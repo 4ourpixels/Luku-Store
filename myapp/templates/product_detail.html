@@ -1,95 +1,135 @@
 {% extends 'base.html' %}{% load static %} {% block body %}
 
-<article>
-  <p class="bread-crumbs">
-    <a class="bread-crumbs-link underline" href="{% url 'store' %}">Shop</a>
-    / {{product.shop}} /
-    <strong>{{product.name}}</strong>
-  </p>
-</article>
+<div id="top" class="container ">
+  <div class="row">
+    <section class="py-5">
+      <div class="container">
+        <div class="row gx-1">
+          <aside class="col-lg-8">
+            <div class="mb-3 d-flex justify-content-center">
+              <a
+                data-fslightbox="mygalley"
+                class="rounded-4"
+                target="_blank"
+                data-type="image"
+                href="{{ imgURL }}"
+              >
+                <img
+                  style="max-width: 100%; max-height: 100vh; margin: auto"
+                  class="cover"
+                  src="{{ product.imageURL }}"
+                />
+              </a>
+            </div>
+            <!-- gallery-wrap .end// -->
+          </aside>
+          <main class="col-lg-4">
+            <div class="ps-lg-3">
+              <p>
+                <small
+                  ><a href="#" onclick="history.go(-1);" class="underline text-dark"
+                    >« Back to shop</a
+                  ></small
+                >
+                <hr />
+              </p>
+              <h2 class="title text-dark">{{ product.name }}</h2>
 
-<div class="main-container">
-  <section class="product-left">
-    <div class="images">
-      <a class="gfg-img" href="{{ imgURL }}">
-        <img src="{{ product.imageURL }}" alt="{{ product.name }}"
-      /></a>
-      <div class="zoom-preview"></div>
-    </div>
-  </section>
+              <div class="mb-3">
+                <span class="h5">€{{ product.price }}</span>
+              </div>
 
-  <section class="right">
-    <div class="details">
-      <div class="details-group">
-        <h3 class="product-name-details">{{ product.name }}</h3>
-        <p class="description">
-          {{ product.description }}
-          <span class="size">{{ product.sizes|upper }}</span>
-        </p>
-      </div>
+              <p>{{ product.description }}</p>
 
-      <div class="details-group">
-        <div class="price-group">
-          <h3 class="price">€{{ product.price }}</h3>
+              <div class="row">
+                <dt class="col-3">Brand</dt>
+                <dd class="col-9">{{ product.shop }}</dd>
+              </div>
+
+              <hr />
+
+              <div class="row mb-4">
+                <div class="col-md-4 col-6">
+                  <label class="mb-2">Size</label>
+                  <select
+                    class="form-select border border-secondary"
+                    style="height: 35px"
+                  >
+                    {% for size in sizes %}
+                    <option>{{ size|join:"" }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="col-md-4 col-6">
+                  <label class="mb-2">Color</label>
+                  <select
+                    class="form-select border border-secondary"
+                    style="height: 35px"
+                  >
+                    {% for color in colors %}
+                    <option>{{ color|join:"" }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <button
+                data-product="{{ product.pk }}"
+                data-action="add"
+                class="btn btn-dark update-cart"
+              >
+                Add to cart <i class="me-1 fa fa-shopping-basket"></i>
+              </button>
+              <a class="btn btn-outline-dark" href="{% url 'cart' %}"
+                >View Cart</a
+              >
+            </div>
+          </main>
         </div>
       </div>
+    </section>
+    <!-- content -->
+  </div>
+  {% if similar_products %}
+  <hr />
+  <div class="col ">
+    <div class="row">
+      <h5 class="card-title mb-3">Similar items</h5>
 
-      <div class="details-group">
-        <div class="details-buttons buttons">
-          <a
-            data-product="{{ product.pk }}"
-            data-action="add"
-            class="buy-now-btn btn-primary update-cart"
-            href="{% url 'cart' %}"
-            >Add to cart</a
-          >
-        </div>
-      </div>
+      <div class="row">
+        {% for product in similar_products %}
+        <div class="col-lg-3 col-md-6 col-sm-6 d-flex">
+          <div style="border: none" class="card w-100 my-2 shadow-2-strong">
+            <a href="{% url 'product_detail' product.pk %}">
+              <img
+                src="{{ product.imageURL }}"
+                class="card-img-top"
+                style="
+                  aspect-ratio: 1 / 1;
+                  object-fit: cover;
+                  border-radius: 25px;
+                  height: 25rem;
+                "
+                alt="{{ product.name }}"
+            /></a>
 
-      <div class="details-group delivery-details">
-        <div class="delivery">
-          <div class="delivery-div">
-            <i class="fa-solid fa-truck"></i>
-            <h5>Free Delivery</h5>
+            <div style="margin-top: 1rem" class="row d-flex flex-column">
+              <p class="text-bold">
+                {{ product.description|truncatechars:50 }}
+              </p>
+              <p class="text-secondary">By: {{ product.shop }}</p>
+            </div>
+            <hr />
           </div>
-          <a class="postal-code-link" href="#"
-            >Enter your Postal code for Delivery Availability</a
-          >
         </div>
-        <hr />
-        <div class="delivery">
-          <div class="delivery-div">
-            <i class="fa-solid fa-truck-ramp-box"></i>
-            <h5>Return Delivery</h5>
-          </div>
-          <a class="return-delivery-code-link" href="#"
-            >Free 30days Delivery Returns. Details.</a
-          >
-        </div>
+        {% endfor %}
       </div>
     </div>
-  </section>
+  </div>
+  {% else %}
+  <div></div>
+  {% endif %}
+  <a class="text-black underline" href="#top">Back to top</a>
 </div>
-<script>
-  var img = document.getElementById("gfg-img");
-  var preview = document.querySelector(".zoom-preview");
-
-  //calculating the ratio by which we want to magnify the image
-  //you can increase or decrease it according to your requirement
-  var x = preview.offsetWidth / 100;
-  var y = preview.offsetHeight / 100;
-
-  img.addEventListener("mousemove", (e) => {
-    preview.style.backgroundImage = "";
-    preview.style.backgroundSize =
-      img.width * x + "px " + img.height * y + "px";
-    var posX = e.offsetX;
-    var posY = e.offsetY;
-    preview.style.backgroundPosition =
-      "-" + posX * x + "px -" + posY * y + "px";
-  });
-  img.addEventListener("mouseout", () => {
-    preview.style.backgroundImage = "none";
-  });
-</script>
 {% endblock %}
