@@ -1,71 +1,65 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<section>
-  <header class="cart-bread-crumbs">
-    <div class="cart-top">
-      <h3 class="checkout-current">Cart Summary</h3>
-      <a class="checkout-button" href="{% url 'checkout' %}"
-        >Checkout &#8594;</a
-      >
-    </div>
 
-    <ol class="cart-navigation">
-      <li>
-        <p class="underline current">1. Cart Summary</p>
-      </li>
-      <li>
-        <a class="underline" href="{% url 'checkout' %}"
-          >2. Shipping Information</a
-        >
-      </li>
-      <li>
-        <p>3. Select Payment Method</p>
-      </li>
-      <li>
-        <p>4. Order Confirmation</p>
-      </li>
-    </ol>
-  </header>
-
-  <div class="cart-header">
-    <h4>Total Items: {{ cartItems }}</h4>
-    <h4>Total: €{{ order.get_cart_total }}</h4>
-  </div>
-
-  <div class="cart-sum">
-    <table>
+<div
+  style="margin-top: 5rem !important; margin-bottom: 5rem !important"
+  class="container"
+>
+  <table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
       <tr>
-        <th>Image</th>
         <th>Product</th>
-        <th>Quantity</th>
-        <th>Subtotal</th>
+        <th>Price</th>
+        <th>Actions</th>
+        <th>Total</th>
       </tr>
+    </thead>
+    <tbody>
       {% for item in items %}
       <tr>
         <td>
-          <img class="order-image" src="{{ item.product.imageURL }}" alt="" />
-        </td>
-        <td>{{ item.product.name }} <br />€{{ item.product.price }}</td>
-        <td>
-          <!-- quantity -->
-          <div class="order-quantity">
-            <i
-              data-product="{{ item.product.id }}"
-              data-action="remove"
-              class="fa-solid fa-minus update-cart"
-            ></i>
-            <p>{{ item.quantity }}</p>
-            <i
-              data-product="{{ item.product.id }}"
-              data-action="add"
-              class="fa-solid fa-plus update-cart"
-            ></i>
+          <div class="d-flex align-items-center">
+            <img
+              src="{{ item.product.imageURL }}"
+              alt="{{ item.product.name }}"
+              style="width: 45px; height: 45px; border-radius: 8px"
+            />
+            <div class="ms-3">
+              <p class="fw-bold mb-1">{{ item.product.name }}</p>
+            </div>
           </div>
-          <!-- end of quantity -->
         </td>
-        <td>€{{ item.get_total }}</td>
+        <td>
+          <p class="fw-normal mb-1">€ {{ item.product.price }}</p>
+          <p class="text-muted mb-0">x {{ item.quantity }}</p>
+        </td>
+        <td>
+          <button
+            data-product="{{ item.product.id }}"
+            data-action="remove"
+            class="update-cart btn btn btn-danger"
+          >
+            <i class="fa-solid fa-minus update-cart"></i>
+          </button>
+          <button
+            data-product="{{ item.product.id }}"
+            data-action="add"
+            class="update-cart btn btn-success"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </td>
+        <td>
+          <p class="fw-normal mb-1">€{{ item.get_total }}</p>
+        </td>
       </tr>
       {% endfor %}
-    </table>
+    </tbody>
+  </table>
+  <div style="margin-top: 2.5rem" class="col">
+    <a class="btn btn-dark float-end" href="{% url 'checkout' %}"
+      >Proceed to checkout</a
+    >
   </div>
-</section>
+</div>
+
 {% endblock %}
