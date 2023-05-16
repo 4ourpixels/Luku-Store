@@ -1,31 +1,93 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<section class="shop">
-  <h1 style="font-size: 3rem;"><i style="margin-right: 10px;" class="fa-solid fa-shop"></i>Shop</h1>
-  <main>
-    <section class="shop-section">
-      {% for product in recent_products %}
-      <div>
-        <a class="product-view-link" href="{% url 'product_detail' product.pk %}">
-          <img class="thumbnail" src="{{ product.imageURL }}" alt="" />
-          <hr style="margin: 10px 0px 10px 0px;" />
-          <div>
-            <h3>{{ product.name }}</h3></a>
-            <p class="description">{{ product.description }}</p>
-            <h4 class="product-details-group">
-            Price: 
-            € {{ product.price }}<i class="wishlist fa-regular fa-heart"></i>
-            </h4>
+
+<div id="top" class="container">
+  <div class="bg-light text-dark">
+    <!-- Products -->
+    <section>
+      <div class="container my-5">
+        <header class="mb-4">
+          <h1>New products</h3>
+        </header>
+
+        <div class="row">
+          {% for product in recent_products %}
+          <div class="col-lg-3 col-md-6 col-sm-6 d-flex">
+            <div style="border: none" class="card w-100 my-2 shadow-2-strong">
+              <a href="{% url 'product_detail' product.pk %}">
+                <img
+                  src="{{ product.imageURL }}"
+                  class="card-img-top"
+                  style="
+                    aspect-ratio: 1 / 1;
+                    object-fit: cover;
+                    border-radius: 25px;
+                    height: 25rem;
+                  "
+                  alt="{{ product.name }}"
+              /></a>
+              <hr>
+              <br />
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-dark">{{ product.name }}</h5>
+                <p>{{ product.description|truncatechars:50 }}</p>
+                <h4 class="card-text">€{{ product.price }}</h4>
+                <div
+                  class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
+                  <button
+                    data-product="{{ product.pk }}"
+                    data-action="add"
+                    class="btn-cart btn-outline-secondary shadow-0 me-1 update-cart"
+                  >
+                    Add to cart
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-          <button 
-                data-product="{{ product.pk }}"
-                data-action="add"
-                class="add-btn update-cart addToCartBtn"
-              >
-              Add to <i class="fa-solid fa-cart-shopping"></i>
-            </button>
+          {% endfor %}
+        </div>
       </div>
-      {% endfor %}
     </section>
-  </main>
-</section>
+    <!-- Products -->
+
+    <!-- Blog -->
+  </div>
+  <section class="mt-5 mb-4">
+    <div class="container text-dark">
+      <header class="mb-4">
+        <h3>Blog posts</h3>
+      </header>
+
+      <div class="row">
+        {% for blog in blogs|slice:":4" %}
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+          <article>
+            <a href="#" class="img-fluid">
+              <img
+                class="rounded w-100"
+                src="{{ blog.imageURL }}"
+                style="object-fit: cover"
+                height="160"
+              />
+            </a>
+            <div class="mt-2 text-muted small d-block mb-1">
+              <span>
+                <i class="fa fa-calendar-alt fa-sm"></i>
+                {{ blog.pub_date }}
+              </span>
+              <a class="underline" href="{% url 'blog_detail' pk=blog.pk %}"
+                ><h6 class="text-dark">{{ blog.title|truncatechars:50 }}</h6></a
+              >
+              <p>{{ blog.summary|truncatechars:50}}</p>
+            </div>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <!-- Blog -->
+  <hr />
+  <a class="underline text-dark" href="#top">Back to top</a>
+</div>
 {% endblock %}
