@@ -3,223 +3,411 @@
 <!-- -------------------- -->
 
 <!-- HERO SECTION -->
-<section id="current" class="hero">
-  <article class="hero-title-box">
-    <h1 class="hero-main-title">
-      Streetwear is an artistic movement. <br />
-      It’s a creative process.  <br>
-      "Virgil Abloh"
-    </h1>
-    <div>
-      <a class="btn-primary underline" href="{% url 'brands' %}"
-        >SS23' Lukubook</a
-      >
-      <a class="btn btn-secondary" href="{% url 'store' %}">Shop Now &#8599;</a>
+<div
+  style="
+    margin-top: 0 !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+  "
+  id="myCarousel"
+  class="carousel slide"
+  data-bs-ride="carousel"
+>
+  <div class="carousel-indicators">
+    <button
+      type="button"
+      data-bs-target="#myCarousel"
+      data-bs-slide-to="0"
+      class="active"
+      aria-current="true"
+      aria-label="Slide 1"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#myCarousel"
+      data-bs-slide-to="1"
+      aria-label="Slide 2"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#myCarousel"
+      data-bs-slide-to="2"
+      aria-label="Slide 3"
+    ></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img
+        class="d-block w-100"
+        src="{% static 'images/hero/image_6483441.png' %}"
+      />
+
+      <div class="container">
+        <div class="carousel-caption text-start">
+          <img
+            style="filter: invert(100%); margin-bottom: 1.5rem"
+            height="200"
+            src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
+          />
+          <p>
+            <a class="btn btn-lg btn-outline-light" href="#">SS23' Lukubook</a>
+          </p>
+        </div>
+      </div>
     </div>
-  </article>
-</section>
+    <div class="carousel-item">
+      <img
+        class="d-block w-100"
+        src="{% static 'images/hero/OX_2-hero.png' %}"
+      />
+      <div class="container">
+        <div class="carousel-caption">
+          <figure class="text-center">
+            <blockquote class="blockquote">
+              <h1>
+                Streetwear is an artistic movement. <br />
+                It’s a creative process.
+              </h1>
+            </blockquote>
+            <figcaption class="blockquote-footer">Virgil Abloh</figcaption>
+          </figure>
+          <p>
+            <a class="btn btn-lg btn-outline-light" href="{% url 'brands' %}"
+              >Shop &#8599;</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img
+        class="d-block w-100"
+        src="{% static 'images/hero/image_6483441-hero.png' %}"
+      />
+
+      <div class="container">
+        <div class="carousel-caption text-end">
+          <img
+            style="filter: invert(100%); margin-bottom: 1.5rem"
+            height="200"
+            src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
+          />
+          <p>
+            <a class="btn btn-lg btn-outline-light" href="#"
+              >Akiba Studios &#8594;</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#myCarousel"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#myCarousel"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 
 <!-- END OF HERO SECTION -->
 
 <!-- -------------------- -->
 <!-- -------------------- -->
 <!--  SECTION -->
-  <div class="winter-heading">
+<div style="margin-top: 100vh" class="container">
+  <!-- heading -->
+  <div class="row">
     <h3 class="index-heading">Winter 23/24 Collection</h3>
     <p class="winter-sub-heading">
       Check out our summer collection from local designers in Kenya, Africa.
     </p>
   </div>
-  <!-- End of Winter Heading -->
-
-<div id="winter-section" class="winter-section">
-  <!-- Winter Heading -->
-  <section class="winter-inner-section">
-    <!-- 1st Block -->
-    <div class="new-release-div">
-      <h2>New Release</h2>
-      <p>OX 2023 Collection</p>
-      <div class="new-release-buttons">
-        <a href="{% url 'brands' %}">Men Shop &#8599;</a>
-        <a href="{% url 'brands' %}">Women Shop &#8599;</a>
+  <!-- end of heading -->
+  <div class="container">
+    <div class="row gy-5 gx-5">
+      <div class="col-sm-12 col-md-12 col-lg-5">
+        <!-- 1st Block -->
+        <div class="new-release-div">
+          <h2>New Release</h2>
+          <p>OX 2023 Collection</p>
+          <div class="new-release-buttons">
+            <a href="{% url 'store' %}">Shop &#8599;</a>
+          </div>
+        </div>
+        <!-- End of 1st Block -->
       </div>
-    </div>
-    <!-- End of 1st Block -->
 
-    <!-- 2nd Block -->
-    <div class="mid-div">
-      <div class="sweater-div"><a class="underline" href="{% url 'store' %}">Sweater</a></div>
-      <div class="jacket-div"><a class="underline" href="{% url 'store' %}">Jacket</a></div>
-    </div>
-    <!-- End of 2nd Block -->
-
-    <!-- 3rd Block -->
-    <div class="trucker-div">
-      <a class="underline" href="{% url 'brands' %}"
-        >Trucker <br />
-        Hats</a
-      >
-    </div>
-    <!-- End of 3rd Block -->
-  </section>
-</div>
-
-<!-- END OF  SECTION -->
-
-<!-- -------------------- -->
-<!-- -------------------- -->
-
-<!-- LUKU DEFINITION -->
-<div id="definition">
-  <section class="definition">
-    <h1>luku</h1>
-    <em>/ loo-koo /</em>
-    <p>
-      <strong>(n.)</strong>
-      a magical power possessed by stylish Kenyan clothing that makes you feel
-      like you can conquer the world while also doing good for others. Example:
-      "I put on my new dress from Kenya and suddenly I felt the luku coursing
-      through my veins! Time to take on the day with confidence!
-    </p>
-  </section>
-</div>
-<div class="horizontal-rule"></div>
-<!-- END OF LUKU DEFINITION -->
-
-<!-- -------------------- -->
-<!-- -------------------- -->
-<!-- POPULAR THIS WEEK -->
-<div id="popular-this-week" class="popular-heading">
-  <h3 class="index-heading">Popular This Week</h3>
-  <p class="popular-sub-heading">
-    Akiba is back with unique and colorful outfits that reflect the Kenyan
-    culture and lifestyle.
-  </p>
-</div>
-
-<section class="popular">
-  {% for product in products %} {% if product.popular|slice:":3" %}
-  <div>
-    <a class="product-view-link" href="{% url 'product_detail' product.pk %}">
-      <img class="thumbnail" src="{{ product.imageURL }}" alt="" />
-      <hr style="margin: 10px 0px 10px 0px;" />
-      <div>
-        <h3>{{ product.name }}</h3></a>
-        <p class="description">{{ product.description }}</p>
-        <h4 class="product-details-group">
-        Price: 
-        €{{ product.price }}<i class="wishlist fa-regular fa-heart"></i>
-        </h4>
+      <div class="col-sm-12 col-md-4 col-lg-3 d-flex justify-content-center">
+        <!-- 2nd Block -->
+        <div class="container">
+          <div class="row gy-5 gx-5">
+            <div class="sweater-div col-sm-6 col-md-6 col-lg-12">
+              <a class="underline" href="{% url 'store' %}">Sweater</a>
+            </div>
+            <div class="jacket-div col-sm-6 col-md-6 col-lg-12">
+              <a class="underline" href="{% url 'store' %}">Jacket</a>
+            </div>
+          </div>
+        </div>
+        <!-- End of 2nd Block -->
       </div>
-      <button 
-            data-product="{{ product.pk }}"
-            data-action="add"
-            class="add-btn update-cart addToCartBtn"
+
+      <div class="col-sm-12 col-md-8 col-lg-4 d-flex justify-content-center">
+        <!-- 3rd Block -->
+        <div class="trucker-div">
+          <a class="underline" href="{% url 'brands' %}"
+            >Trucker <br />
+            Hats</a
           >
-          Add to <i class="fa-solid fa-cart-shopping"></i>
-        </button>
+        </div>
+        <!-- End of 3rd Block -->
+      </div>
+    </div>
   </div>
-  {% endif %} {% endfor %}
-</section>
+  <br />
+  <br />
+  <br />
+  <!-- END OF  SECTION -->
 
-<article class="site-numbers">
-  <div class="customers-number">
-    <h2>2,500+</h2>
-    <span>Customers</span>
+  <!-- -------------------- -->
+  <!-- -------------------- -->
+
+  <!-- LUKU DEFINITION -->
+  <div class="container d-flex h-100 w-100 text-center text-dark">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <div class="px-3">
+        <h1 style="font-size: 200px" class="col-sm-12 col-md-12 col-12">
+          luku
+        </h1>
+        <p class="text-muted h4">/ loo-koo /</p>
+        <br />
+
+        <p class="display-6">
+          <strong>(n.)</strong>
+          a magical power possessed by stylish Kenyan clothing that makes you
+          feel like you can conquer the world while also doing good for others.
+          Example: "I put on my new fit from Kenya and suddenly I felt the luku
+          coursing through my veins! Time to take on the day with confidence!"
+        </p>
+      </div>
+    </div>
   </div>
+  <!-- END OF LUKU DEFINITION -->
+  <br />
+  <hr />
+  <br />
+  <br />
+  <!-- -------------------- -->
+  <!-- -------------------- -->
+  <!-- POPULAR THIS WEEK -->
 
-  <div class="monthly-blog">
-    <h2>5,500+</h2>
-    <span>Monthly Blog Readers</span>
+  <div class="container">
+    <div class="row">
+      <div id="popular-this-week" class="index-heading">
+        <h3 class="index-heading">Popular This Week</h3>
+        <p class="winter-sub-heading">
+          Akiba is back with unique and colorful outfits that reflect the Kenyan
+          culture and lifestyle.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      {% for product in products %} {% if product.popular|slice:":4" %}
+      <div class="col-lg-3 col-md-6 col-sm-6 d-flex">
+        <div style="border: none" class="card w-100 my-2 shadow-2-strong">
+          <a href="{% url 'product_detail' product.pk %}">
+            <img
+              src="{{ product.imageURL }}"
+              class="card-img-top"
+              style="
+                aspect-ratio: 1 / 1;
+                object-fit: cover;
+                border-radius: 25px;
+                height: 25rem;
+              "
+              alt="{{ product.name }}"
+          /></a>
+          <br />
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title text-dark">{{ product.name }}</h5>
+            <p>{{ product.description|truncatechars:50 }}</p>
+            <h4 class="card-text">€{{ product.price }}</h4>
+            <div
+              class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto"
+            >
+              <button
+                data-product="{{ product.pk }}"
+                data-action="add"
+                class="btn-cart btn-outline-secondary shadow-0 me-1 update-cart"
+              >
+                Add to cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %} {% endfor %}
+    </div>
   </div>
+  <!-- END OF POPULAR THIS WEEK -->
+  <!-- -------------------- -->
+  <!-- -------------------- -->
 
-  <div class="countries">
-    <h2>10+</h2>
-    <span>Countries</span>
-  </div>
-</article>
+  <!-- BLOG SECTION -->
 
-<!-- END OF POPULAR THIS WEEK -->
-<!-- -------------------- -->
-<!-- -------------------- -->
+  <!-- Blog -->
+  <section class="mt-5 mb-4">
+    <div class="container text-dark">
+      <header class="mb-4">
+        <h1 class="">Blog posts</h1>
+      </header>
 
-<!-- BLOG SECTION -->
-<div class="horizontal-rule"></div>
-<div id="index-blog" class="blog-heading">
-  <h3 class="index-heading">Blog Posts</h3>
-</div>
-<section class="index-blog-container">
-  <!-- LATEST BLOG -->
-  {% for blog in blogs|slice:":1" %}
-  <article class="index-blog-item">
-    <iframe
-      class="index-blog-image"
-      src="https://www.youtube.com/embed/XppZqa0BtoQ"
-      title="YouTube video player"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen
-    ></iframe>
+      <div class="row">
+        {% for blog in blogs|slice:":4" %}
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+          <article>
+            <a href="{% url 'blog_detail' pk=blog.pk %}" class="img-fluid">
+              <img
+                class="rounded w-100"
+                src="{{ blog.imageURL }}"
+                style="object-fit: cover"
+                height="160"
+              />
+            </a>
+            <div class="mt-2 text-muted small d-block mb-1">
+              <span>
+                <i class="fa fa-calendar-alt fa-sm"></i>
+                {{ blog.pub_date }}
+              </span>
+              >
+              <h6 class="text-dark">{{ blog.title|truncatechars:50 }}</h6>
+              <p>{{ blog.summary|truncatechars:50}}</p>
+            </div>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <!-- Blog -->
 
-    <a class="index-blog-title underline" href="{% url 'blog_detail' blog.pk %}"
-      >{{ blog.title }}</a
-    >
-    <p class="index-blog-summary">
-      {{ blog.summary }}
-      <a class="underline" href="{% url 'blog_detail' blog.pk %}"
-        ><br />
-        Read more ...</a
-      >
-    </p>
-  </article>
-  {% endfor %}
+  <!-- END OF BLOG SECTION -->
+  <!-- -------------------- -->
+  <!-- -------------------- -->
 
-  <!-- END OF LATEST BLOG -->
-
-  <!-- OTHER BLOG -->
-  {% for blog in blogs|slice:"1:3" %}
-  <article class="index-blog-item">
-    {% if blog.image %}
-    <a class="index-blog-title underline" href="{% url 'blog_detail' blog.pk %}"
-      >
-    <img
-      src="{{ blog.imageURL }}"
-      alt="{{ blog.name }}"
-    />
-    {% endif %}
-    {{ blog.title }}</a
-    >
-    <p class="index-blog-summary">
-      {{ blog.summary }}
-      <a class="read-blog underline" href="{% url 'blog_detail' blog.pk %}"
-        ><br />
-        Read more ...</a
-      >
-    </p>
-  </article>
-  {% endfor %}
-  <!-- END OF OTHER BLOG -->
-</section>
-<a class="read-more underline" href="{% url 'blog_list' %}"
-  >More Blogs &#8594;</a
->
-
-<div class="horizontal-rule"></div>
-
-<!-- END OF BLOG SECTION -->
-<!-- -------------------- -->
-<!-- -------------------- -->
-
-<!-- HOT SALE -->
-<section id="hot-sale" class="hot-sale" >
-  <a class="hot-sale-link underline" href="{% url 'store' %}"
-    >Explore Akiba <br />
-    Trucker Hats &#8594;</a
+  <!-- HOT SALE -->
+  <div
+    style="margin-bottom: 5rem"
+    id="myCarouselHotSale"
+    class="carousel slide"
+    data-bs-ride="carousel"
   >
-</section>
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#myCarouselHotSale"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#myCarouselHotSale"
+        data-bs-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#myCarouselHotSale"
+        data-bs-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
+    </div>
+    <div class="carousel-inner">
+      <div style="height: 35rem" class="carousel-item active">
+        <img
+          style="border-radius: 25px"
+          class="d-block w-100"
+          src="{% static 'index/TRUCKER_HAT_2.jpg' %}"
+        />
+        <div class="container">
+          <div class="carousel-caption text-start">
+            <a
+              style="text-decoration: none"
+              class="link-light"
+              href="{% url 'store' %}"
+              ><h3 class="underline">
+                Explore Akiba <br />
+                Trucker Hats &#8594;
+              </h3></a
+            >
+          </div>
+        </div>
+      </div>
 
-<!-- END OF HOT SALE -->
-<!-- -------------------- -->
-<!-- -------------------- -->
+      <div style="height: 35rem" class="carousel-item">
+        <img
+          style="
+            border-radius: 25px;
+            background: linear-gradient(
+              to right,
+              rgba(0, 0, 0, 0.724),
+              transparent
+            );
+          "
+          class="d-block w-100"
+          src="{% static 'index/TRUCKER_HAT_1.jpg' %}"
+        />
+      </div>
 
+      <div style="height: 35rem" class="carousel-item">
+        <img
+          style="border-radius: 25px"
+          class="d-block w-100"
+          src="{% static 'index/bucket-hats1.png' %}"
+        />
+      </div>
+    </div>
+
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#myCarouselHotSale"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#myCarouselHotSale"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <hr />
+  <!-- END OF HOT SALE -->
+  <!-- -------------------- -->
+  <!-- -------------------- -->
+  <a class="underline text-dark" href="#myCarousel">Back to top</a>
+</div>
 {% endblock %}
