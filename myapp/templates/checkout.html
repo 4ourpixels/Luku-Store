@@ -1,117 +1,88 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
+<div class="container" style="margin-top: 2.5rem !important" class="container">
+  <div>
+    <div class="col">
+      <div class="box-element" id="form-wrapper">
+        <div class="row">
+          <form class="form" method="POST" id="form">
+            <h4 class="mb-3">Billing address</h4>
+            {% csrf_token %}
+            <div class="container">
+              <div class="row" id="user-info">
+                <div class="col">
+                  <label for="firstName">Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="firstName"
+                    name="name"
+                    required
+                  />
+                  <div class="invalid-feedback">Name is required.</div>
+                </div>
 
-<!-- NAVIGATION -->
-<!-- END OF NAVIGATION -->
-<header class="cart-bread-crumbs">
-  <p id="checkout-current" class="checkout-current">Shipping Information</p>
-  <ol class="cart-navigation">
-    <li>
-      <a class="underline" href="{% url 'cart' %}">1. Cart Summary</a>
-    </li>
-    <li>
-      <p id="digital-false" class="underline current">
-        2. Shipping Information
-      </p>
-    </li>
-    <li>
-      <p id="digital-true" class="underline">3. Select Payment Method</p>
-    </li>
-    <li>
-      <p class="underline">4. Confirm Order</p>
-    </li>
-  </ol>
-</header>
+                <div class="col">
+                  <label for="email">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    required
+                  />
+                  <div class="invalid-feedback">Valid Email is required.</div>
+                </div>
+              </div>
+            </div>
 
-<!-- FORM -->
-<div class="box-element" id="form-wrapper">
-  <form class="form" id="form">
-    {% csrf_token %}
-    <div style="margin-top: 15px" id="user-info">
-      <div style="margin-top: 15px" class="form-field">
-        <input
-          required
-          class="form-control"
-          type="text"
-          name="name"
-          placeholder="Name"
-        />
-      </div>
-      <div class="form-field">
-        <input
-          required
-          type="email"
-          class="form-control"
-          placeholder="Email"
-          name="email"
-        />
+            <div class="container" id="shipping-info">
+              <div class="mb-3">
+                <label for="country">Country</label>
+                <input type="text" class="form-control" id="country" required />
+              </div>
+
+              <div class="mb-3">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city" required />
+              </div>
+
+              <div class="mb-3">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" required />
+              </div>
+
+              <div class="mb-3">
+                <label for="zipcode">Zipcode</label>
+                <input type="text" class="form-control" id="zipcode" required />
+              </div>
+
+              <div class="mb-3">
+                <label for="state">State</label>
+                <input type="text" class="form-control" id="state" required />
+              </div>
+
+              <hr class="mb-4" />
+              <button
+                id="form-button"
+                class="btn btn-dark btn-lg btn-block"
+                type="submit"
+              >
+                Save Address
+              </button>
+            </div>
+          </form>
+          <section id="payment-info" class="hidden">
+            <div class="left-payment-child" id="paypal-button-container"></div>
+          </section>
+        </div>
       </div>
     </div>
-
-    <div id="shipping-info">
-      <div class="form-field">
-        <input
-          class="form-control"
-          type="text"
-          name="country"
-          placeholder="Country"
-          required
-        />
-      </div>
-      <div class="form-field">
-        <input
-          class="form-control"
-          type="text"
-          name="city"
-          placeholder="City.."
-          required
-        />
-      </div>
-      <div class="form-field">
-        <input
-          class="form-control"
-          type="text"
-          name="address"
-          placeholder="Address.."
-          required
-        />
-        <input
-          class="form-control"
-          type="text"
-          name="zipcode"
-          placeholder="Zip code.."
-        />
-      </div>
-      <div class="form-field">
-        <input
-          class="form-control"
-          type="text"
-          name="state"
-          placeholder="State.."
-        />
-      </div>
-      <button id="form-button" class="cart-button-black" type="submit">
-        Save Address
-      </button>
-    </div>
-  </form>
-  <img
-    class="box-element-img-form"
-    src="{% static 'images/mail-truck.svg' %}"
-  />
-
-  <!-- END OF FORM -->
-
-  <!-- PAYMENT OPTIONS ---------------------------------------------------------->
-  <section id="payment-info" class="hidden">
-    <div class="left-payment-child" id="paypal-button-container"></div>
-  </section>
-  <!-- END OF PAYMENT OPTIONS ---------------------------------------------------------->
+  </div>
 </div>
-
 <!-- javascript -->
 <!-- Paypal -->
 <!-- Paypal API -->
-<script src="https://www.paypal.com/sdk/js?client-id=AWQLLidcguyPsillx1mX6siiFmBlTpZOkE7qxy5vvzLb1jeoK4_DGKE9f27VEiwd5baRTgVkfXCMPK51&currency=EUR"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AWQLLidcguyPsillx1mX6siiFmBlTpZOkE7qxy5vvzLb1jeoK4_DGKE9f27VEiwd5baRTgVkfXCMPK51&currency=USD"></script>
 <!-- end of Paypal API -->
 
 <!-- Paypal Button -->
@@ -155,18 +126,12 @@
 
   if (shipping == "False") {
     document.getElementById("shipping-info").innerHTML = "";
-    document.getElementById("digital-false").classList.add("current");
-    document.getElementById("digital-true").classList.remove("current");
-    document.getElementById("checkout-current").textContent =
-      "Digital Product Payment";
     document.getElementById("user-info").classList.add("hidden");
     document.getElementById("payment-info").classList.remove("hidden");
   }
 
   if (user != "AnonymousUser") {
     document.getElementById("user-info").innerHTML = "";
-    document.getElementById("digital-false").classList.add("current");
-    document.getElementById("digital-true").classList.remove("current");
   }
 
   if (shipping == "False" && user != "AnonymousUser") {
@@ -188,9 +153,6 @@
     document.getElementById("form-button").classList.add("hidden");
     document.getElementById("payment-info").classList.remove("hidden");
     document.getElementById("form").classList.add("hidden");
-    document.getElementById("checkout-current").textContent = "Select Payment";
-    document.getElementById("digital-false").classList.remove("current");
-    document.getElementById("digital-true").classList.add("current");
     console.log("...100% form submission completed");
   });
 
