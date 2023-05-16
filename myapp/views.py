@@ -6,6 +6,8 @@ from .models import *
 from . utils import cookieCart, cartData, guestOrder, search_items
 import http.client
 from django.contrib.auth.decorators import user_passes_test
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 # ERROR - DONE
@@ -74,6 +76,8 @@ def dashboard(request):
 # END OF DASHBOARD
 
 def index(request):
+    
+    page_name = "| Online Clothing Store | Affordable and Stylish Clothes from Kenya"
     products = Product.objects.all()
     blogs = Blog.objects.all()
     
@@ -85,10 +89,12 @@ def index(request):
         newsletter_subscriber = Newsletter(email=email)
         newsletter_subscriber.save()
         print(f"{email} subscribed to our newsletter from the homepage!")
+        return redirect('index')
     
     context = {'products': products, 
                 'blogs': blogs, 
                 'cartItems': cartItems,
+                'page_name': page_name,
                 }
     return render(request, 'index.html', context)
 
@@ -105,13 +111,18 @@ def store(request):
     
     recent_products = Product.objects.order_by('-pk')
     products = Product.objects.all()
+    blogs = Blog.objects.order_by('-pk')
+    
+    items_per_page = 8
+    paginator = Paginator(recent_products, items_per_page)
     
     context = { 
                 'products': products, 
                 'page_name': page_name,
                 'cartItems': cartItems,
                 'recent_products': recent_products,
-                
+                'paginator': paginator,
+                'blogs': blogs,
                 }
     
     return render(request, 'store.html', context)
@@ -191,6 +202,16 @@ def checkout(request):
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    price_range = Product.objects.filter(price__lte=product.price + 25).exclude(pk=pk)
+    
+    keywords = product.keywords.split(',')
+    similar_products = Product.objects.filter(
+        Q(keywords__icontains=keywords[0]) |
+        Q(description__icontains=keywords[0]) |
+        Q(name__icontains=keywords[0]) |
+        Q(shop__icontains=keywords[0]) |
+        Q(brand__icontains=keywords[0])
+    ).exclude(pk=pk).distinct()
 
     page_name = f"| {product.name}"
     
@@ -206,9 +227,10 @@ def product_detail(request, pk):
 
     
     imgURL = product.imageURL
-    
-    colors = Product.objects.values('available_colors').distinct()
 
+    colors = product.available_colors.split(',')
+    sizes = product.sizes.split(',')
+    
     context = {
             'product': product, 
             'page_name': page_name, 
@@ -217,6 +239,9 @@ def product_detail(request, pk):
             'colors': colors,
             'cartItems': cartItems,
             'imgURL':imgURL,
+            'sizes': sizes,
+            'similar_products': similar_products,
+            'price_range': price_range,
             }
         
     return render(request, 'product_detail.html', context)
@@ -224,6 +249,7 @@ def product_detail(request, pk):
 
 def blog_list(request):
     blogs = Blog.objects.all()
+    recent_blogs = Blog.objects.order_by('-pk')
     page_name = f"| Blogs"
     
     data = cartData(request)
@@ -232,7 +258,8 @@ def blog_list(request):
     context = {
         'cartItems': cartItems,
         'blogs': blogs,
-        'page_name': page_name
+        'page_name': page_name,
+        'recent_blogs': recent_blogs,
         }
     return render(request, 'blog_list.html', context)
 
@@ -326,7 +353,7 @@ def newsletter(request):
             return redirect('/')
         else:
             # Subscribe the email to the newsletter
-            print(f"{email} Subscribed from our newsletter.")
+            print(f"{email} Subscribed to our newsletter!")
             newsletter_subscriber = Newsletter(email=email)
             newsletter_subscriber.save()
         return redirect('/')
