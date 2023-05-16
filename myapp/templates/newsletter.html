@@ -1,33 +1,44 @@
 {% extends 'base.html' %} {% block body %}
+<section class="d-flex align-items-center justify-content-center h-100">
+  <div style="height: 45vh; margin-top: 5rem" class="cover-container w-50 p-3">
+    <main class="px-3">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3 text-center">
+          <h1>Lukustore Newsletter</h1>
+          <p>
+            Subscribe to receive updates, access to exclusive deals, our
+            newsletter, and more.
+          </p>
+          <input
+            style="padding: 1rem"
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <div class="d-grid">
+          <button
+            style="padding: 1rem; font-size: 1rem"
+            class="btn btn-dark"
+            type="submit"
+          >
+            Subscribe
+          </button>
+        </div>
+      </form>
+    </main>
 
-<section class="newsletter-page">
-  <form id="newsletter" method="POST">
-    {% csrf_token %}
-    <h1>Lukustore Newsletter</h1>
-    <p>
-      Subscribe to recieve updates, access to exclusive deals, our newsletter
-      and more.
-    </p>
-    <p>{{message}}</p>
-    <input
-      id="newsletter-email"
-      class="newsletter-input"
-      type="email"
-      name="email"
-      placeholder="Enter your email"
-      required
-    />
-    <span
-      ><input
-        type="checkbox"
-        id="myCheck"
-        onclick="myFunctionHere()"
-        required
-        class="newsletter-checkbox"
-      />
-      I accept the <a href="/help/#termsOfService">Terms of Service</a> and
-      <a href="/help/#privacyPolicy">Privacy Policy.</a>
-    </span>
-  </form>
+    <footer class="mt-3 text-center">
+      <p style="font-size: 0.8rem">
+        By subscribing to our newsletter, you agree to the
+        <a class="underline" href="/help/#termsOfService">Terms of Service</a>
+        and <a class="underline" href="/help/#privacyPolicy">Privacy Policy</a>.
+      </p>
+    </footer>
+  </div>
 </section>
 {% endblock %}
