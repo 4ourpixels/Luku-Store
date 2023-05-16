@@ -1,32 +1,69 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<section class="shop">
-  <h1 style="margin-top: 25px; font-size: 2.5rem;">Wishlist</h1>
-  <small>A list of <strong>4</strong> special (popular & digital) products</small>
-  <div class="shop-section">
-    {% for product in products %}
-    {% if product.popular %}
-    <div>
-      <a class="product-view-link" href="{% url 'product_detail' product.pk %}">
-        <img class="thumbnail" src="{{ product.imageURL }}" alt="" />
-        <hr style="margin: 10px 0px 10px 0px;" />
-        <div>
-          <h3>{{ product.name }}</h3></a>
-          <p class="description">{{ product.description }}</p>
-          <h4 class="product-details-group">
-          Price: 
-          € {{ product.price }}<i class="wishlist fa-regular fa-heart"></i>
-          </h4>
+<main style="margin-top: 3rem;" id="top" role="main">
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">My Wishlist</h1>
+    </div>
+  </section>
+
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row">
+        {% for product in products %} {% if product.popular %}
+        <div class="col-md-4">
+          <div class="card mb-4 box-shadow">
+            <img
+              height="auto"
+              class="card-img-top"
+              src="{{ product.imageURL }}"
+              alt="Card image cap"
+            />
+            <div class="card-body">
+              <a class="underline text-dark" href="{% url 'product_detail' product.pk %}">
+              <h3>{{ product.name }}</h3></a>
+              <p class="card-text">{{ product.description }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="container">
+                  <button
+                    style="padding: .5rem 1.5rem; font-size: 1rem"
+                    data-product="{{ product.id }}"
+                    data-action="add"
+                    class="update-cart btn btn-dark"
+                    type="button"
+                  >
+                    Move to <i class="fa-solid fa-cart-plus"></i>
+                  </button>
+                  <button
+                    style="background: none; border: none; margin-left:1rem; font-size: 1.5rem"
+                    data-product="{{ product.id }}"
+                    data-action="remove"
+                    class="update-cart"
+                    type="button"
+                  >
+                    <i class="fa-solid fa-trash text-danger"></i>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <button 
-              data-product="{{ product.pk }}"
-              data-action="add"
-              class="add-btn update-cart addToCartBtn"
-            >
-            Add to <i class="fa-solid fa-cart-shopping"></i>
-          </button>
+        {% endif %}{% endfor %}
       </div>
-      {% endif %}
-      {% endfor %}
+    </div>
   </div>
-</section>
+</main>
+
+<footer style="margin-top: 1.5rem;" class="text-muted">
+  <div class="container">
+  <div class="row g-5">
+    <div class="col-md-8">
+      <a style="text-decoration: none"
+        ><h3 class="pb-4 mb-4 fst-italic border-bottom text-dark underline">
+          Our SS23' Lukubook &raquo;
+        </h3></a
+      >
+    </div>
+  </div>
+  <a class="underline text-dark" href="#top">Back to top</a>
+  </div>
+</footer>
 {% endblock %}
