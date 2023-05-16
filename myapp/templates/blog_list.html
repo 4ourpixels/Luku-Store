@@ -1,40 +1,85 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<main>
-  <section class="blog-section">
-    <h1>Blog Posts</h1>
-    <div class="blogs">
-      {% for blog in blogs %}
-      <div class="blog-item">
-        <a class="underline" href="{% url 'blog_detail' blog.pk %}">
+
+<main style="margin-top: 3rem" id="top" class="container">
+  <div
+    style="border-radius: 25px"
+    class="container rounded text-bg-light d-flex justify-content-center"
+  >
+    <div class="col-md-6 px-0 text-center justify-content-center">
+      {% for blog in recent_blogs|slice:":1" %}
+      <h1 class="display-1 text-bold fw-bolder">Blogs</h1>
+      <hr class="border border-3" />
+      <p class="lead">{{ blog.summary }}</p>
+      <p>
+        <a href="{% url 'blog_detail' blog.pk %}" class="text-black underline"
+          >Read the latest blog</a
+        >
+      </p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    {% for blog in recent_blogs %}
+    <div class="col-md-6">
+      <div
+        class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
+      >
+        <div class="col p-4 d-flex flex-column position-static">
+          <h3 class="mb-0">{{ blog.title }}</h3>
+          <div style="margin-top: 1rem" class="mb-1 text-muted">
+            {{ blog.pub_date }}
+          </div>
+          <p class="card-text mb-auto">{{ blog.summary|truncatechars:50 }}</p>
+          <a
+            href="{% url 'blog_detail' pk=blog.pk %}"
+            class="underline text-black"
+            >Continue reading</a
+          >
+        </div>
+        <div class="col-auto d-none d-lg-block">
           {% if blog.youtube %}
           <iframe
-            class="blog-list-youtube-thumbnail"
-            width="420"
-            height="240"
+            class="bd-placeholder-img"
+            width="200"
+            height="250"
             src="https://www.youtube.com/embed/XppZqa0BtoQ"
-            title="YouTube video player"
+            title="{{ blog.title }}"
+            preserveAspectRatio="xMidYMid slice"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
+            focusable="false"
           ></iframe>
           {% elif blog.image %}
-          <img src="{{ blog.imageURL }}" alt="{{ blog.name }}" />
+          <img
+            style="object-fit: cover"
+            preserveAspectRatio="xMidYMid slice"
+            class="bd-placeholder-img"
+            width="200"
+            height="250"
+            src="{{ blog.imageURL }}"
+            alt="{{ blog.name }}"
+            width="200"
+            height="250"
+          />
           {% endif %}
-          <p class="blog-title">{{ blog.title }}</p></a
-        >
-        <p class="blog-summary">
-          {{ blog.summary|slice:":100"}}...
-          <span
-            ><a class="underline" href="{% url 'blog_detail' pk=blog.pk %}">
-              Read more</a
-            ></span
-          >
-        </p>
-        <p class="pub-date">{{ blog.pub_date }}</p>
-        <hr />
+        </div>
       </div>
-      {% endfor %}
     </div>
-  </section>
+    {% endfor %}
+  </div>
+
+  <div class="row g-5">
+    <div class="col-md-8">
+      <a style="text-decoration: none"
+        ><h3 class="pb-4 mb-4 fst-italic border-bottom text-dark underline">
+          The SS23' Lukubook &raquo;
+        </h3></a
+      >
+    </div>
+  </div>
+  <a class="underline text-dark" href="#top">Back to top</a>
 </main>
+
 {% endblock %}
