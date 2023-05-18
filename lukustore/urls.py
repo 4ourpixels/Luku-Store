@@ -54,8 +54,14 @@ urlpatterns = [
     # Dashboard
     path('dashboard/', dashboard, name='dashboard'),
     
-    # Login/Signup Page
-    path('newCustomer/', newCustomer, name='newCustomer'),
+    # Login
+    path('login/', loginPage, name='login'),
+    
+    # Logout
+    path('logout/', logoutUser, name='logout'),
+
+    # Register User
+    path('register/', registerPage, name='register'),
 
     # Error 404 Page
     path('error/', error, name='error'),
