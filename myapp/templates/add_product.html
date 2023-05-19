@@ -1,71 +1,134 @@
-{% extends 'base.html' %} {% block body %}
-<div class="col-md-8">
-        <div class="h4">Add Product</div>
-        <div class="form">
-          <form method="POST">
-            {% csrf_token %}
+{% extends 'base.html' %}{% load static %}{% block body %}
+<main class="mt-3 container" id="top">
+  <h1 class="mt-3">New Luku</h1>
+  <div class="row g-5">
+    <div class="col-md-5 col-lg-4 order-md-last">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-dark">All Products</span>
+        <span class="badge bg-dark rounded-pill">{{ total_products }}</span>
+      </h4>
+      <ul class="list-group mb-3">
+        {% for product in products %} {% if product.popular %}
+        <li class="list-group-item d-flex justify-content-between bg-light">
+          <div class="text-success">
+            <h6 class="my-0">{{ product.name }}</h6>
+            <small>{{ product.shop }}</small>
+          </div>
+          <span class="text-success">{{ product.price }}</span>
+        </li>
+        {% else %}
+        <li class="list-group-item d-flex justify-content-between lh-sm">
+          <div>
+            <h6 class="my-0">{{ product.name }}</h6>
+            <small class="text-muted">{{ product.shop }}</small>
+          </div>
+          <span class="text-muted">{{ product.price }}</span>
+        </li>
+        {% endif %}{% endfor %}
+      </ul>
+    </div>
+    <div class="col-md-7 col-lg-8">
+      <form class="needs-validation" method="POST" action="">
+        {% csrf_token %}
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              placeholder="Product Name"
+              required
+            />
+          </div>
 
-            <!-- submit product info -->
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  name="name"
-                  id="name"
-                  placeholder="Name Of Product"
-                />
-              </div>
-              <div class="form-group col-md-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="shop"
-                  name="shop"
-                  placeholder="Nike, Akiba, Reebok"
-                />
-              </div>
-            </div>
-            <div class="form-group">
+          <div class="col-sm-6">
+            <input
+              type="text"
+              name="keywords"
+              class="form-control"
+              id="keywords"
+              placeholder="Keywords"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label" for="image">Upload Image</label>
+            <input
+              type="file"
+              multiple
+              class="form-control-file"
+              id="image"
+              name="image"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <input
+              type="text"
+              class="form-control"
+              id="shop"
+              name="shop"
+              placeholder="Shop"
+              required
+            />
+          </div>
+
+          <div class="col-12">
+            <textarea
+              name="description"
+              id="description"
+              cols="5"
+              rows="10"
+              class="form-control"
+              placeholder="Description of product"
+              required
+            ></textarea>
+          </div>
+
+          <div class="col-md-6">
+            <input
+              type="text"
+              class="form-control"
+              id="size"
+              name="size"
+              placeholder="Size"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <input
+              type="number"
+              class="form-control"
+              id="price"
+              name="price"
+              placeholder="Price"
+            />
+            <div class="form-check">
               <input
-                type="text"
-                class="form-control"
-                id="description"
-                name="description"
-                placeholder="Description"
+                type="checkbox"
+                name="popular"
+                class="form-check-input"
+                id="popular"
+                value="True"
               />
+              <label class="form-check-label" for="same-address"
+                >Product is popular.</label
+              >
             </div>
-
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="keywords">Keywords</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="keywords"
-                  name="keywords"
-                  placeholder="Summer, Dinner Dress"
-                />
-              </div>
-            </div>
-
-            <div class="row col-md-12">
-                <input type="file" accept=".jpg, .png" class="form-control" name="image" id="image" />
-              </div>
-            </div>
-            <div class="price-row">
-              <label for="price">Price</label>
-              <input
-                type="number"
-                class="form-control"
-                id="price"
-                name="price"
-                placeholder="$0.00"
-              />
-            </div>
-            <button type="submit" class="btn btn-primary">Add Product</button>
-          </form>
+          </div>
         </div>
-      </div>
-</div>
+
+        <button class="mt-3 w-100 btn btn-dark btn-lg" type="submit">
+          Add Product
+        </button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer class="my-5 pt-5 text-muted text-center text-small">
+  <a class="underline text-dark" href="#top">Back to top</a>
+</footer>
+
 {% endblock %}
