@@ -69,6 +69,11 @@ def dashboard(request):
     blogs = Blog.objects.all()
     shipping_addresses = ShippingAddress.objects.all()
     
+    page_name = f" | Dashboard"
+    
+    data = cartData(request)
+    cartItems = data['cartItems']
+    
     total_products = Product.objects.count()
     total_blogs = Blog.objects.count()
     context = {
@@ -77,6 +82,8 @@ def dashboard(request):
             'total_products': total_products, 
             "total_blogs": total_blogs,
             'shipping_addresses': shipping_addresses,
+            'cartItems': cartItems,
+            'page_name': page_name,
             }
     return render(request, 'dashboard.html', context)
 # END OF DASHBOARD
@@ -519,7 +526,13 @@ def confirmed(request):
 
 
 @login_required(login_url='login')
-def addProduct(request):
+def add_product(request):
+    page_name = '| New Luku!'
+    
+    products = Product.objects.order_by('-pk')
+    orders = Order.objects.order_by('-pk')
+    total_products = Product.objects.count()
+    total_orders = Order.objects.count()
 
     if request.method == 'POST':
         name = request.POST.get('name', '')
@@ -528,9 +541,8 @@ def addProduct(request):
         keywords = request.POST.get('keywords', '')
         image = request.POST.get('image', '')
         price = request.POST.get('price', '')
-        popular_true = request.POST.get('popular_true', '')
-        popular_false = request.POST.get('popular_false', '')
-        size = request.POST.get('size', '')
+        popular = request.POST.get('popular', '')
+        sizes = request.POST.get('size', '')
 
         product = Product(name=name,
                         shop=shop,
@@ -538,14 +550,20 @@ def addProduct(request):
                         keywords=keywords,
                         image=image,
                         price=price,
-                        popular_false=popular_false,
-                        popular_true=popular_true,
-                        size=size,
+                        popular=popular,
+                        sizes=sizes,
                     )
         product.save()
         print(f"New Product Saved! {product.pk}, {product.name}")
     
-    return render(request, 'add_product.html')
+    context = {
+        'products': products,
+        'page_name': page_name,
+        'orders': orders,
+        'total_orders': total_orders,
+        'total_products': total_products,
+    }
+    return render(request, 'add_product.html', context)
 
 @login_required(login_url='login')
 def delete(request, pk):
