@@ -545,14 +545,14 @@ def add_product(request):
         sizes = request.POST.get('size', '')
 
         product = Product(name=name,
-                        shop=shop,
-                        description=description,
-                        keywords=keywords,
-                        image=image,
-                        price=price,
-                        popular=popular,
-                        sizes=sizes,
-                    )
+            shop=shop,
+            description=description,
+            keywords=keywords,
+            image=image,
+            price=price,
+            popular=popular,
+            sizes=sizes,
+        )
         product.save()
         print(f"New Product Saved! {product.pk}, {product.name}")
     
