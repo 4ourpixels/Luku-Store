@@ -3,9 +3,6 @@ from django.contrib.auth.models import User
 from django.utils.dateformat import DateFormat
 from django.utils import timezone
 
-
-# Create your models here.
-
 # PRODUCT ENTRY
 
 class Product(models.Model):
@@ -18,6 +15,8 @@ class Product(models.Model):
     image = models.ImageField(null=True, upload_to="products/", blank=True, default='image.jpg')
     digital = models.BooleanField(default=False, null=True, blank=False)
     popular = models.BooleanField(default=False, null=True, blank=False)
+    available_colors = models.CharField(max_length=75, blank=True) 
+    sizes = models.CharField(max_length=75, blank=True)
     
     BRAND = (
         ('luku-store', 'Luku Store'),
@@ -25,33 +24,6 @@ class Product(models.Model):
         ('default', 'Default'),
     )
     brand = models.CharField(max_length=15, choices=BRAND, null=True, default='luku-store')
-
-    # available colors block
-    AVAILABLE_COLORS = (
-        ('red', 'Red'),
-        ('green', 'Green'),
-        ('blue', 'Blue'),
-        ('pink', 'Pink'),
-        ('yellow', 'Yellow'),
-        ('white', 'White'),
-        ('black', 'Black'),
-        ('orange', 'Orange'),
-        ('grey', 'Grey'),
-    )
-    available_colors = models.CharField(max_length=15, choices=AVAILABLE_COLORS)
-    # end of available colors block
-    
-    # sizes block
-    SIZES = (
-        ('small', 'small'),
-        ('medium', 'Medium'),
-        ('large', 'Large'),
-        ('xl', 'XL'),
-        ('xxl', 'XXL'),
-        ('fit', 'Fit'),
-    )
-    sizes = models.CharField(max_length=10, choices=SIZES)
-    # end of sizes block
 
     def __str__(self):
         return f"{self.name}"
