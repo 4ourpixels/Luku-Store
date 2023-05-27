@@ -19,45 +19,49 @@ from django.core.paginator import Paginator
 # ERROR - DONE
 def error(request):
     print("Error 404")
-    
+
     retry_link = ""
     error_message = ""
-    
+
     context = {'retry_link': retry_link,
-                'error_message': error_message,
-                }
+               'error_message': error_message,
+               }
     return render(request, 'error.html', context)
 # END OF ERROR - DONE
 
 # ABOUT US
+
+
 def about_us(request):
     page_name = f"| About Us"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
 
     summary = AboutUs.objects.all()
 
-    context = {'summary': summary, 
-                'page_name': page_name,
-                'cartItems': cartItems, 
-                }
-    
+    context = {'summary': summary,
+               'page_name': page_name,
+               'cartItems': cartItems,
+               }
+
     return render(request, 'about_us.html', context)
 # END OF ABOUT US
 
 # HELP SECTION - DONE
+
+
 def help(request):
     page_name = f" | Help"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
-    
+
     help = Help.objects.first()
     context = {'help': help,
-                'page_name': page_name,
-                'cartItems': cartItems,
-                }
+               'page_name': page_name,
+               'cartItems': cartItems,
+               }
     return render(request, 'help.html', context)
 # END OF HELP SECTION - DONE
 
@@ -68,31 +72,31 @@ def dashboard(request):
     products = Product.objects.all()
     blogs = Blog.objects.all()
     shipping_addresses = ShippingAddress.objects.all()
-    
+
     page_name = f" | Dashboard"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
-    
+
     total_products = Product.objects.count()
     total_blogs = Blog.objects.count()
     context = {
-            'products': products, 
-            'blogs': blogs,
-            'total_products': total_products, 
-            "total_blogs": total_blogs,
-            'shipping_addresses': shipping_addresses,
-            'cartItems': cartItems,
-            'page_name': page_name,
-            }
+        'products': products,
+        'blogs': blogs,
+        'total_products': total_products,
+        "total_blogs": total_blogs,
+        'shipping_addresses': shipping_addresses,
+        'cartItems': cartItems,
+        'page_name': page_name,
+    }
     return render(request, 'dashboard.html', context)
 # END OF DASHBOARD
+
 
 def index(request):
     page_name = "| Online Clothing Store | Affordable and Stylish Clothes from Kenya"
     products = Product.objects.all()
     blogs = Blog.objects.all()
-    
     data = cartData(request)
     cartItems = data['cartItems']
 
@@ -102,47 +106,49 @@ def index(request):
         newsletter_subscriber.save()
         print(f"{email} subscribed to our newsletter from the homepage!")
         return redirect('index')
-    
-    context = {'products': products, 
-                'blogs': blogs, 
-                'cartItems': cartItems,
-                'page_name': page_name,
-                }
+
+    context = {'products': products,
+               'blogs': blogs,
+               'cartItems': cartItems,
+               'page_name': page_name,
+               }
     return render(request, 'index.html', context)
+
 
 def contact_us(request):
     page_name = f"| Contact Us"
     context = {'page_name': page_name}
     return render(request, 'contact_us.html', context)
 
+
 def store(request):
     page_name = f"| Shop"
 
     data = cartData(request)
     cartItems = data['cartItems']
-    
+
     recent_products = Product.objects.order_by('-pk')
     products = Product.objects.all()
     blogs = Blog.objects.order_by('-pk')
-    
+
     items_per_page = 8
     paginator = Paginator(recent_products, items_per_page)
-    
-    context = { 
-                'products': products, 
-                'page_name': page_name,
-                'cartItems': cartItems,
-                'recent_products': recent_products,
-                'paginator': paginator,
-                'blogs': blogs,
-                }
-    
+
+    context = {
+        'products': products,
+        'page_name': page_name,
+        'cartItems': cartItems,
+        'recent_products': recent_products,
+        'paginator': paginator,
+        'blogs': blogs,
+    }
+
     return render(request, 'store.html', context)
 
 
 def brand(request):
     page_name = f"| Brands"
-    
+
     list_of_brand_products = Product.objects.filter(brand=brand)
     list_of_brand_blogs = Blog.objects.filter(brand=brand)
 
@@ -152,18 +158,18 @@ def brand(request):
     recent_products = Product.objects.order_by('-pk')
     recent_blogs = Blog.objects.order_by('-pk')
     products = Product.objects.all()
-    
 
-    context = {'products': products, 
-                'page_name': page_name,
-                'cartItems': cartItems,
-                'recent_products': recent_products,
-                'recent_blogs': recent_blogs,
-                'list_of_brand_products': list_of_brand_products,
-                'list_of_brand_blogs': list_of_brand_blogs,
-                }
+    context = {'products': products,
+               'page_name': page_name,
+               'cartItems': cartItems,
+               'recent_products': recent_products,
+               'recent_blogs': recent_blogs,
+               'list_of_brand_products': list_of_brand_products,
+               'list_of_brand_blogs': list_of_brand_blogs,
+               }
     return render(request, 'brand.html', context)
 # CART
+
 
 def cart(request):
     page_name = f"| Cart"
@@ -172,39 +178,40 @@ def cart(request):
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
-    
+
     products = Product.objects.all()
 
     context = {
-                'page_name': page_name,
-                'items': items,
-                'cartItems': cartItems,
-                'order': order,
-                'products': products,
-            }
-    
+        'page_name': page_name,
+        'items': items,
+        'cartItems': cartItems,
+        'order': order,
+        'products': products,
+    }
+
     return render(request, 'cart.html', context)
 
 # END OF CART
 
 # CHECKOUT
 
+
 def checkout(request):
-    
+
     page_name = f"| Checkout"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
-    
+
     context = {
-                'page_name': page_name,
-                'items': items,
-                'order': order,
-                'cartItems': cartItems,
-            }
-    
+        'page_name': page_name,
+        'items': items,
+        'order': order,
+        'cartItems': cartItems,
+    }
+
     return render(request, 'checkout.html', context)
 
 # END OF CHECKOUT
@@ -214,8 +221,9 @@ def checkout(request):
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    price_range = Product.objects.filter(price__lte=product.price + 25).exclude(pk=pk)
-    
+    price_range = Product.objects.filter(
+        price__lte=product.price + 25).exclude(pk=pk)
+
     keywords = product.keywords.split(',')
     similar_products = Product.objects.filter(
         Q(keywords__icontains=keywords[0]) |
@@ -226,108 +234,113 @@ def product_detail(request, pk):
     ).exclude(pk=pk).distinct()
 
     page_name = f"| {product.name}"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
     shop = product.shop
-
 
     # Create a dynamic URL based on the first 5 words of the product name
     words = product.name.split()[:5]
     url_name = '-'.join(words)
     dynamic_url = f"/product/{pk}/{url_name}/"
 
-    
     imgURL = product.imageURL
 
     colors = product.available_colors.split(',')
     sizes = product.sizes.split(',')
-    
+
     context = {
-            'product': product, 
-            'page_name': page_name, 
-            'dynamic_url': dynamic_url, 
-            'shop':shop,
-            'colors': colors,
-            'cartItems': cartItems,
-            'imgURL':imgURL,
-            'sizes': sizes,
-            'similar_products': similar_products,
-            'price_range': price_range,
-            }
-        
+        'product': product,
+        'page_name': page_name,
+        'dynamic_url': dynamic_url,
+        'shop': shop,
+        'colors': colors,
+        'cartItems': cartItems,
+        'imgURL': imgURL,
+        'sizes': sizes,
+        'keywords': keywords,
+        'similar_products': similar_products,
+        'price_range': price_range,
+    }
+
     return render(request, 'product_detail.html', context)
 # END OF PRODUCT DETAIL METHOD
+
 
 def blog_list(request):
     blogs = Blog.objects.all()
     recent_blogs = Blog.objects.order_by('-pk')
     page_name = f"| Blogs"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
-    
+
     context = {
         'cartItems': cartItems,
         'blogs': blogs,
         'page_name': page_name,
         'recent_blogs': recent_blogs,
-        }
+    }
     return render(request, 'blog_list.html', context)
+
 
 def blog_detail(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     page_name = f"| {blog.title}"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
-    
+
     context = {
-        'blog': blog, 
+        'blog': blog,
         'page_name': page_name,
         'cartItems': cartItems
-        }
+    }
     return render(request, 'blog_detail.html', context)
+
 
 def signup(request):
     page_name = f"| Log In/Sign Up"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
-    
+
     context = {
         'cartItems': cartItems,
         'page_name': page_name,
-        }
+    }
     return render(request, 'signup.html', context)
+
 
 @login_required(login_url='login')
 def wishlist(request):
     products = Product.objects.all()
     total_products = Product.objects.count()
     page_name = f"| Wishlist"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
-    
-    
-    context = {'products': products, 
-                'total_products':total_products,
-                'page_name': page_name,
-                'cartItems': cartItems,
-                }
+
+    context = {'products': products,
+               'total_products': total_products,
+               'page_name': page_name,
+               'cartItems': cartItems,
+               }
     return render(request, 'wishlist.html', context)
 # END OF WISHLIST
 
 # BRAND
+
+
 def brands(request):
     page_name = f"| Brands"
-    
+
     products = Product.objects.all()
     blogs = Blog.objects.all()
-    
+
     brands_list = set(Product.objects.values_list('shop', flat=True))
-    categories = set(Product.objects.values_list('description', flat=True)) # add more categories as needed
+    categories = set(Product.objects.values_list(
+        'description', flat=True))  # add more categories as needed
     keywords = categories
 
     # print(keywords)
@@ -338,24 +351,25 @@ def brands(request):
     data = cartData(request)
     cartItems = data['cartItems']
 
-    context = {'brands_list': brands_list, 
-                'page_name': page_name,
-                'cartItems': cartItems, 
-                'categories': categories,
-                'keywords': keywords,
-                'akiba_studios_products': akiba_studios_products,
-                'blogs': blogs,
-                'products': products,
-                }
+    context = {'brands_list': brands_list,
+               'page_name': page_name,
+               'cartItems': cartItems,
+               'categories': categories,
+               'keywords': keywords,
+               'akiba_studios_products': akiba_studios_products,
+               'blogs': blogs,
+               'products': products,
+               }
     return render(request, 'brands.html', context)
 # END OF BRAND
 
+
 def newsletter(request):
     page_name = f" | Newsletter Subscription"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
-    
+
     if request.method == 'POST':
         email = request.POST.get('email', '')
         newsletter_subscriber = Customer.objects.filter(email=email).first()
@@ -369,39 +383,43 @@ def newsletter(request):
         return redirect('/')
 
     context = {
-                'page_name': page_name,
-                'cartItems': cartItems,
-                }
+        'page_name': page_name,
+        'cartItems': cartItems,
+    }
 
     return render(request, 'newsletter.html', context)
 
 # cart update item view
 
+
 def updateItem(request):
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
-    
+
     print(f'The product {productId} was {action}ed')
-    
+
     customer = request.user.customer
     product = Product.objects.get(id=productId)
-    order, created = Order.objects.get_or_create(customer=customer, complete=False)
-    
-    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-    
+    order, created = Order.objects.get_or_create(
+        customer=customer, complete=False)
+
+    orderItem, created = OrderItem.objects.get_or_create(
+        order=order, product=product)
+
     if action == 'add':
         orderItem.quantity = (orderItem.quantity + 1)
     elif action == 'remove':
         orderItem.quantity = (orderItem.quantity - 1)
 
     orderItem.save()
-    
+
     if orderItem.quantity <= 0:
         orderItem.delete()
 
     return JsonResponse('Item was added', safe=False)
 # end of cart update item view
+
 
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()
@@ -409,7 +427,8 @@ def processOrder(request):
 
     if request.user.is_authenticated:
         customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        order, created = Order.objects.get_or_create(
+            customer=customer, complete=False)
 
         # if order.shipping == True:
         #     ShippingAddress.objects.create(
@@ -430,35 +449,36 @@ def processOrder(request):
     if total == order.get_cart_total:
         order.complete = True
     order.save()
-    
+
     if order.shipping == True:
         ShippingAddress.objects.create(
-                customer=customer,
-                order=order,
-                address=data['shipping']['address'],
-                city=data['shipping']['city'],
-                state=data['shipping']['state'],
-                zipcode=data['shipping']['zipcode'],
-            )
+            customer=customer,
+            order=order,
+            address=data['shipping']['address'],
+            city=data['shipping']['city'],
+            state=data['shipping']['state'],
+            zipcode=data['shipping']['zipcode'],
+        )
 
     return JsonResponse('Payment Complete', safe=False)
+
 
 def loginPage(request):
 
     page_name = f" | Log In"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
-    
+
     if request.user.is_authenticated:
         return redirect('index')
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
-            
+
             user = authenticate(request, username=username, password=password)
-            
+
             if user is not None:
                 login(request, user)
                 if user.is_staff:
@@ -469,22 +489,23 @@ def loginPage(request):
                 messages.info(request, 'Username Or Password is incorrect')
 
         context = {
-                    'page_name': page_name,
-                    'cartItems': cartItems,
-                    }
+            'page_name': page_name,
+            'cartItems': cartItems,
+        }
 
         return render(request, 'login.html', context)
+
 
 def logoutUser(request):
     logout(request)
     return redirect('login')
 
+
 def registerPage(request):
-    
+
     page_name = f" | Sign Up"
-    
+
     form = CreateUserForm()
-    
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -498,14 +519,14 @@ def registerPage(request):
                 form.save()
                 user = form.cleaned_data.get('username')
                 messages.success(request, 'Account was created for' + user)
-                
+
                 return redirect('login')
 
     context = {
-                'page_name': page_name,
-                'cartItems': cartItems,
-                'form': form,
-                }
+        'page_name': page_name,
+        'cartItems': cartItems,
+        'form': form,
+    }
 
     return render(request, 'register.html', context)
 # customer
@@ -513,10 +534,10 @@ def registerPage(request):
 
 def confirmed(request):
     page_name = f"| Order Complete!"
-    
+
     data = cartData(request)
     cartItems = data['cartItems']
-    
+
     context = {
         'page_name': page_name,
         'cartItems': cartItems,
@@ -526,9 +547,9 @@ def confirmed(request):
 
 
 @login_required(login_url='login')
-def add_product(request):
+def add(request):
     page_name = '| New Luku!'
-    
+
     products = Product.objects.order_by('-pk')
     orders = Order.objects.order_by('-pk')
     total_products = Product.objects.count()
@@ -539,23 +560,25 @@ def add_product(request):
         shop = request.POST.get('shop', '')
         description = request.POST.get('description', '')
         keywords = request.POST.get('keywords', '')
-        image = request.POST.get('image', '')
+        image = request.FILE.get('image', '')
         price = request.POST.get('price', '')
         popular = request.POST.get('popular', '')
         sizes = request.POST.get('size', '')
 
         product = Product(name=name,
-            shop=shop,
-            description=description,
-            keywords=keywords,
-            image=image,
-            price=price,
-            popular=popular,
-            sizes=sizes,
-        )
+                          shop=shop,
+                          description=description,
+                          keywords=keywords,
+                          image=image,
+                          price=price,
+                          popular=popular,
+                          sizes=sizes,
+                          )
+
         product.save()
+
         print(f"New Product Saved! {product.pk}, {product.name}")
-    
+
     context = {
         'products': products,
         'page_name': page_name,
@@ -563,7 +586,8 @@ def add_product(request):
         'total_orders': total_orders,
         'total_products': total_products,
     }
-    return render(request, 'add_product.html', context)
+    return render(request, 'add.html', context)
+
 
 @login_required(login_url='login')
 def delete(request, pk):
