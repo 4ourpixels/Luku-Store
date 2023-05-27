@@ -20,43 +20,44 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    
+
     # Admin
     path("admin/", admin.site.urls),
-    
-    # Home page
-    path('', index,name='index'),
 
-    # <---- Shop/Store - All products in store 
+    # Home page
+    path('', index, name='index'),
+
+    # <---- Shop/Store - All products in store
     path('store/', store, name='store'),
 
-    # ----- Single product view 
+    # ----- Single product view
     path('product/<int:pk>/', product_detail, name='product_detail'),
-    
-    # ----> Updated URL pattern with dynamic_url 
-    path('product/<int:pk>/<slug:url_name>/', product_detail, name='product_detail_dynamic'),
 
-    # <---- All Blogs 
+    # ----> Updated URL pattern with dynamic_url
+    path('product/<int:pk>/<slug:url_name>/',
+         product_detail, name='product_detail_dynamic'),
+
+    # <---- All Blogs
     path('blog/', blog_list, name='blog_list'),
 
-    # ----> Single Blog View 
+    # ----> Single Blog View
     path('blog/<int:pk>/', blog_detail, name='blog_detail'),
-    
+
     # About Us
     path('about_us/', about_us, name='about_us'),
 
-    # <---- Brands 
+    # <---- Brands
     path('brands/', brands, name='brands'),
 
-    # ----> Loads a single brand 
+    # ----> Loads a single brand
     path('brand/<str:brand>/', brand, name='brand'),
 
     # Dashboard
     path('dashboard/', dashboard, name='dashboard'),
-    
+
     # Login
     path('login/', loginPage, name='login'),
-    
+
     # Logout
     path('logout/', logoutUser, name='logout'),
 
@@ -65,36 +66,36 @@ urlpatterns = [
 
     # Error 404 Page
     path('error/', error, name='error'),
-    
+
     # <---- Cart view
     path('cart/', cart, name='cart'),
-        
+
     # ----- Cart view
     path('confirmed/', confirmed, name='confirmed'),
-    
+
     # ----> Checkout view
     path('checkout/', checkout, name='checkout'),
-    
+
     # Wishlist
     path('wishlist/', wishlist, name='wishlist'),
 
     # Newsletter
     path('newsletter/', newsletter, name='newsletter'),
-    
+
     # Help
     path('help/', help, name='help'),
 
-    # Updates the item to the backend 
+    # Updates the item to the backend
     path('updateItem/', updateItem, name='updateItem'),
-    
+
     # Processes the data in the backend
     path('processOrder/', processOrder, name='processOrder'),
-    
+
     # Adds a product to the database/inventory
-    path('add_product/', addProduct, name='addProduct'),
-    
+    path('add/', add, name='add'),
+
     # Delete
     path('delete/<int:pk>/', delete, name='delete'),
-    
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
