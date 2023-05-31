@@ -97,5 +97,10 @@ urlpatterns = [
     # Delete
     path('delete/<int:pk>/', delete, name='delete'),
 
+    # Trials
+    path('gallery/', gallery, name='gallery'),
+    path('photo/<str:pk>/', viewPhoto, name='photo'),
+    path('addphoto/', addPhoto, name='addphoto'),
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
