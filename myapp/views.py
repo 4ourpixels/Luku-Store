@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator
+import random
 
 
 # ERROR - DONE
@@ -23,9 +24,11 @@ def error(request):
     retry_link = ""
     error_message = ""
 
-    context = {'retry_link': retry_link,
-               'error_message': error_message,
-               }
+    context = {
+        'retry_link': retry_link,
+        'error_message': error_message,
+    }
+
     return render(request, 'error.html', context)
 # END OF ERROR - DONE
 
@@ -40,10 +43,11 @@ def about_us(request):
 
     summary = AboutUs.objects.all()
 
-    context = {'summary': summary,
-               'page_name': page_name,
-               'cartItems': cartItems,
-               }
+    context = {
+        'summary': summary,
+        'page_name': page_name,
+        'cartItems': cartItems,
+    }
 
     return render(request, 'about_us.html', context)
 # END OF ABOUT US
@@ -58,39 +62,13 @@ def help(request):
     cartItems = data['cartItems']
 
     help = Help.objects.first()
-    context = {'help': help,
-               'page_name': page_name,
-               'cartItems': cartItems,
-               }
+    context = {
+        'help': help,
+        'page_name': page_name,
+        'cartItems': cartItems,
+    }
     return render(request, 'help.html', context)
 # END OF HELP SECTION - DONE
-
-
-# DASHBOARD
-
-def dashboard(request):
-    products = Product.objects.all()
-    blogs = Blog.objects.all()
-    shipping_addresses = ShippingAddress.objects.all()
-
-    page_name = f" | Dashboard"
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    total_products = Product.objects.count()
-    total_blogs = Blog.objects.count()
-    context = {
-        'products': products,
-        'blogs': blogs,
-        'total_products': total_products,
-        "total_blogs": total_blogs,
-        'shipping_addresses': shipping_addresses,
-        'cartItems': cartItems,
-        'page_name': page_name,
-    }
-    return render(request, 'dashboard.html', context)
-# END OF DASHBOARD
 
 
 def index(request):
@@ -107,11 +85,12 @@ def index(request):
         print(f"{email} subscribed to our newsletter from the homepage!")
         return redirect('index')
 
-    context = {'products': products,
-               'blogs': blogs,
-               'cartItems': cartItems,
-               'page_name': page_name,
-               }
+    context = {
+        'products': products,
+        'blogs': blogs,
+        'cartItems': cartItems,
+        'page_name': page_name,
+    }
     return render(request, 'index.html', context)
 
 
@@ -159,14 +138,15 @@ def brand(request):
     recent_blogs = Blog.objects.order_by('-pk')
     products = Product.objects.all()
 
-    context = {'products': products,
-               'page_name': page_name,
-               'cartItems': cartItems,
-               'recent_products': recent_products,
-               'recent_blogs': recent_blogs,
-               'list_of_brand_products': list_of_brand_products,
-               'list_of_brand_blogs': list_of_brand_blogs,
-               }
+    context = {
+        'products': products,
+        'page_name': page_name,
+        'cartItems': cartItems,
+        'recent_products': recent_products,
+        'recent_blogs': recent_blogs,
+        'list_of_brand_products': list_of_brand_products,
+        'list_of_brand_blogs': list_of_brand_blogs,
+    }
     return render(request, 'brand.html', context)
 # CART
 
@@ -321,11 +301,12 @@ def wishlist(request):
     data = cartData(request)
     cartItems = data['cartItems']
 
-    context = {'products': products,
-               'total_products': total_products,
-               'page_name': page_name,
-               'cartItems': cartItems,
-               }
+    context = {
+        'products': products,
+        'total_products': total_products,
+        'page_name': page_name,
+        'cartItems': cartItems,
+    }
     return render(request, 'wishlist.html', context)
 # END OF WISHLIST
 
@@ -351,15 +332,16 @@ def brands(request):
     data = cartData(request)
     cartItems = data['cartItems']
 
-    context = {'brands_list': brands_list,
-               'page_name': page_name,
-               'cartItems': cartItems,
-               'categories': categories,
-               'keywords': keywords,
-               'akiba_studios_products': akiba_studios_products,
-               'blogs': blogs,
-               'products': products,
-               }
+    context = {
+        'brands_list': brands_list,
+        'page_name': page_name,
+        'cartItems': cartItems,
+        'categories': categories,
+        'keywords': keywords,
+        'akiba_studios_products': akiba_studios_products,
+        'blogs': blogs,
+        'products': products,
+    }
     return render(request, 'brands.html', context)
 # END OF BRAND
 
@@ -471,7 +453,7 @@ def loginPage(request):
     cartItems = data['cartItems']
 
     if request.user.is_authenticated:
-        return redirect('index')
+        return redirect('dashboard')
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -482,7 +464,7 @@ def loginPage(request):
             if user is not None:
                 login(request, user)
                 if user.is_staff:
-                    return redirect('admin:index')
+                    return redirect('dashboard')
                 else:
                     return redirect('login')
             else:
@@ -565,15 +547,16 @@ def add(request):
         popular = request.POST.get('popular', '')
         sizes = request.POST.get('size', '')
 
-        product = Product(name=name,
-                          shop=shop,
-                          description=description,
-                          keywords=keywords,
-                          image=image,
-                          price=price,
-                          popular=popular,
-                          sizes=sizes,
-                          )
+        product = Product(
+            name=name,
+            shop=shop,
+            description=description,
+            keywords=keywords,
+            image=image,
+            price=price,
+            popular=popular,
+            sizes=sizes,
+        )
 
         product.save()
 
@@ -594,5 +577,105 @@ def delete(request, pk):
     if request.method == "POST":
         product = Product.objects.get(pk=pk)
         product.delete()
-        return redirect("dashboard/")
+        return redirect("dashboard")
     return render(request, 'delete.html')
+
+# Trials ===========================
+
+
+def gallery(request):
+    category = request.GET.get('category')
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    if category == None:
+        photos = Photo.objects.all()
+    else:
+        photos = Photo.objects.filter(category__name=category)
+
+    categories = Category.objects.all()
+
+    context = {
+        'categories': categories,
+        'photos': photos,
+        'cartItems': cartItems,
+    }
+    return render(request, 'gallery.html', context)
+
+
+def viewPhoto(request, pk):
+    photo = Photo.objects.get(id=pk)
+    return render(request, 'photo.html', {'photo': photo})
+
+
+@login_required(login_url='login')
+def addPhoto(request):
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        data = request.POST
+        images = request.FILES.getlist('images')
+
+        if data['category'] != 'none':
+            category = Category.objects.get(pk=data['category'])
+        elif data['category_new'] != '':
+            category, created = Category.objects.get_or_create(
+                name=data['category_name'])
+        else:
+            category = None
+
+        for image in images:
+            photo = Photo.objects.create(
+                category=category,
+                description=data['description'],
+                image=image,
+            )
+
+        return redirect('gallery')
+
+    context = {
+        'categories': categories,
+    }
+    return render(request, 'addphoto.html', context)
+
+
+# DASHBOARD
+@login_required(login_url='login')
+def dashboard(request):
+    photos = Photo.objects.all()
+    categories = Category.objects.all()
+    products = Product.objects.all()
+    blogs = Blog.objects.all()
+    newsletters = Newsletter.objects.all()
+    shippings = ShippingAddress.objects.all()
+    orders = Order.objects.order_by('-pk')
+    order_lists = OrderItem.objects.all()
+
+    categories_count = len(categories)
+    page_name = f" | Dashboard"
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    total_products = Product.objects.count()
+    total_blogs = Blog.objects.count()
+
+    context = {
+        'products': products,
+        'blogs': blogs,
+        'total_products': total_products,
+        "total_blogs": total_blogs,
+        'shippings': shippings,
+        'cartItems': cartItems,
+        'page_name': page_name,
+        'photos': photos,
+        'categories': categories,
+        'categories_count': categories_count,
+        'orders': orders,
+        'newsletters': newsletters,
+        'order_lists': order_lists,
+    }
+
+    return render(request, 'dashboard.html', context)
+# END OF DASHBOARD
