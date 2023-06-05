@@ -123,6 +123,15 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+
+
+def create_customer(sender, instance, created, **kwargs):
+    if created:
+        Customer.objects.create(
+            user=instance, name=instance.username, email=instance.email)
+
+
+models.signals.post_save.connect(create_customer, sender=User)
 # END OF CUSTOMER MODEL
 
 # ORDER
@@ -133,7 +142,7 @@ class Order(models.Model):
         Customer, on_delete=models.SET_NULL, blank=True, null=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
-    transaction_id = models.CharField(max_length=200, null=True)
+    transaction_id = models.CharField(max_length=200, null=True, blank=False)
 
     def __str__(self):
         date_format = DateFormat(self.date_ordered.astimezone(
@@ -251,8 +260,13 @@ class Category(models.Model):
 class Photo(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True)
-    image = models.ImageField(null=False, blank=False,
-                              upload_to="products/", default='image.jpg')
+
+    image = models.ImageField(
+        null=False,
+        blank=False,
+        upload_to="products/",
+        default='image.jpg'
+    )
     description = models.TextField()
 
     name = models.CharField(max_length=100, null=True, blank=True)
@@ -267,8 +281,12 @@ class Photo(models.Model):
         ('Akiba Studios', 'Akiba Studios'),
         ('Default', 'default'),
     )
-    shop = models.CharField(max_length=15, choices=SHOP,
-                            null=True, default='luku-store')
+    shop = models.CharField(
+        max_length=15,
+        choices=SHOP,
+        null=True,
+        default='luku-store'
+    )
 
     def __str__(self):
         try:
