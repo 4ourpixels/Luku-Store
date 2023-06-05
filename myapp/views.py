@@ -661,6 +661,13 @@ def dashboard(request):
     total_products = Product.objects.count()
     total_blogs = Blog.objects.count()
 
+    category_list = [category.name for category in categories]
+    category_json = json.dumps(category_list)
+
+    popular_list = [product.popular for product in products]
+    popular_number = popular_list.count(True)
+    regular_products = total_products - popular_number
+
     context = {
         'products': products,
         'blogs': blogs,
@@ -675,6 +682,9 @@ def dashboard(request):
         'orders': orders,
         'newsletters': newsletters,
         'order_lists': order_lists,
+        'category_json': category_json,
+        'popular_number': popular_number,
+        'regular_products': regular_products,
     }
 
     return render(request, 'dashboard.html', context)
