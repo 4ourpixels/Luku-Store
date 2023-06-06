@@ -276,9 +276,9 @@ class Photo(models.Model):
     colors = models.CharField(max_length=75, blank=True)
     digital = models.BooleanField(default=False, null=True, blank=False)
 
-    size = models.CharField(max_length=75, blank=True)
-    type = models.CharField(max_length=75, blank=True)
-    rating = models.IntegerField(blank=True, default=0)
+    size = models.CharField(max_length=75, blank=True, null=True)
+    type = models.CharField(max_length=75, blank=True, null=True)
+    rating = models.IntegerField(blank=True, default=0, null=True)
 
     SHOP = (
         ('Luku Store', 'Luku Store'),
