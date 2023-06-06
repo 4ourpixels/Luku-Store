@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luku Store.nl {{ page_name }}</title>
+
     <meta
       name="keywords"
       content="Lukustore.nl, online clothing store, Netherlands, affordable clothes, young men, young women, 18-35 years old, stylish clothes, streetwear, local designers, Kenya, Africa, Kenyan culture, unique outfits, colorful outfits, fashion, independent clothing designers, reasonable price, blog posts, stories behind designers, collections, community, socially-conscious shoppers, different cultures, handmade clothes, high quality, authenticity, free shipping"
@@ -164,9 +165,6 @@
                 >Blogs</a
               >
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link text-bold" href="{% url 'brands' %}">Brands</a>
-            </li> -->
             <li class="nav-item">
               <a
                 id="nav-about"
@@ -177,13 +175,16 @@
             </li>
           </ul>
           <div class="d-flex soci">
-            <span><i class="fa-solid fa-magnifying-glass"></i></span>
+            <span
+              ><a href="{% url 'gallery' %}">
+                <i class="fa-solid fa-magnifying-glass"></i></a
+            ></span>
             <span
               ><a href="{% url 'wishlist' %}">
                 <i class="fa-solid fa-heart"></i></a
             ></span>
             <span
-              ><a href="{% url 'newCustomer' %}">
+              ><a href="{% url 'dashboard' %}">
                 <i class="fa-solid fa-user"></i></a
             ></span>
             <span
@@ -198,6 +199,19 @@
       </div>
     </nav>
     <!-- END OF NAVIGATION BAR ----------------------------->
+    <div class="container mt-4">
+      {% if messages %} {% for message in messages %}
+      <div class="alert alert-warning alert-dismissable fade show" role="alert">
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %} {% endif %}
+    </div>
     {% block body %} {% endblock %}
     <!-- FOOTER ----------------------------->
     <footer
