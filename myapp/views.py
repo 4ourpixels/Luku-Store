@@ -3,21 +3,22 @@ from django.http import JsonResponse
 import json
 import datetime
 from .models import *
-from .forms import OrderForm, CreateUserForm
+# Registration form import from the forms.py file
+from .forms import OrderForm, RegisterUserForm
 from . utils import cookieCart, cartData, guestOrder, search_items
 import http.client
 from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
 from django.core.paginator import Paginator
 import random
 
 
 # ERROR - DONE
+
+
 def error(request):
     print("Error 404")
 
@@ -72,6 +73,7 @@ def help(request):
 
 
 def index(request):
+
     page_name = "| Online Clothing Store | Affordable and Stylish Clothes from Kenya"
     products = Product.objects.all()
     blogs = Blog.objects.all()
@@ -106,20 +108,36 @@ def store(request):
     data = cartData(request)
     cartItems = data['cartItems']
 
-    recent_products = Product.objects.order_by('-pk')
-    products = Product.objects.all()
+    recent_photos = Photo.objects.order_by('-pk')
     blogs = Blog.objects.order_by('-pk')
 
-    items_per_page = 8
-    paginator = Paginator(recent_products, items_per_page)
+    category = request.GET.get('category')
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    if category == None:
+        photos = Photo.objects.all()
+    else:
+        photos = Photo.objects.filter(category__name=category)
+
+    categories = Category.objects.all()
+
+    # Filter products based on type
+    # Get the product type from the request query parameters
+    photo_type = request.GET.get('photo_type')
+    if photo_type:
+        # Filter products based on the type
+        photos = photos.filter(type=photo_type)
 
     context = {
-        'products': products,
         'page_name': page_name,
         'cartItems': cartItems,
-        'recent_products': recent_products,
-        'paginator': paginator,
+        'recent_photos': recent_photos,
         'blogs': blogs,
+        'photo_type': photo_type,
+        'categories': categories,
+        'photos': photos,
     }
 
     return render(request, 'store.html', context)
@@ -204,6 +222,8 @@ def product_detail(request, pk):
     price_range = Product.objects.filter(
         price__lte=product.price + 25).exclude(pk=pk)
 
+    rating = 0
+
     keywords = product.keywords.split(',')
     similar_products = Product.objects.filter(
         Q(keywords__icontains=keywords[0]) |
@@ -219,20 +239,14 @@ def product_detail(request, pk):
     cartItems = data['cartItems']
     shop = product.shop
 
-    # Create a dynamic URL based on the first 5 words of the product name
-    words = product.name.split()[:5]
-    url_name = '-'.join(words)
-    dynamic_url = f"/product/{pk}/{url_name}/"
-
     imgURL = product.imageURL
 
-    colors = product.available_colors.split(',')
+    colors = product.colors.split(',')
     sizes = product.sizes.split(',')
 
     context = {
         'product': product,
         'page_name': page_name,
-        'dynamic_url': dynamic_url,
         'shop': shop,
         'colors': colors,
         'cartItems': cartItems,
@@ -470,12 +484,12 @@ def loginPage(request):
             else:
                 messages.info(request, 'Username Or Password is incorrect')
 
-        context = {
-            'page_name': page_name,
-            'cartItems': cartItems,
-        }
+    context = {
+        'page_name': page_name,
+        'cartItems': cartItems,
+    }
 
-        return render(request, 'login.html', context)
+    return render(request, 'login.html', context)
 
 
 def logoutUser(request):
@@ -487,7 +501,7 @@ def registerPage(request):
 
     page_name = f" | Sign Up"
 
-    form = CreateUserForm()
+    form = RegisterUserForm()
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -496,14 +510,17 @@ def registerPage(request):
         return redirect('index')
     else:
         if request.method == "POST":
-            form = CreateUserForm(request.POST)
+            form = RegisterUserForm(request.POST)
             if form.is_valid():
                 form.save()
-                user = form.cleaned_data.get('username')
-                messages.success(request, 'Account was created for' + user)
-
-                return redirect('login')
-
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=password)
+                login(request, user)
+                messages.success(request, ('Registration Successful'))
+                return redirect('index')
+        else:
+            form = RegisterUserForm()
     context = {
         'page_name': page_name,
         'cartItems': cartItems,
@@ -532,42 +549,46 @@ def confirmed(request):
 def add(request):
     page_name = '| New Luku!'
 
-    products = Product.objects.order_by('-pk')
-    orders = Order.objects.order_by('-pk')
-    total_products = Product.objects.count()
-    total_orders = Order.objects.count()
+    photos = Photo.objects.order_by('-pk')
+    total_products = Photo.objects.count()
+
+    categories = Category.objects.all()
 
     if request.method == 'POST':
-        name = request.POST.get('name', '')
-        shop = request.POST.get('shop', '')
-        description = request.POST.get('description', '')
-        keywords = request.POST.get('keywords', '')
-        image = request.FILE.get('image', '')
-        price = request.POST.get('price', '')
-        popular = request.POST.get('popular', '')
-        sizes = request.POST.get('size', '')
+        data = request.POST
+        images = request.FILES.getlist('images')
+        name = request.POST.get('name')
 
-        product = Product(
-            name=name,
-            shop=shop,
-            description=description,
-            keywords=keywords,
-            image=image,
-            price=price,
-            popular=popular,
-            sizes=sizes,
-        )
+        if data['category'] != 'none':
+            category = Category.objects.get(pk=data['category'])
+        elif data['category_new'] != '':
+            category, created = Category.objects.get_or_create(
+                name=data['category_name'])
+        else:
+            category = None
 
-        product.save()
+        for image in images:
+            photo = Photo.objects.create(
+                category=category,
+                description=data['description'],
+                image=image,
+                name=name,
+                keywords=data['keywords'],
+                shop=data['shop'],
+                size=data['size'],
+                price=data['price'],
+                type=data['type'],
+                rating=data['rating'],
+            )
 
-        print(f"New Product Saved! {product.pk}, {product.name}")
+        return redirect('gallery')
 
     context = {
-        'products': products,
+        'categories': categories,
         'page_name': page_name,
-        'orders': orders,
-        'total_orders': total_orders,
+        'photos': photos,
         'total_products': total_products,
+
     }
     return render(request, 'add.html', context)
 
@@ -616,6 +637,7 @@ def addPhoto(request):
     if request.method == 'POST':
         data = request.POST
         images = request.FILES.getlist('images')
+        name = request.POST.get('name')
 
         if data['category'] != 'none':
             category = Category.objects.get(pk=data['category'])
@@ -630,6 +652,7 @@ def addPhoto(request):
                 category=category,
                 description=data['description'],
                 image=image,
+                name=name,
             )
 
         return redirect('gallery')
@@ -645,7 +668,6 @@ def addPhoto(request):
 def dashboard(request):
     photos = Photo.objects.all()
     categories = Category.objects.all()
-    products = Product.objects.all()
     blogs = Blog.objects.all()
     newsletters = Newsletter.objects.all()
     shippings = ShippingAddress.objects.all()
@@ -658,18 +680,18 @@ def dashboard(request):
     data = cartData(request)
     cartItems = data['cartItems']
 
-    total_products = Product.objects.count()
+    total_products = Photo.objects.count()
     total_blogs = Blog.objects.count()
 
     category_list = [category.name for category in categories]
     category_json = json.dumps(category_list)
 
-    popular_list = [product.popular for product in products]
-    popular_number = popular_list.count(True)
-    regular_products = total_products - popular_number
+    # popular_list = [photo.popular for photo in photos]
+    # popular_number = popular_list.count(True)
+
+    # regular_products = total_products - popular_number
 
     context = {
-        'products': products,
         'blogs': blogs,
         'total_products': total_products,
         "total_blogs": total_blogs,
@@ -683,8 +705,8 @@ def dashboard(request):
         'newsletters': newsletters,
         'order_lists': order_lists,
         'category_json': category_json,
-        'popular_number': popular_number,
-        'regular_products': regular_products,
+        # 'popular_number': popular_number,
+        # 'regular_products': regular_products,
     }
 
     return render(request, 'dashboard.html', context)
