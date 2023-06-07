@@ -4,7 +4,7 @@ import json
 import datetime
 from .models import *
 # Registration form import from the forms.py file
-from .forms import OrderForm, RegisterUserForm
+from .forms import OrderForm, RegisterUserForm, PhotoForm
 from . utils import cookieCart, cartData, guestOrder, search_items
 import http.client
 from django.contrib.auth.decorators import user_passes_test
@@ -75,7 +75,7 @@ def help(request):
 def index(request):
 
     page_name = "| Online Clothing Store | Affordable and Stylish Clothes from Kenya"
-    products = Product.objects.all()
+    photos = Photo.objects.all()
     blogs = Blog.objects.all()
     data = cartData(request)
     cartItems = data['cartItems']
@@ -88,7 +88,7 @@ def index(request):
         return redirect('index')
 
     context = {
-        'products': products,
+        'photos': photos,
         'blogs': blogs,
         'cartItems': cartItems,
         'page_name': page_name,
@@ -105,38 +105,24 @@ def contact_us(request):
 def store(request):
     page_name = f"| Shop"
 
+    photos = Photo.objects.order_by('-pk')
+    photo_name = request.GET.get('photo_name')
     data = cartData(request)
     cartItems = data['cartItems']
 
-    recent_photos = Photo.objects.order_by('-pk')
     blogs = Blog.objects.order_by('-pk')
 
-    category = request.GET.get('category')
+    if photo_name:
+        photo = Photo.objects.filter(name=photo_name).first()
+        photos = [photo] if photo else []
 
     data = cartData(request)
     cartItems = data['cartItems']
-
-    if category == None:
-        photos = Photo.objects.all()
-    else:
-        photos = Photo.objects.filter(category__name=category)
-
-    categories = Category.objects.all()
-
-    # Filter products based on type
-    # Get the product type from the request query parameters
-    photo_type = request.GET.get('photo_type')
-    if photo_type:
-        # Filter products based on the type
-        photos = photos.filter(type=photo_type)
 
     context = {
         'page_name': page_name,
         'cartItems': cartItems,
-        'recent_photos': recent_photos,
         'blogs': blogs,
-        'photo_type': photo_type,
-        'categories': categories,
         'photos': photos,
     }
 
@@ -308,15 +294,15 @@ def signup(request):
 
 @login_required(login_url='login')
 def wishlist(request):
-    products = Product.objects.all()
-    total_products = Product.objects.count()
+    photos = Photo.objects.all()
+    total_products = Photo.objects.count()
     page_name = f"| Wishlist"
 
     data = cartData(request)
     cartItems = data['cartItems']
 
     context = {
-        'products': products,
+        'photos': photos,
         'total_products': total_products,
         'page_name': page_name,
         'cartItems': cartItems,
@@ -572,15 +558,16 @@ def add(request):
                 category=category,
                 description=data['description'],
                 image=image,
-                name=name,
+                name=data['name'],
                 keywords=data['keywords'],
                 shop=data['shop'],
                 size=data['size'],
                 price=data['price'],
                 type=data['type'],
                 rating=data['rating'],
+                color=data['color'],
             )
-
+        messages.success(request, ('Succesfully added new product!'))
         return redirect('gallery')
 
     context = {
@@ -595,11 +582,12 @@ def add(request):
 
 @login_required(login_url='login')
 def delete(request, pk):
-    if request.method == "POST":
-        product = Product.objects.get(pk=pk)
-        product.delete()
-        return redirect("dashboard")
-    return render(request, 'delete.html')
+    photo = get_object_or_404(Photo, id=pk)
+
+    if request.method == 'POST':
+        photo.delete()
+        return redirect('dashboard')
+    return render(request, 'delete.html', {'photo': photo})
 
 # Trials ===========================
 
@@ -627,7 +615,20 @@ def gallery(request):
 
 def viewPhoto(request, pk):
     photo = Photo.objects.get(id=pk)
-    return render(request, 'photo.html', {'photo': photo})
+
+    keywords = photo.keywords.split(',')
+
+    similar_products = Photo.objects.filter(
+        Q(keywords__icontains=keywords[0]) |
+        Q(name__icontains=keywords[0])
+    ).exclude(pk=pk).distinct()
+
+    context = {
+        'similar_products': similar_products,
+        'photo': photo,
+    }
+
+    return render(request, 'photo.html', context)
 
 
 @login_required(login_url='login')
@@ -668,46 +669,71 @@ def addPhoto(request):
 def dashboard(request):
     photos = Photo.objects.all()
     categories = Category.objects.all()
-    blogs = Blog.objects.all()
     newsletters = Newsletter.objects.all()
     shippings = ShippingAddress.objects.all()
     orders = Order.objects.order_by('-pk')
     order_lists = OrderItem.objects.all()
-
-    categories_count = len(categories)
     page_name = f" | Dashboard"
+
+    blogs = Blog.objects.all()
+    customers = Customer.objects.all()
+    helps = Help.objects.all()
+    order_item_list = OrderItem.objects.all()
+    products = Product.objects.all()
+    about_us = AboutUs.objects.all()
 
     data = cartData(request)
     cartItems = data['cartItems']
 
     total_products = Photo.objects.count()
-    total_blogs = Blog.objects.count()
 
     category_list = [category.name for category in categories]
     category_json = json.dumps(category_list)
 
-    # popular_list = [photo.popular for photo in photos]
-    # popular_number = popular_list.count(True)
+    popular_list = [photo.popular for photo in photos]
+    popular_number = popular_list.count(True)
 
-    # regular_products = total_products - popular_number
+    regular_products = total_products - popular_number
 
     context = {
         'blogs': blogs,
+        'customers': customers,
+        'helps': helps,
+        'order_item_list': order_item_list,
+        'products': products,
+        'about_us': about_us,
         'total_products': total_products,
-        "total_blogs": total_blogs,
         'shippings': shippings,
         'cartItems': cartItems,
         'page_name': page_name,
         'photos': photos,
         'categories': categories,
-        'categories_count': categories_count,
         'orders': orders,
         'newsletters': newsletters,
         'order_lists': order_lists,
         'category_json': category_json,
-        # 'popular_number': popular_number,
-        # 'regular_products': regular_products,
+        'popular_number': popular_number,
+        'regular_products': regular_products,
     }
 
     return render(request, 'dashboard.html', context)
 # END OF DASHBOARD
+
+
+@login_required(login_url='login')
+def update(request, pk):
+    photo = Photo.objects.get(pk=pk)
+    form = PhotoForm(request.POST or None, instance=photo)
+    page_name = f"| Update {photo.name}"
+
+    if form.is_valid():
+        form.save()
+        return redirect('dashboard')
+
+    context = {
+        'page_name': page_name,
+        'form': form,
+        'photo': photo,
+    }
+
+    return render(request, 'edit.html', context)
