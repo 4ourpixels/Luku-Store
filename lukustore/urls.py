@@ -33,10 +33,6 @@ urlpatterns = [
     # ----- Single product view
     path('product/<int:pk>/', product_detail, name='product_detail'),
 
-    # ----> Updated URL pattern with dynamic_url
-    path('product/<int:pk>/<slug:url_name>/',
-         product_detail, name='product_detail_dynamic'),
-
     # <---- All Blogs
     path('blog/', blog_list, name='blog_list'),
 
@@ -94,8 +90,11 @@ urlpatterns = [
     # Adds a product to the database/inventory
     path('add/', add, name='add'),
 
-    # Delete
+    # Delete Photo
     path('delete/<int:pk>/', delete, name='delete'),
+
+    # Update Photo
+    path('update/<int:pk>/', update, name='update'),
 
     # Trials
     path('gallery/', gallery, name='gallery'),
