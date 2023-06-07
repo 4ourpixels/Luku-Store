@@ -14,10 +14,14 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2)
     stock = models.IntegerField(default=0)
     image = models.ImageField(
-        null=True, upload_to="products/", blank=True, default='image.jpg')
+        null=True,
+        upload_to="products/",
+        blank=True,
+        default='image.jpg'
+    )
     digital = models.BooleanField(default=False, null=True, blank=False)
     popular = models.BooleanField(default=False, null=True, blank=False)
-    available_colors = models.CharField(max_length=75, blank=True)
+    colors = models.CharField(max_length=75, blank=True)
     sizes = models.CharField(max_length=75, blank=True)
 
     BRAND = (
@@ -25,8 +29,12 @@ class Product(models.Model):
         ('akiba-studios', 'Akiba Studios'),
         ('default', 'Default'),
     )
-    brand = models.CharField(max_length=15, choices=BRAND,
-                             null=True, default='luku-store')
+    brand = models.CharField(
+        max_length=15,
+        choices=BRAND,
+        null=True,
+        default='luku-store'
+    )
 
     def __str__(self):
         return f"{self.name}"
@@ -49,16 +57,25 @@ class Blog(models.Model):
     content = models.TextField()
     author = models.CharField(max_length=100)
     keywords = models.CharField(max_length=255, blank=True)
-    image = models.ImageField(null=True, blank=True,
-                              upload_to="blog/", default='blog.jpg')
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="blog/",
+        default='blog.jpg'
+    )
     youtube = models.TextField(blank=True, null=True)
     BRAND = (
         ('luku-store', 'Luku Store.nl'),
         ('akiba-studios', 'Akiba Studios'),
         ('default', 'Default'),
     )
-    brand = models.CharField(max_length=15, choices=BRAND,
-                             null=True, blank=False, default='Luku Store.nl')
+    brand = models.CharField(
+        max_length=15,
+        choices=BRAND,
+        null=True,
+        blank=False,
+        default='Luku Store.nl'
+    )
     pub_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -84,8 +101,12 @@ class AboutUs(models.Model):
     instagram = models.CharField(max_length=50, default=" ")
     twitter = models.CharField(max_length=50, default=" ")
     bio = models.TextField(default=" ")
-    image = models.ImageField(null=True, blank=True,
-                              upload_to="about-us/", default='aboutus.jpg')
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="about-us/",
+        default='aboutus.jpg'
+    )
 
     def __str__(self):
         return f"{self.name} || {self.role}"
@@ -259,7 +280,10 @@ class Category(models.Model):
 
 class Photo(models.Model):
     category = models.ForeignKey(
-        Category, on_delete=models.SET_NULL, null=True)
+        Category,
+        on_delete=models.SET_NULL,
+        null=True
+    )
 
     image = models.ImageField(
         null=False,
@@ -267,18 +291,19 @@ class Photo(models.Model):
         upload_to="products/",
         default='image.jpg'
     )
-    description = models.TextField()
 
+    description = models.TextField()
     name = models.CharField(max_length=100, null=True, blank=True)
     keywords = models.CharField(max_length=50, blank=True)
     price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     stock = models.IntegerField(default=0)
-    colors = models.CharField(max_length=75, blank=True)
+    color = models.CharField(max_length=75, blank=True, null=True)
     digital = models.BooleanField(default=False, null=True, blank=False)
 
-    size = models.CharField(max_length=75, blank=True, null=True)
-    type = models.CharField(max_length=75, blank=True, null=True)
-    rating = models.IntegerField(blank=True, default=0, null=True)
+    size = models.CharField(max_length=50, blank=True, null=True)
+    type = models.CharField(max_length=75, blank=True)
+    rating = models.IntegerField(blank=True, default=0)
+    popular = models.BooleanField(default=False, null=True, blank=False)
 
     SHOP = (
         ('Luku Store', 'Luku Store'),
@@ -306,5 +331,5 @@ class Photo(models.Model):
         try:
             i = self.name
         except:
-            i = self.category
+            i = self.type
         return i
