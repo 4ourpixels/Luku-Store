@@ -264,17 +264,17 @@
               <h6 class="text-white mb-2">Quick Links</h6>
               <ul class="list-unstyled mb-4">
                 <li>
-                  <a class="text-white" href="{% url 'store' %}"
+                  <a class="text-white underline" href="{% url 'store' %}"
                     ><small>Shop</small></a
                   >
                 </li>
                 <li>
-                  <a class="text-white" href="{% url 'brands' %}"
+                  <a class="text-white underline" href="{% url 'brands' %}"
                     ><small>Brands</small></a
                   >
                 </li>
                 <li>
-                  <a class="text-white" href="{% url 'blog_list' %}"
+                  <a class="text-white underline" href="{% url 'blog_list' %}"
                     ><small>Blogs</small></a
                   >
                 </li>
@@ -288,17 +288,21 @@
               <h6 class="text-white mb-2">Help & Information</h6>
               <ul class="list-unstyled mb-4">
                 <li>
-                  <a class="text-white" href="/help/#ordersAndDelivery"
+                  <a
+                    class="text-white underline"
+                    href="/help/#ordersAndDelivery"
                     ><small>Orders & Delivery</small>
                   </a>
                 </li>
                 <li>
-                  <a class="text-white" href="/help/#returnAndRefundsPolicy"
+                  <a
+                    class="text-white underline"
+                    href="/help/#returnAndRefundsPolicy"
                     ><small>Return & Refunds</small>
                   </a>
                 </li>
                 <li>
-                  <a class="text-white" href="/help/#paymentMethods"
+                  <a class="text-white underline" href="/help/#paymentMethods"
                     ><small>Payment Methods</small></a
                   >
                 </li>
@@ -315,7 +319,7 @@
                 newsletter and more.
               </small>
               <div class="input-group row">
-                <form method="POST">
+                <form method="POST" class="pb-3">
                   {% csrf_token %}
                   <input
                     style="margin-bottom: 1rem; margin-top: 1rem"
