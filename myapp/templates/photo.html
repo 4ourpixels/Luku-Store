@@ -1,8 +1,14 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
 <div id="top" class="container">
   <div class="row">
-    <section class="py-5">
-      <div class="container">
+    <section class="py-4">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item "><a class="text-dark underline" href="{% url 'store' %}">Store</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><a class="text-muted underline" href="{% url 'gallery' %}?category={{ photo.category.name }}">{{ photo.category }}</a></li>
+        </ol>
+      </nav>
+      <div class="container pt-1">
         <div class="row gx-5">
           <aside class="col-lg-6">
             <div class="border rounded-4 mb-3 d-flex justify-content-center">
@@ -22,45 +28,53 @@
                   "
                   class="rounded-4 fit"
                   src="{{ photo.image.url }}"
+                  id="productImg"
                 />
               </a>
             </div>
+            {% if similar_products %}
+            <div class="d-flex justify-content-center mb-3">
+              {% for photo in similar_products %}
+              <img
+                style="object-fit: cover"
+                width="60"
+                height="60"
+                class="rounded-2 small-img border mx-1 rounded-2"
+                src="{{ photo.image.url }}"
+              />
+              {% endfor %}
+            </div>
+            {% endif %}
           </aside>
 
           <main class="col-lg-6">
             <div class="ps-lg-3">
               <h4 class="title text-dark">{{ photo.name }}</h4>
+              <h2 class="title text-dark">€{{ photo.price }}</h4>
 
-              <div class="mb-3">
+              <div class="my-3">
                 <p class="text-muted small">{{ photo.description }}</p>
               </div>
-
-              <p class="text-muted">{{ photo.category }}</p>
 
               <div class="row">
                 <dt class="col-3">Type:</dt>
                 <dd class="col-9">{{ photo.type }}</dd>
 
                 <dt class="col-3">Color</dt>
-                <dd class="col-9">{{ photo.colors }}</dd>
+                <dd class="col-9">{{ photo.color }}</dd>
 
                 <dt class="col-3">Brand</dt>
                 <dd class="col-9">{{ photo.shop }}</dd>
+
+                <dt class="col-3">Size</dt>
+                <dd class="col-9">{{ photo.size }}</dd>
+                
+                <dt class="col-3">Rating</dt>
+                <dd class="col-9">{{ photo.rating }}</dd>
+                
               </div>
 
               <hr />
-
-              <div class="row mb-4">
-                <div class="col-md-4 col-6">
-                  <label class="mb-2">Size</label>
-                  <select
-                    class="form-select border border-secondary"
-                    style="height: 35px"
-                  >
-                    <option>size</option>
-                  </select>
-                </div>
-              </div>
               <button
                 data-product="{{ photo.pk }}"
                 data-action="add"
@@ -82,4 +96,22 @@
     </section>
   </div>
 </div>
+
+<script>
+  var ProductImg = document.getElementById("productImg");
+  var SmallImg = document.getElementsByClassName("small-img");
+
+  SmallImg[0].onclick = function () {
+    ProductImg.src = SmallImg[0].src;
+  };
+  SmallImg[1].onclick = function () {
+    ProductImg.src = SmallImg[1].src;
+  };
+  SmallImg[2].onclick = function () {
+    ProductImg.src = SmallImg[2].src;
+  };
+  SmallImg[3].onclick = function () {
+    ProductImg.src = SmallImg[3].src;
+  };
+</script>
 {% endblock %}
