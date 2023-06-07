@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Order
+from .models import Order, Photo
 
 from django import forms
 
@@ -40,3 +40,42 @@ class RegisterUserForm(UserCreationForm):
             self.fields['first_name'].widget.attrs['class'] = 'form-control'
             self.fields['last_name'].widget.attrs['class'] = 'form-control'
             self.fields['email'].widget.attrs['class'] = 'form-control'
+
+
+class PhotoForm(forms.ModelForm):
+    class Meta:
+        model = Photo
+        fields = (
+            'category',
+            'image',
+            'description',
+            'name',
+            'keywords',
+            'price',
+            'stock',
+            'color',
+            'digital',
+            'size',
+            'type',
+            'rating',
+            'popular',
+            'shop',
+        )
+
+        def __init__(self, *args, **kwagrs):
+            super(PhotoForm, self).__init__(*args, **kwagrs)
+
+            self.fields['category'].widget.attrs['class'] = 'form-control'
+            self.fields['image'].widget.attrs['class'] = 'form-control'
+            self.fields['description'].widget.attrs['class'] = 'form-control'
+            self.fields['name'].widget.attrs['class'] = 'form-control'
+            self.fields['keywords'].widget.attrs['class'] = 'form-control'
+            self.fields['price'].widget.attrs['class'] = 'form-control'
+            self.fields['stock'].widget.attrs['class'] = 'form-control'
+            self.fields['color'].widget.attrs['class'] = 'form-control'
+            self.fields['digital'].widget.attrs['class'] = 'form-check-input'
+            self.fields['size'].widget.attrs['class'] = 'form-control'
+            self.fields['type'].widget.attrs['class'] = 'form-control'
+            self.fields['rating'].widget.attrs['class'] = 'form-control'
+            self.fields['popular'].widget.attrs['class'] = 'form-check-input'
+            self.fields['shop'].widget.attrs['class'] = 'form-check-input'
