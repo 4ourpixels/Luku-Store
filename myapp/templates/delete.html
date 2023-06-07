@@ -1,9 +1,35 @@
-{% extends 'base.html' %} {% block body %}
-
-<form method="POST" action="DELETE">
-  {% csrf_token %}
-
-  <button type="submit">Delete</button>
-</form>
-
+{% extends 'base.html' %} {% load static %} {% block body %}
+<div id="top" class="container bg-light text-dark">
+  <div class="row">
+    <div class="col text-center">
+      <h1>Delete {{ photo.name }}?</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="mb-3 d-flex justify-content-center">
+              <a
+                class="rounded-4"
+                data-type="image"
+                href="{{ photo.image.url }}"
+              >
+                <img
+                  style="margin: auto; object-fit: cover; height: 30rem"
+                  class="rounded-4 fit"
+                  src="{{ photo.image.url }}"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form">
+        <form method="POST">
+          {% csrf_token %}
+          <a class="btn btn-outline-dark" href="{% url 'dashboard' %}">Back</a>
+          <button type="submit" class="btn btn-danger btn-lg">Confirm</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
