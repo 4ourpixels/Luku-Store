@@ -132,18 +132,18 @@ def store(request):
 def brand(request):
     page_name = f"| Brands"
 
-    list_of_brand_products = Product.objects.filter(brand=brand)
+    list_of_brand_products = Photo.objects.filter(brand=brand)
     list_of_brand_blogs = Blog.objects.filter(brand=brand)
 
     data = cartData(request)
     cartItems = data['cartItems']
 
-    recent_products = Product.objects.order_by('-pk')
+    recent_products = Photo.objects.order_by('-pk')
     recent_blogs = Blog.objects.order_by('-pk')
-    products = Product.objects.all()
+    photos = Photo.objects.all()
 
     context = {
-        'products': products,
+        'photos': photos,
         'page_name': page_name,
         'cartItems': cartItems,
         'recent_products': recent_products,
@@ -163,14 +163,14 @@ def cart(request):
     order = data['order']
     items = data['items']
 
-    products = Product.objects.all()
+    photos = Photo.objects.all()
 
     context = {
         'page_name': page_name,
         'items': items,
         'cartItems': cartItems,
         'order': order,
-        'products': products,
+        'photos': photos,
     }
 
     return render(request, 'cart.html', context)
@@ -204,14 +204,14 @@ def checkout(request):
 # PRODUCT DETAIL
 
 def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    price_range = Product.objects.filter(
-        price__lte=product.price + 25).exclude(pk=pk)
+    photo = get_object_or_404(Photo, pk=pk)
+    price_range = Photo.objects.filter(
+        price__lte=photo.price + 25).exclude(pk=pk)
 
     rating = 0
 
-    keywords = product.keywords.split(',')
-    similar_products = Product.objects.filter(
+    keywords = photo.keywords.split(',')
+    similar_products = Photo.objects.filter(
         Q(keywords__icontains=keywords[0]) |
         Q(description__icontains=keywords[0]) |
         Q(name__icontains=keywords[0]) |
@@ -219,24 +219,21 @@ def product_detail(request, pk):
         Q(brand__icontains=keywords[0])
     ).exclude(pk=pk).distinct()
 
-    page_name = f"| {product.name}"
+    page_name = f"| {photo.name}"
 
     data = cartData(request)
     cartItems = data['cartItems']
-    shop = product.shop
+    shop = photo.shop
 
-    imgURL = product.imageURL
-
-    colors = product.colors.split(',')
-    sizes = product.sizes.split(',')
+    colors = photo.colors.split(',')
+    sizes = photo.sizes.split(',')
 
     context = {
-        'product': product,
+        'photo': photo,
         'page_name': page_name,
         'shop': shop,
         'colors': colors,
         'cartItems': cartItems,
-        'imgURL': imgURL,
         'sizes': sizes,
         'keywords': keywords,
         'similar_products': similar_products,
@@ -316,11 +313,11 @@ def wishlist(request):
 def brands(request):
     page_name = f"| Brands"
 
-    products = Product.objects.all()
+    photos = Photo.objects.all()
     blogs = Blog.objects.all()
 
-    brands_list = set(Product.objects.values_list('shop', flat=True))
-    categories = set(Product.objects.values_list(
+    brands_list = set(Photo.objects.values_list('shop', flat=True))
+    categories = set(Photo.objects.values_list(
         'description', flat=True))  # add more categories as needed
     keywords = categories
 
@@ -340,7 +337,7 @@ def brands(request):
         'keywords': keywords,
         'akiba_studios_products': akiba_studios_products,
         'blogs': blogs,
-        'products': products,
+        'photos': photos,
     }
     return render(request, 'brands.html', context)
 # END OF BRAND
@@ -376,18 +373,18 @@ def newsletter(request):
 
 def updateItem(request):
     data = json.loads(request.body)
-    productId = data['productId']
+    photoId = data['photoId']
     action = data['action']
 
-    print(f'The product {productId} was {action}ed')
+    print(f'The product {photoId} was {action}ed')
 
     customer = request.user.customer
-    product = Product.objects.get(id=productId)
+    photo = Photo.objects.get(pk=photoId)
     order, created = Order.objects.get_or_create(
         customer=customer, complete=False)
 
     orderItem, created = OrderItem.objects.get_or_create(
-        order=order, product=product)
+        order=order, photo=photo)
 
     if action == 'add':
         orderItem.quantity = (orderItem.quantity + 1)
@@ -411,16 +408,15 @@ def processOrder(request):
         customer = request.user.customer
         order, created = Order.objects.get_or_create(
             customer=customer, complete=False)
-
-        # if order.shipping == True:
-        #     ShippingAddress.objects.create(
-        #             customer=customer,
-        #             order=order,
-        #             address=data['shipping']['address'],
-        #             city=data['shipping']['city'],
-        #             state=data['shipping']['state'],
-        #             zipcode=data['shipping']['zipcode'],
-        #         )
+        if order.shipping == True:
+            ShippingAddress.objects.create(
+                customer=customer,
+                order=order,
+                address=data['shipping']['address'],
+                city=data['shipping']['city'],
+                state=data['shipping']['state'],
+                zipcode=data['shipping']['zipcode'],
+            )
 
     else:
         customer, order = guestOrder(request, data)
@@ -441,7 +437,7 @@ def processOrder(request):
             state=data['shipping']['state'],
             zipcode=data['shipping']['zipcode'],
         )
-
+    messages.success(request, ("Payment Complete!"))
     return JsonResponse('Payment Complete', safe=False)
 
 
@@ -615,6 +611,8 @@ def gallery(request):
 
 def viewPhoto(request, pk):
     photo = Photo.objects.get(id=pk)
+    data = cartData(request)
+    cartItems = data['cartItems']
 
     keywords = photo.keywords.split(',')
 
@@ -626,6 +624,7 @@ def viewPhoto(request, pk):
     context = {
         'similar_products': similar_products,
         'photo': photo,
+        'cartItems': cartItems,
     }
 
     return render(request, 'photo.html', context)
@@ -679,7 +678,6 @@ def dashboard(request):
     customers = Customer.objects.all()
     helps = Help.objects.all()
     order_item_list = OrderItem.objects.all()
-    products = Product.objects.all()
     about_us = AboutUs.objects.all()
 
     data = cartData(request)
@@ -700,7 +698,6 @@ def dashboard(request):
         'customers': customers,
         'helps': helps,
         'order_item_list': order_item_list,
-        'products': products,
         'about_us': about_us,
         'total_products': total_products,
         'shippings': shippings,
