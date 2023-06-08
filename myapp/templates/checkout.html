@@ -1,5 +1,13 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<div class="container" style="margin-top: 2.5rem !important" class="container">
+<div id="top" class="container my-3">
+  <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">
+        <a class="text-dark underline" href="{% url 'cart' %}">Cart</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+    </ol>
+  </nav>
   <div>
     <div class="col">
       <div class="box-element" id="form-wrapper">
@@ -149,16 +157,12 @@
   csrftoken = form.getElementsByTagName("input")[0].value;
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-    console.log("Form submitted 0%...");
     document.getElementById("form-button").classList.add("hidden");
     document.getElementById("payment-info").classList.remove("hidden");
     document.getElementById("form").classList.add("hidden");
-    console.log("...100% form submission completed");
   });
 
   function submitFormData() {
-    console.log("Payment button clicked");
-
     var userFormData = {
       name: null,
       email: null,
@@ -197,7 +201,6 @@
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log("Success:", response);
         alert("Transaction completed");
 
         cart = {};
