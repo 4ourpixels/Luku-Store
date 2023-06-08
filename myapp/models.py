@@ -3,51 +3,6 @@ from django.contrib.auth.models import User
 from django.utils.dateformat import DateFormat
 from django.utils import timezone
 
-# PRODUCT ENTRY
-
-
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    shop = models.CharField(max_length=50)
-    description = models.TextField()
-    keywords = models.CharField(max_length=50, blank=True)
-    price = models.DecimalField(max_digits=7, decimal_places=2)
-    stock = models.IntegerField(default=0)
-    image = models.ImageField(
-        null=True,
-        upload_to="products/",
-        blank=True,
-        default='image.jpg'
-    )
-    digital = models.BooleanField(default=False, null=True, blank=False)
-    popular = models.BooleanField(default=False, null=True, blank=False)
-    colors = models.CharField(max_length=75, blank=True)
-    sizes = models.CharField(max_length=75, blank=True)
-
-    BRAND = (
-        ('luku-store', 'Luku Store'),
-        ('akiba-studios', 'Akiba Studios'),
-        ('default', 'Default'),
-    )
-    brand = models.CharField(
-        max_length=15,
-        choices=BRAND,
-        null=True,
-        default='luku-store'
-    )
-
-    def __str__(self):
-        return f"{self.name}"
-
-    @property
-    def imageURL(self):
-        try:
-            url = self.image.url
-        except:
-            url = ''
-        return url
-# END OF PRODUCT ENTRY
-
 # BLOG ENTRY
 
 
@@ -133,7 +88,72 @@ class Help(models.Model):
     payment_methods = models.TextField()
 # END OF HELP
 
-# CUSTOMER MODEL
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, null=False, blank=False)
+    icon = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Photo(models.Model):
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
+    image = models.ImageField(
+        null=False,
+        blank=False,
+        upload_to="products/",
+        default='image.jpg'
+    )
+
+    description = models.TextField()
+    name = models.CharField(max_length=100, null=True, blank=True)
+    keywords = models.CharField(max_length=100, blank=True)
+    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+    stock = models.IntegerField(default=0)
+    color = models.CharField(max_length=75, blank=True, null=True)
+    digital = models.BooleanField(default=False, null=True, blank=False)
+
+    size = models.CharField(max_length=50, blank=True, null=True)
+    type = models.CharField(max_length=75, blank=True)
+    rating = models.IntegerField(blank=True, default=0)
+    popular = models.BooleanField(default=False, null=True, blank=False)
+
+    SHOP = (
+        ('Luku Store', 'Luku Store'),
+        ('Akiba Studios', 'Akiba Studios'),
+        ('Default', 'default'),
+    )
+    shop = models.CharField(
+        max_length=15,
+        choices=SHOP,
+        null=True,
+        default='luku-store'
+    )
+
+    def __str__(self):
+        try:
+            if self.name:
+                return self.name
+            else:
+                return f"Category: {self.category}"
+        except Exception as e:
+            return f"Error retrieving string representation: {str(e)}"
+
+    @property
+    def name_of_photo(self):
+        try:
+            i = self.name
+        except:
+            i = self.type
+        return i
+
+# ++++ TRIAL
 
 
 class Customer(models.Model):
@@ -176,7 +196,7 @@ class Order(models.Model):
         shipping = False
         orderitems = self.orderitem_set.all()
         for i in orderitems:
-            if i.product.digital == False:
+            if i.photo.digital == False:
                 shipping = True
         return shipping
 
@@ -197,7 +217,7 @@ class Order(models.Model):
         shipping = False
         orderitems = self.orderitem_set.all()
         for i in orderitems:
-            if i.product.digital == False:
+            if i.photo.digital == False:
                 shipping = True
         return shipping
 # END OF ORDER
@@ -206,19 +226,19 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.SET_NULL, blank=True, null=True)
+    photo = models.ForeignKey(
+        Photo, on_delete=models.SET_NULL, blank=True, null=True)
     order = models.ForeignKey(
         Order, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
 
     @property
     def get_total(self):
-        total = self.product.price * self.quantity
+        total = self.photo.price * self.quantity
         return total
 
     def __str__(self):
-        return f'{self.product}'
+        return f'{self.photo}'
 
     @property
     def get_cart_items(self):
@@ -256,6 +276,7 @@ class ShippingAddress(models.Model):
         return f"{self.customer}'s {self.label} Address"
 # END OF SHIPPING ADDRESS
 
+
 # NEWSLETTER
 
 
@@ -268,68 +289,3 @@ class Newsletter(models.Model):
         return self.email
 
 # END OF NEWSLETTER
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=100, null=False, blank=False)
-    icon = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Photo(models.Model):
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.SET_NULL,
-        null=True
-    )
-
-    image = models.ImageField(
-        null=False,
-        blank=False,
-        upload_to="products/",
-        default='image.jpg'
-    )
-
-    description = models.TextField()
-    name = models.CharField(max_length=100, null=True, blank=True)
-    keywords = models.CharField(max_length=50, blank=True)
-    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
-    stock = models.IntegerField(default=0)
-    color = models.CharField(max_length=75, blank=True, null=True)
-    digital = models.BooleanField(default=False, null=True, blank=False)
-
-    size = models.CharField(max_length=50, blank=True, null=True)
-    type = models.CharField(max_length=75, blank=True)
-    rating = models.IntegerField(blank=True, default=0)
-    popular = models.BooleanField(default=False, null=True, blank=False)
-
-    SHOP = (
-        ('Luku Store', 'Luku Store'),
-        ('Akiba Studios', 'Akiba Studios'),
-        ('Default', 'default'),
-    )
-    shop = models.CharField(
-        max_length=15,
-        choices=SHOP,
-        null=True,
-        default='luku-store'
-    )
-
-    def __str__(self):
-        try:
-            if self.name:
-                return self.name
-            else:
-                return f"Category: {self.category}"
-        except Exception as e:
-            return f"Error retrieving string representation: {str(e)}"
-
-    @property
-    def name_of_photo(self):
-        try:
-            i = self.name
-        except:
-            i = self.type
-        return i
