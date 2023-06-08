@@ -1,9 +1,17 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
 
-<div
-  style="margin-top: 5rem !important; margin-bottom: 5rem !important"
-  class="container"
->
+<div class="container my-5">
+  <a class="btn btn-dark float-end mb-3" href="{% url 'checkout' %}"
+    >Checkout</a
+  >
+  <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a class="text-dark underline" href="{% url 'gallery' %}">Back</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Cart</li>
+    </ol>
+  </nav>
   <table class="table align-middle mb-0 bg-white">
     <thead class="bg-light">
       <tr>
@@ -19,29 +27,34 @@
         <td>
           <div class="d-flex align-items-center">
             <img
-              src="{{ item.product.imageURL }}"
-              alt="{{ item.product.name }}"
-              style="width: 45px; height: 45px; border-radius: 8px"
+              src="{{ item.photo.image }}"
+              alt="{{ item.photo.name }}"
+              style="
+                width: 45px;
+                height: 45px;
+                border-radius: 8px;
+                object-fit: cover;
+              "
             />
             <div class="ms-3">
-              <p class="fw-bold mb-1">{{ item.product.name }}</p>
+              <p class="fw-bold mb-1">{{ item.photo.name }}</p>
             </div>
           </div>
         </td>
         <td>
-          <p class="fw-normal mb-1">€ {{ item.product.price }}</p>
+          <p class="fw-normal mb-1">€ {{ item.photo.price }}</p>
           <p class="text-muted mb-0">x {{ item.quantity }}</p>
         </td>
         <td>
           <button
-            data-product="{{ item.product.id }}"
+            data-product="{{ item.photo.pk }}"
             data-action="remove"
             class="update-cart btn btn btn-danger"
           >
             <i class="fa-solid fa-minus update-cart"></i>
           </button>
           <button
-            data-product="{{ item.product.id }}"
+            data-product="{{ item.photo.pk }}"
             data-action="add"
             class="update-cart btn btn-success"
           >
@@ -55,11 +68,6 @@
       {% endfor %}
     </tbody>
   </table>
-  <div style="margin-top: 2.5rem" class="col">
-    <a class="btn btn-dark float-end" href="{% url 'checkout' %}"
-      >Proceed to checkout</a
-    >
-  </div>
 </div>
 
 {% endblock %}
