@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import random
+import http.client
 
 
 # ERROR - DONE
@@ -73,10 +74,22 @@ def help(request):
 
 
 def index(request):
-
     page_name = "| Online Clothing Store | Affordable and Stylish Clothes from Kenya"
+
     photos = Photo.objects.all()
     blogs = Blog.objects.all()
+    homepages = HomePage.objects.all()
+
+    slide1 = homepages[0]
+    slide2 = homepages[1]
+    slide3 = homepages[2]
+    collection = homepages[3]
+    definition = homepages[4]
+    new_release = homepages[5]
+    jacket = homepages[6]
+    sweater = homepages[7]
+    trucker_hats = homepages[8]
+
     data = cartData(request)
     cartItems = data['cartItems']
 
@@ -92,6 +105,17 @@ def index(request):
         'blogs': blogs,
         'cartItems': cartItems,
         'page_name': page_name,
+        'homepages': homepages,
+        'slide1': slide1,
+        'slide2': slide2,
+        'slide3': slide3,
+        'collection': collection,
+        'definition': definition,
+        'new_release': new_release,
+        'jacket': jacket,
+        'jacket': jacket,
+        'trucker_hats': trucker_hats,
+        'sweater': sweater,
     }
     return render(request, 'index.html', context)
 
@@ -719,18 +743,28 @@ def dashboard(request):
 
 @login_required(login_url='login')
 def update(request, pk):
+
+    print("Debugging Update view...")
+    print("Getting photo object using the Primary key")
     photo = Photo.objects.get(pk=pk)
+    print("Getting a few methods from the request and using the Photo as an instance")
     form = PhotoForm(request.POST or None, instance=photo)
+    print("Page name variable")
     page_name = f"| Update {photo.name}"
 
+    print("If condition starts here")
     if form.is_valid():
+        print("Form is saved")
         form.save()
+        print("Redirecting to dashboard")
         return redirect('dashboard')
 
+    print("Context dictionary starts here")
     context = {
         'page_name': page_name,
         'form': form,
         'photo': photo,
     }
+    print("Returning a copy of edit html with the context")
 
     return render(request, 'edit.html', context)
