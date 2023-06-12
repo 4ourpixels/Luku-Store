@@ -37,13 +37,13 @@
       aria-label="Slide 3"
     ></button>
   </div>
+
   <div class="carousel-inner">
     <div class="carousel-item active">
       <img
-        class="d-block w-100"
-        src="{% static 'images/hero/image_6483441.png' %}"
+      class="d-block w-100"
+      src="{% static 'images/hero/mid_thumbnail_matatu_tee.png' %}"
       />
-
       <div class="container">
         <div class="carousel-caption text-start">
           <img
@@ -60,12 +60,14 @@
     <div class="carousel-item">
       <img
         class="d-block w-100"
-        src="{% static 'images/hero/OX_2-hero.png' %}"
+        src="{% static 'images/hero/mid_thumbnail_OX_2_HERO.png' %}"
       />
       <div class="container">
         <div class="carousel-caption">
           <figure class="text-center">
             <blockquote class="blockquote">
+              
+              
               <h1>
                 Streetwear is an artistic movement. <br />
                 It’s a creative process.
@@ -84,7 +86,7 @@
     <div class="carousel-item">
       <img
         class="d-block w-100"
-        src="{% static 'images/hero/image_6483441-hero.png' %}"
+        src="{% static 'images/hero/mid_thumbnail_sweatshirt.png' %}"
       />
 
       <div class="container">
@@ -129,6 +131,42 @@
 <!-- -------------------- -->
 <!--  SECTION -->
 <div style="margin-top: 100vh" class="container">
+  <div class="container">
+    <h3>{{ collection.name }}</h3>
+    <p class="text-muted">{{ collection.quote }}</p>
+    <!-- Trial -->
+    <!-- Gallery -->
+    <div class="row">
+      <div class="col-5 col-sd-12">
+        <div class="image-container position-relative rounded">
+          <img height="450" class="w-100" src="{{ new_release.image.url }}">
+          <div style="padding-top: 22rem; padding-left:2rem;" class="details-overlay text-white">
+            <h5 class="bold">New<br>Release</h5>
+            <small>OX 2023 Collection</small><br>
+            <a class="btn btn-outline-light underline mt-3" href="{% url 'gallery' %}?category=New%20Arrivals">Shop</a>
+          </div>
+        </div>
+      </div>
+    
+    
+      <div class="col-3 col-md-3 col-sd-12 mb-3">
+        <a href="{% url 'gallery' %}?category=Limited%20Edition%20Releases">
+          <img class="rounded gradient-overlay-top" height="225" src="{{ sweater.image.url }}">
+        </a>
+        <a href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
+          <img class="rounded gradient-overlay-top" height="225" src="{{ jacket.image.url }}">
+        </a>
+      </div>
+      
+      <div class="col-3 col-md-3">
+        <a href="{% url 'gallery' %}?category=Hats%20And%20Caps">
+          <img class="rounded gradient-overlay-top" height="450" src="{{ trucker_hats.image.url }}">
+        </a>
+      </div>
+    </div>
+    <!-- Gallery -->
+    <!-- Trial -->
+  </div>
   <br />
   <br />
   <br />
@@ -145,10 +183,7 @@
     <br />
     <p class="display-6">
       <strong>(n.)</strong>
-      a magical power possessed by stylish clothing that makes you feel like you
-      can conquer the world while also doing good for others. Example: "I put on
-      my new fit from Kenya and suddenly I felt the luku coursing through my
-      veins! Time to take on the day with confidence."
+      {{ definition.quote|safe }}
     </p>
   </div>
   <!-- END OF LUKU DEFINITION -->
@@ -163,15 +198,15 @@
   <div class="container">
     <div class="row">
       <div id="popular-this-week" class="index-heading">
-        <h3 class="index-heading">Popular This Week</h3>
-        <p class="winter-sub-heading">
+        <h3>Popular This Week</h3>
+        <p class="text-muted">
           Akiba is back with unique and colorful outfits that reflect the Kenyan
           culture and lifestyle.
         </p>
       </div>
     </div>
 
-    <div class="row">
+    <div class="row d-flex justify-content-around">
       {% for photo in photos %} {% if photo.popular|slice:":4" %}
       <div class="col-lg-3 col-md-6 col-sm-6 d-flex">
         <div style="border: none" class="card w-100 my-2 shadow-2-strong">
@@ -189,16 +224,16 @@
           /></a>
           <br />
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title text-dark">{{ photo.name }}</h5>
-            <p>{{ photo.description|truncatechars:50 }}</p>
-            <h4 class="card-text">€{{ photo.price }}</h4>
+            <h5 class="card-title text-dark fw-bold">{{ photo.name }}</h5>
+            <small>{{ photo.description|truncatechars:50 }}</small>
+            <h4 class="card-text mt-3">€{{ photo.price }}</h4>
             <div
               class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto"
             >
               <button
                 data-product="{{ photo.pk }}"
                 data-action="add"
-                class="btn-cart btn-outline-secondary shadow-0 me-1 update-cart"
+                class="btn w-100 btn-dark shadow-0 me-1 update-cart"
               >
                 Add to cart
               </button>
@@ -209,6 +244,8 @@
       {% endif %} {% endfor %}
     </div>
   </div>
+  <br>
+  <hr>
   <!-- END OF POPULAR THIS WEEK -->
   <!-- -------------------- -->
   <!-- -------------------- -->
@@ -218,30 +255,24 @@
     <!-- Blog -->
     <section class="mt-5 mb-4">
       <div class="container text-dark">
-        <header class="mb-4">
-          <h1 class="">Blog posts</h1>
-        </header>
-
-        <div class="row">
+        <h1 class="text-center mb-5">Blog posts</h1>
+        <div class="row d-flex justify-content-around">
           {% for blog in blogs|slice:":4" %}
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+          <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
             <article>
-              <a href="{% url 'blog_detail' pk=blog.pk %}" class="img-fluid">
+              <a href="{% url 'blog_detail' pk=blog.pk %}" class="img-fluid underline text-dark">
                 <img
                   class="rounded w-100"
-                  src="{{ blog.imageURL }}"
+                  src="{{ blog.image.url }}"
                   style="object-fit: cover"
                   height="160"
                 />
-              </a>
               <div class="mt-2 text-muted small d-block mb-1">
-                <span>
-                  <i class="fa fa-calendar-alt fa-sm"></i>
-                  {{ blog.pub_date }}
-                </span>
-                >
-                <h6 class="text-dark">{{ blog.title|truncatechars:50 }}</h6>
-                <p>{{ blog.summary|truncatechars:50}}</p>
+                <h6 class="text-dark">{{ blog.title|truncatechars:50 }}</h6></a>
+                <p class="small">{{ blog.summary|truncatechars:50}}</p>
+                <hr>
+                <i class="fa fa-calendar-alt fa-sm"></i>
+                {{ blog.pub_date }}
               </div>
             </article>
           </div>
@@ -256,98 +287,38 @@
     <!-- -------------------- -->
 
     <!-- HOT SALE -->
-    <div
-      style="margin-bottom: 5rem"
-      id="myCarouselHotSale"
-      class="carousel slide"
-      data-bs-ride="carousel"
-    >
-      <div class="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#myCarouselHotSale"
-          data-bs-slide-to="0"
-          class="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#myCarouselHotSale"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#myCarouselHotSale"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
-      </div>
-      <div class="carousel-inner">
-        <div style="height: 35rem" class="carousel-item active">
-          <img
-            style="border-radius: 25px"
-            class="d-block w-100"
-            src="{% static 'index/TRUCKER_HAT_2.jpg' %}"
-          />
-          <div class="container">
-            <div class="carousel-caption text-start">
-              <a
-                style="text-decoration: none"
-                class="link-light"
-                href="{% url 'gallery' %}?category=Hats%20And%20Caps"
-                ><h3 class="underline">
-                  Explore Akiba <br />
-                  Trucker Hats &#8594;
-                </h3></a
-              >
+    <div class="row">
+      <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner rounded">
+
+          <div class="carousel-item active" style="height: 350px;">
+            <img style="object-fit: cover;" src="{% static 'index/TRUCKER_HAT_2.jpg' %}" class="d-block w-100 grayscale gradient-overlay" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <a class="underline text-white" href="{% url 'gallery' %}?category=Hats%20And%20Caps"><h1 class="text-start text-white">Explore our <br> Trucker Hats &#8594;</h1></a>
             </div>
           </div>
+
+          <div class="carousel-item" style="height: 350px;">
+            <img style="object-fit: cover;" src="{% static 'index/TRUCKER_HAT_1.jpg' %}" class="d-block w-100" alt="...">
+          </div>
+
+          <div class="carousel-item" style="height: 350px;">
+            <img style="object-fit: cover;" src="{% static 'index/bucket-hats1.png' %}" class="d-block w-100" alt="...">
+          </div>
+
         </div>
 
-        <div style="height: 35rem" class="carousel-item">
-          <img
-            style="
-              border-radius: 25px;
-              background: linear-gradient(
-                to right,
-                rgba(0, 0, 0, 0.724),
-                transparent
-              );
-            "
-            class="d-block w-100"
-            src="{% static 'index/TRUCKER_HAT_1.jpg' %}"
-          />
-        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
 
-        <div style="height: 35rem" class="carousel-item">
-          <img
-            style="border-radius: 25px"
-            class="d-block w-100"
-            src="{% static 'index/bucket-hats1.png' %}"
-          />
-        </div>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+
       </div>
-
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#myCarouselHotSale"
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#myCarouselHotSale"
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
     </div>
     <hr />
     <!-- END OF HOT SALE -->
