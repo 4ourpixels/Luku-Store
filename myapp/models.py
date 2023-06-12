@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.dateformat import DateFormat
 from django.utils import timezone
 
+
 # BLOG ENTRY
 
 
@@ -20,15 +21,14 @@ class Blog(models.Model):
     )
     youtube = models.TextField(blank=True, null=True)
     BRAND = (
-        ('luku-store', 'Luku Store.nl'),
-        ('akiba-studios', 'Akiba Studios'),
-        ('default', 'Default'),
+        ('Luku Store', 'Luku Store.nl'),
+        ('Akiba Studios', 'Akiba Studios'),
     )
     brand = models.CharField(
         max_length=15,
         choices=BRAND,
         null=True,
-        blank=False,
+        blank=True,
         default='Luku Store.nl'
     )
     pub_date = models.DateTimeField(auto_now_add=True)
@@ -50,17 +50,18 @@ class Blog(models.Model):
 
 
 class AboutUs(models.Model):
-    summary = models.CharField(max_length=700)
-    name = models.CharField(max_length=100, default=" ")
-    role = models.CharField(max_length=100, default=" ")
-    instagram = models.CharField(max_length=50, default=" ")
-    twitter = models.CharField(max_length=50, default=" ")
-    bio = models.TextField(default=" ")
+    summary = models.CharField(max_length=700, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    role = models.CharField(max_length=100, blank=True, null=True)
+    instagram = models.CharField(max_length=50, blank=True, null=True)
+    twitter = models.CharField(max_length=50, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+
     image = models.ImageField(
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         upload_to="about-us/",
-        default='aboutus.jpg'
+        default='image.jpg'
     )
 
     def __str__(self):
@@ -289,3 +290,20 @@ class Newsletter(models.Model):
         return self.email
 
 # END OF NEWSLETTER
+
+
+class HomePage(models.Model):
+    quote = models.TextField(null=True, blank=True)
+    name = models.CharField(max_length=200, null=True, blank=True)
+    quote_author = models.CharField(max_length=200, null=True, blank=True)
+
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="media/",
+        default='image.jpg',
+    )
+    button = models.CharField(max_length=10, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
