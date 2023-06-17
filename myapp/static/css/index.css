@@ -154,3 +154,20 @@ hr {
   padding: 20px;
   color: white;
 }
+
+.thumbnail {
+  object-fit: cover;
+  width: 100%;
+}
+
+.overlay:hover {
+  cursor: pointer;
+}
+
+#slideshow img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
