@@ -120,11 +120,11 @@
   <body id="top">
     <!-- NAVIGATION BAR STARTS HERE ----------------------------->
     <nav class="navbar sticky-top navbar-expand-lg bg-white w-auto">
-      <div class="container-fluid">
+      <div class="container-fluid mx-3">
         <a class="navbar-brand" href="{% url 'index' %}"
           ><img
             src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
-            height="50"
+            height="40"
         /></a>
         <span>
           <button
@@ -136,10 +136,17 @@
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
+            <a
+              style="text-decoration: none"
+              class="text-muted"
+              href="{% url 'cart' %}"
+            >
+              <i class="fa-solid fa-cart-shopping mx-2"></i>{{ cartItems }}
+            </a>
             <span class="navbar-toggler-icon"></span>
           </button>
         </span>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse my-3" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a
@@ -179,21 +186,33 @@
               ><a href="{% url 'gallery' %}">
                 <i class="fa-solid fa-magnifying-glass"></i></a
             ></span>
-            <span
-              ><a href="{% url 'wishlist' %}">
-                <i class="fa-solid fa-heart"></i></a
-            ></span>
+            <span>
+              <a href="{% url 'cart' %}">
+                <i class="fa-solid fa-cart-shopping">
+                  <span class="cartItems">{{ cartItems }}</span></i
+                >
+              </a>
+            </span>
+            {% if user.is_authenticated %}
             <span
               ><a href="{% url 'dashboard' %}">
-                <i class="fa-solid fa-user"></i></a
-            ></span>
-            <span
-              ><a href="{% url 'cart' %}">
-                <i class="fa-solid fa-cart-shopping"
-                  ><span class="cartItems">{{ cartItems }}</span></i
-                >
-              </a></span
-            >
+                <img
+                  style="
+                    object-fit: cover;
+                    height: 20px;
+                    width: 20px;
+                    border-radius: 25px;
+                  "
+                  src="{{ user.customer.image.url }}"
+              /></a>
+            </span>
+            {% else %}
+            <span>
+              <a href="{% url 'dashboard' %}">
+                <i class="fa-solid fa-user"></i>
+              </a>
+            </span>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -237,18 +256,15 @@
                 Experience the vibrant culture of Kenya through our affordable
                 and stylish clothing. Shop with us now and make a social impact! </small
               ><br />
-              <ul
-                class="list-unstyled text-center text-md-start footer-social-media"
-              >
+              <ul class="list-unstyled text-start">
                 <li>
                   <a
                     class="text-white"
                     href="https://www.instagram.com/lukustorenl"
                     ><i class="fa-brands fa-instagram"></i
                   ></a>
-                </li>
-                <li>
                   <a
+                    style="margin-left: 3rem"
                     class="text-white"
                     href="https://www.tiktok.com/lukustorenl"
                     ><i class="fa-brands fa-tiktok"></i
@@ -332,7 +348,7 @@
                     required
                   />
                   <button
-                    class="btn btn-outline-light"
+                    class="btn btn-outline-light w-100"
                     type="submit"
                     id="button-addon2"
                   >
