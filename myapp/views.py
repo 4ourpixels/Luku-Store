@@ -45,6 +45,18 @@ def about_us(request):
 
     summary = AboutUs.objects.all()
 
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        message = request.POST.get('message')
+        contact = ContactForm(
+            name=name,
+            email=email,
+            message=message,
+        )
+        contact.save()
+        return redirect('about_us')
+
     context = {
         'summary': summary,
         'page_name': page_name,
@@ -89,6 +101,8 @@ def index(request):
     jacket = homepages[6]
     sweater = homepages[7]
     trucker_hats = homepages[8]
+    asorted_trucker_hats = homepages[9]
+    green_trucker_hat = homepages[10]
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -116,12 +130,15 @@ def index(request):
         'jacket': jacket,
         'trucker_hats': trucker_hats,
         'sweater': sweater,
+        'asorted_trucker_hats': asorted_trucker_hats,
+        'green_trucker_hat': green_trucker_hat,
     }
     return render(request, 'index.html', context)
 
 
 def contact_us(request):
     page_name = f"| Contact Us"
+
     context = {'page_name': page_name}
     return render(request, 'contact_us.html', context)
 
@@ -129,16 +146,11 @@ def contact_us(request):
 def store(request):
     page_name = f"| Shop"
 
-    photos = Photo.objects.order_by('-pk')
-    photo_name = request.GET.get('photo_name')
     data = cartData(request)
     cartItems = data['cartItems']
 
     blogs = Blog.objects.order_by('-pk')
-
-    if photo_name:
-        photo = Photo.objects.filter(name=photo_name).first()
-        photos = [photo] if photo else []
+    photos = Photo.objects.order_by('-pk')
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -316,15 +328,13 @@ def signup(request):
 @login_required(login_url='login')
 def wishlist(request):
     photos = Photo.objects.all()
-    total_products = Photo.objects.count()
-    page_name = f"| Wishlist"
+    page_name = f"| My Wishlist"
 
     data = cartData(request)
     cartItems = data['cartItems']
 
     context = {
         'photos': photos,
-        'total_products': total_products,
         'page_name': page_name,
         'cartItems': cartItems,
     }
@@ -400,7 +410,7 @@ def updateItem(request):
     photoId = data['photoId']
     action = data['action']
 
-    print(f'The product {photoId} was {action}ed')
+    print(f'{action}ed the product {photoId}')
 
     customer = request.user.customer
     photo = Photo.objects.get(pk=photoId)
@@ -486,7 +496,7 @@ def loginPage(request):
                 if user.is_staff:
                     return redirect('dashboard')
                 else:
-                    return redirect('login')
+                    return redirect('register')
             else:
                 messages.info(request, 'Username Or Password is incorrect')
 
@@ -634,21 +644,29 @@ def gallery(request):
 
 
 def viewPhoto(request, pk):
-    photo = Photo.objects.get(id=pk)
+    photo = Photo.objects.get(pk=pk)
     data = cartData(request)
     cartItems = data['cartItems']
 
-    keywords = photo.keywords.split(',')
+    name_link = photo.name_link.split(',')
+
+    similar_images = Photo.objects.filter(
+        Q(name_link__icontains=name_link[0]) |
+        Q(name__icontains=name_link[0])
+    ).exclude(pk=pk).distinct()
+
+    similar_products = photo.similar_products.split(',')
 
     similar_products = Photo.objects.filter(
-        Q(keywords__icontains=keywords[0]) |
-        Q(name__icontains=keywords[0])
+        Q(similar_products__icontains=similar_products[0]) |
+        Q(name__icontains=similar_products[0])
     ).exclude(pk=pk).distinct()
 
     context = {
-        'similar_products': similar_products,
         'photo': photo,
         'cartItems': cartItems,
+        'similar_images': similar_images,
+        'similar_products': similar_products
     }
 
     return render(request, 'photo.html', context)
@@ -699,6 +717,7 @@ def dashboard(request):
     page_name = f" | Dashboard"
 
     blogs = Blog.objects.all()
+    username = User.objects.all()
     customers = Customer.objects.all()
     helps = Help.objects.all()
     order_item_list = OrderItem.objects.all()
@@ -750,7 +769,7 @@ def update(request, pk):
     print("Getting a few methods from the request and using the Photo as an instance")
     form = PhotoForm(request.POST or None, instance=photo)
     print("Page name variable")
-    page_name = f"| Update {photo.name}"
+    page_name = f"| Edit"
 
     print("If condition starts here")
     if form.is_valid():
