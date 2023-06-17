@@ -46,36 +46,38 @@ class PhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
         fields = (
+            'name',
+            'name_link',
+            'type',
             'category',
             'image',
             'description',
-            'name',
-            'keywords',
+            'similar_products',
             'price',
             'stock',
             'color',
-            'digital',
             'size',
-            'type',
             'rating',
             'popular',
             'shop',
+            'digital',
         )
 
         def __init__(self, *args, **kwagrs):
             super(PhotoForm, self).__init__(*args, **kwagrs)
 
+            self.fields['name'].widget.attrs['class'] = 'form-control'
+            self.fields['name_link'].widget.attrs['class'] = 'form-control'
+            self.fields['type'].widget.attrs['class'] = 'form-control'
             self.fields['category'].widget.attrs['class'] = 'form-control'
             self.fields['image'].widget.attrs['class'] = 'form-control'
             self.fields['description'].widget.attrs['class'] = 'form-control'
-            self.fields['name'].widget.attrs['class'] = 'form-control'
-            self.fields['keywords'].widget.attrs['class'] = 'form-control'
+            self.fields['similar_products'].widget.attrs['class'] = 'form-control'
             self.fields['price'].widget.attrs['class'] = 'form-control'
             self.fields['stock'].widget.attrs['class'] = 'form-control'
             self.fields['color'].widget.attrs['class'] = 'form-control'
-            self.fields['digital'].widget.attrs['class'] = 'form-check-input'
             self.fields['size'].widget.attrs['class'] = 'form-control'
-            self.fields['type'].widget.attrs['class'] = 'form-control'
             self.fields['rating'].widget.attrs['class'] = 'form-control'
             self.fields['popular'].widget.attrs['class'] = 'form-check-input'
             self.fields['shop'].widget.attrs['class'] = 'form-check-input'
+            self.fields['digital'].widget.attrs['class'] = 'form-check-input'
