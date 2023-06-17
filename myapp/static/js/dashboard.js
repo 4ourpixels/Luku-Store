@@ -1,136 +1,101 @@
-// Sidebar Toggle
+body {
+  font-size: 0.875rem;
+}
 
-var sidebarOpen = false;
-var sidebar = document.getElementById("sidebar");
+.feather {
+  width: 16px;
+  height: 16px;
+}
 
-function openSidebar() {
-  if (sidebarOpen) {
-    sidebar.classList.add("sidebar-responsive");
-    sidebarOpen = true;
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  /* rtl:raw:
+  right: 0;
+  */
+  bottom: 0;
+  /* rtl:remove */
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 767.98px) {
+  .sidebar {
+    top: 5rem;
   }
 }
 
-function closeSidebar() {
-  if (sidebarOpen) {
-    sidebar.classList.remove("sidebar-responsive");
-    sidebarOpen = false;
-  }
+.sidebar-sticky {
+  height: calc(100vh - 48px);
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
-// CHARTS
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+}
 
-// BAR CHART
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #727272;
+}
 
-var barChartOptions = {
-  series: [
-    {
-      data: [10, 8, 6, 4, 2],
-    },
-  ],
-  chart: {
-    type: "bar",
-    height: 350,
-    toolbar: {
-      show: false,
-    },
-  },
-  colors: ["#246dec", "#cc3c43", "#367952", "#f5b74f", "#4f35a1"],
-  plotOptions: {
-    bar: {
-      distributed: true,
-      borderRadius: 4,
-      horizontal: false,
-      columnWidth: "40%",
-    },
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  legend: {
-    show: false,
-  },
-  xaxis: {
-    // categories: [
-    //   "South Korea",
-    //   "Canada",
-    //   "United Kingdom",
-    //   "Netherlands",
-    //   "Italy",
-    //   "France",
-    //   "Japan",
-    //   "United States",
-    //   "China",
-    //   "Germany",
-    // ],
+.sidebar .nav-link.active {
+  color: #2470dc;
+}
 
-    categories: ["Trucker Hats", "Jackets", "Hoodies", "Shoes", "Sweater"],
-  },
-  yaxis: {
-    title: {
-      text: "Count",
-    },
-  },
-};
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
 
-var barChart = new ApexCharts(
-  document.querySelector("#bar-chart"),
-  barChartOptions
-);
-barChart.render();
+.sidebar-heading {
+  font-size: 0.75rem;
+}
 
-// AREA CHART =====
+/*
+ * Navbar
+ */
 
-var areaChartOptions = {
-  series: [
-    {
-      name: "Purchase Orders",
-      data: [31, 40, 28, 51, 42, 109, 100],
-    },
-    {
-      name: "Sales Orders",
-      data: [11, 32, 45, 32, 34, 52, 41],
-    },
-  ],
-  chart: {
-    height: 350,
-    type: "area",
-    toolbar: {
-      show: false,
-    },
-  },
-  colors: ["#4f35a1", "#246dec"],
-  dataLabels: {
-    enabled: false,
-  },
-  stroke: {
-    curve: "smooth",
-  },
+.navbar-brand {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
+}
 
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-  markers: {
-    size: 0,
-  },
-  yaxis: [
-    {
-      title: {
-        text: "Order",
-      },
-    },
-    {
-      opposite: true,
-      title: {
-        text: "Volume",
-      },
-    },
-  ],
-  tooltip: {
-    shared: true,
-    intersect: false,
-  },
-};
+.navbar .navbar-toggler {
+  top: 0.25rem;
+  right: 1rem;
+}
 
-var areaChart = new ApexCharts(
-  document.querySelector("#area-chart"),
-  areaChartOptions
-);
-areaChart.render();
+.navbar .form-control {
+  padding: 0.75rem 1rem;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+
+.underline {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+.underline:hover {
+  text-decoration: underline;
+}
