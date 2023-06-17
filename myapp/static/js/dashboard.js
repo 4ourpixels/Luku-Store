@@ -1,101 +1,49 @@
-body {
-  font-size: 0.875rem;
-}
+/* globals Chart:false, feather:false */
 
-.feather {
-  width: 16px;
-  height: 16px;
-}
+(() => {
+  "use strict";
 
-/*
- * Sidebar
- */
+  feather.replace({ "aria-hidden": "true" });
 
-.sidebar {
-  position: fixed;
-  top: 0;
-  /* rtl:raw:
-  right: 0;
-  */
-  bottom: 0;
-  /* rtl:remove */
-  left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 48px 0 0; /* Height of navbar */
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
-}
-
-@media (max-width: 767.98px) {
-  .sidebar {
-    top: 5rem;
-  }
-}
-
-.sidebar-sticky {
-  height: calc(100vh - 48px);
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-}
-
-.sidebar .nav-link {
-  font-weight: 500;
-  color: #333;
-}
-
-.sidebar .nav-link .feather {
-  margin-right: 4px;
-  color: #727272;
-}
-
-.sidebar .nav-link.active {
-  color: #2470dc;
-}
-
-.sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
-  color: inherit;
-}
-
-.sidebar-heading {
-  font-size: 0.75rem;
-}
-
-/*
- * Navbar
- */
-
-.navbar-brand {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  background-color: rgba(0, 0, 0, 0.25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
-}
-
-.navbar .navbar-toggler {
-  top: 0.25rem;
-  right: 1rem;
-}
-
-.navbar .form-control {
-  padding: 0.75rem 1rem;
-}
-
-.form-control-dark {
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.form-control-dark:focus {
-  border-color: transparent;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
-}
-
-.underline {
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-}
-.underline:hover {
-  text-decoration: underline;
-}
+  // Graphs
+  const ctx = document.getElementById("myChart");
+  // eslint-disable-next-line no-unused-vars
+  const myChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
+      datasets: [
+        {
+          data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
+          lineTension: 0,
+          backgroundColor: "transparent",
+          borderColor: "#007bff",
+          borderWidth: 4,
+          pointBackgroundColor: "#007bff",
+        },
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: false,
+            },
+          },
+        ],
+      },
+      legend: {
+        display: false,
+      },
+    },
+  });
+})();
