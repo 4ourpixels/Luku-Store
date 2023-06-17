@@ -21,15 +21,15 @@ class Blog(models.Model):
     )
     youtube = models.TextField(blank=True, null=True)
     BRAND = (
-        ('Luku Store', 'Luku Store.nl'),
-        ('Akiba Studios', 'Akiba Studios'),
+        ('lukustore', 'Luku Store.nl'),
+        ('akibastudios', 'Akiba Studios'),
     )
     brand = models.CharField(
         max_length=15,
         choices=BRAND,
         null=True,
         blank=True,
-        default='Luku Store.nl'
+        default='lukustore'
     )
     pub_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -99,6 +99,10 @@ class Category(models.Model):
 
 
 class Photo(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True)
+    name_link = models.CharField(max_length=200, null=True, blank=True)
+    similar_products = models.CharField(max_length=100, blank=True)
+    type = models.CharField(max_length=100, blank=True, null=True)
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
@@ -111,50 +115,33 @@ class Photo(models.Model):
         upload_to="products/",
         default='image.jpg'
     )
-
     description = models.TextField()
-    name = models.CharField(max_length=100, null=True, blank=True)
-    keywords = models.CharField(max_length=100, blank=True)
     price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     stock = models.IntegerField(default=0)
     color = models.CharField(max_length=75, blank=True, null=True)
-    digital = models.BooleanField(default=False, null=True, blank=False)
-
     size = models.CharField(max_length=50, blank=True, null=True)
-    type = models.CharField(max_length=75, blank=True)
     rating = models.IntegerField(blank=True, default=0)
     popular = models.BooleanField(default=False, null=True, blank=False)
-
     SHOP = (
-        ('Luku Store', 'Luku Store'),
-        ('Akiba Studios', 'Akiba Studios'),
-        ('Default', 'default'),
+        ('lukustore', 'Luku Store'),
+        ('akibastudios', 'Akiba Studios'),
     )
     shop = models.CharField(
-        max_length=15,
+        max_length=50,
         choices=SHOP,
         null=True,
-        default='luku-store'
+        default='lukustore'
     )
+    digital = models.BooleanField(default=False, null=True, blank=False)
 
     def __str__(self):
         try:
             if self.name:
                 return self.name
             else:
-                return f"Category: {self.category}"
+                return f"Type: {self.type}"
         except Exception as e:
             return f"Error retrieving string representation: {str(e)}"
-
-    @property
-    def name_of_photo(self):
-        try:
-            i = self.name
-        except:
-            i = self.type
-        return i
-
-# ++++ TRIAL
 
 
 class Customer(models.Model):
@@ -162,6 +149,13 @@ class Customer(models.Model):
         User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200)
+
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="media/",
+        default='image.jpg',
+    )
 
     def __str__(self):
         return self.name
@@ -304,6 +298,15 @@ class HomePage(models.Model):
         default='image.jpg',
     )
     button = models.CharField(max_length=10, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ContactForm(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField()
+    message = models.TextField()
 
     def __str__(self):
         return self.name
