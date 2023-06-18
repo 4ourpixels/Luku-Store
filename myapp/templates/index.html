@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load static %} {% block body %}
+ {% extends 'base.html' %} {% load static %} {% block body %}
 <!-- -------------------- -->
 <!-- -------------------- -->
 
@@ -131,41 +131,58 @@
 <!-- -------------------- -->
 <!--  SECTION -->
 <div style="margin-top: 100vh" class="container">
+  <h3>{{ collection.name }}</h3>
+  <p class="text-muted">{{ collection.quote }}</p>
   <div class="container">
-    <h3>{{ collection.name }}</h3>
-    <p class="text-muted">{{ collection.quote }}</p>
-    <!-- Trial -->
-    <!-- Gallery -->
-    <div class="row">
-      <div class="col-5 col-sd-12">
-        <div class="image-container position-relative rounded">
-          <img height="450" class="w-100" src="{{ new_release.image.url }}">
-          <div style="padding-top: 22rem; padding-left:2rem;" class="details-overlay text-white">
-            <h5 class="bold">New<br>Release</h5>
-            <small>OX 2023 Collection</small><br>
-            <a class="btn btn-outline-light underline mt-3" href="{% url 'gallery' %}?category=New%20Arrivals">Shop</a>
+    <!-- Three columns of text below the carousel -->
+        <div class="row d-flex justify-content-around">
+          <div class="col-4 col-md-4 col-sm-12">
+            <img
+              class="rounded img-fluid thumbnail mb-3 w-100"
+              src="{{ new_release.image.url }}"
+            />
+            <div style="margin-left: 3rem; margin-top: -10rem; ">
+              <h3 class="text-white">{{ new_release.name }}</h3>
+              <p class="text-white">
+                {{ new_release.quote_author }}
+              </p>
+              <p>
+                <a class="btn btn-outline-light" href="{% url 'gallery' %}" role="button"
+                >{{ new_release.button }} &raquo;</a
+                >
+              </div>
+            </p>
           </div>
+          <!-- /.col-lg-4 -->
+          <div class="col-4 col-md-2 col-sm-12">
+            <div class="row my-3">
+              <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
+              <img
+                class="rounded img-fluid thumbnail w-100"
+                src="{{ sweater.image.url }}"
+              /></a>
+            </div>
+            <div class="row mb-3">
+              <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
+              <img
+                class="rounded img-fluid thumbnail w-100"
+                src="{{ jacket.image.url }}"
+              />
+              </a>
+            </div>
+          </div>
+          <!-- /.col-lg-4 -->
+          <div class="col-4 col-md-4 col-sm-12">
+            <a class="overlay" href="{% url 'gallery' %}?category=Hats%20And%20Caps">
+            <img
+              class="rounded img-fluid thumbnail w-100"
+              src="{{ trucker_hats.image.url }}"
+            /></a>
+          </div>
+          <!-- /.col-lg-4 -->
         </div>
-      </div>
-    
-    
-      <div class="col-3 col-md-3 col-sd-12 mb-3">
-        <a href="{% url 'gallery' %}?category=Limited%20Edition%20Releases">
-          <img class="rounded gradient-overlay-top" height="225" src="{{ sweater.image.url }}">
-        </a>
-        <a href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
-          <img class="rounded gradient-overlay-top" height="225" src="{{ jacket.image.url }}">
-        </a>
-      </div>
-      
-      <div class="col-3 col-md-3">
-        <a href="{% url 'gallery' %}?category=Hats%20And%20Caps">
-          <img class="rounded gradient-overlay-top" height="450" src="{{ trucker_hats.image.url }}">
-        </a>
-      </div>
-    </div>
-    <!-- Gallery -->
-    <!-- Trial -->
+        <!-- /.row -->
+
   </div>
   <br />
   <br />
