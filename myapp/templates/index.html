@@ -306,35 +306,31 @@
     <!-- HOT SALE -->
     <div class="row">
       <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div class="carousel-inner rounded">
-
-          <div class="carousel-item active" style="height: 350px;">
-            <img style="object-fit: cover;" src="{% static 'index/TRUCKER_HAT_2.jpg' %}" class="d-block w-100 grayscale gradient-overlay" alt="...">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img style="height: 300px; border-radius: 25px" src="{% static 'index/blue_trucker_hat.png' %}" class="d-block w-100 grayscale" alt="...">
             <div class="carousel-caption d-none d-md-block">
-              <a class="underline text-white" href="{% url 'gallery' %}?category=Hats%20And%20Caps"><h1 class="text-start text-white">Explore our <br> Trucker Hats &#8594;</h1></a>
+              <h4 style="margin: 0 0 6rem -3rem;" class="text-start"><a class="underline text-white" href="{% url 'gallery' %}?category=Hats%20And%20Caps">Explore our <br>Trucker Hats &#8594;</a></h4>
             </div>
           </div>
-
-          <div class="carousel-item" style="height: 350px;">
-            <img style="object-fit: cover;" src="{% static 'index/TRUCKER_HAT_1.jpg' %}" class="d-block w-100" alt="...">
+          <div class="carousel-item">
+            <img style="height: 300px; border-radius: 25px" src="{% static 'index/pink_trucker_hat.png' %}" class="d-block w-100" alt="...">
           </div>
-
-          <div class="carousel-item" style="height: 350px;">
-            <img style="object-fit: cover;" src="{% static 'index/bucket-hats1.png' %}" class="d-block w-100" alt="...">
+          <div class="carousel-item">
+            <img style="height: 300px; border-radius: 25px" src="{% static 'index/bucket_hats.png' %}" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <a class="btn btn-outline-light" href="{% url 'gallery' %}?category=Hats%20And%20Caps">Akiba Bucket Hats</a>
+            </div>
           </div>
-
         </div>
-
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
-
         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
-
       </div>
     </div>
     <hr />
