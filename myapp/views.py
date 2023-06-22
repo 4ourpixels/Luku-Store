@@ -91,6 +91,9 @@ def index(request):
     photos = Photo.objects.all()
     blogs = Blog.objects.all()
     homepages = HomePage.objects.all()
+    categories = Category.objects.all()
+
+    hat_category_icon = categories[6].icon
 
     slide1 = homepages[0]
     slide2 = homepages[1]
@@ -132,6 +135,8 @@ def index(request):
         'sweater': sweater,
         'asorted_trucker_hats': asorted_trucker_hats,
         'green_trucker_hat': green_trucker_hat,
+        'categories': categories,
+        'hat_category_icon': hat_category_icon,
     }
     return render(request, 'index.html', context)
 
@@ -483,7 +488,7 @@ def loginPage(request):
     cartItems = data['cartItems']
 
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect('index')
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -787,3 +792,36 @@ def update(request, pk):
     print("Returning a copy of edit html with the context")
 
     return render(request, 'edit.html', context)
+
+
+def music(request):
+    page_name = "| DJ G400 Mixes"
+
+    mix_albums = MixAlbum.objects.all()
+    mixes = Mix.objects.all()
+    playlists = ['Hip Hop', 'RnB', 'Trap', 'Afrobeats', 'Dancehall']
+
+    context = {
+        'page_name': page_name,
+        'mixes': mixes,
+        'mix_albums': mix_albums,
+        'playlists': playlists,
+    }
+    return render(request, 'music.html', context)
+
+
+def music_player(request, id):
+
+    mix = Mix.objects.get(pk=id)
+    mix_albums = MixAlbum.objects.all()
+    mixes = Mix.objects.all()
+
+    page_name = f"| Playing {mix.title}"
+
+    context = {
+        'page_name': page_name,
+        'mix': mix,
+        'mixes': mixes,
+        'mix_albums': mix_albums,
+    }
+    return render(request, 'music_player.html', context)
