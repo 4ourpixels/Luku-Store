@@ -310,3 +310,53 @@ class ContactForm(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class MixAlbum(models.Model):
+    name = models.CharField(max_length=100, null=False, blank=False)
+    genre = models.CharField(max_length=50, null=True, blank=True)
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="media/",
+        default='image.jpg',
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class Mix(models.Model):
+    title = models.CharField(max_length=100)
+    mix_artist = models.CharField(max_length=100)
+    featured_artists = models.CharField(max_length=100)
+    album = models.ForeignKey(
+        MixAlbum,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="media/",
+        default='image.jpg',
+    )
+    genre = models.CharField(max_length=50)
+    duration = models.PositiveIntegerField()
+    release_date = models.DateField()
+    file = models.FileField(upload_to='mix/', blank=True, null=True)
+
+    play_count = models.PositiveIntegerField(default=0)
+    favorite_count = models.PositiveIntegerField(default=0)
+    download_count = models.PositiveIntegerField(default=0)
+    listen_count = models.PositiveIntegerField(default=0)
+
+    youtube_link = models.TextField(blank=True, null=True)
+    download_link = models.TextField(blank=True, null=True)
+    stream_link = models.TextField(blank=True, null=True)
+    hearthis_link = models.TextField(blank=True, null=True)
+    apple_link = models.TextField(blank=True, null=True)
+    mixcloud_link = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
