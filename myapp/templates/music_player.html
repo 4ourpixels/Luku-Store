@@ -1,0 +1,77 @@
+{% extends 'base.html' %} {% load static %} {% block body %}
+<div style="background: #000" class="container-fluid">
+  <div
+    style="background-image: url('{{ mix.image.url }}'); object-fit: cover;"
+    class="p-4 p-md-5 mb-4 text-white"
+  >
+    <div class="col-md-12 p-5">
+      <small
+        ><a class="underline text-white" href="{% url 'music' %}"
+          >Back to mixes</a
+        ></small
+      >
+      <h1 class="display-4 fst-italic text-white">{{ mix.title }}</h1>
+      <p class="lead my-3">{{ mix.genre }}</p>
+      <p class="my-3">{{ mix.featured_artists }}</p>
+      <small class="my-3">Released: {{ mix.release_date|timesince }} ago</small>
+    </div>
+    <div class="row">
+      <div class="audio-player py-3 px-5">
+        <audio id="song">
+          <source src="{{ mix.file.url }}" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+        <input class="my-5" type="range" value="0" id="mix_progress_bar" />
+        <div class="row d-flex justify-content-evenly">
+          <div class="col">
+            <i class="fa-solid fa-backward"></i>
+          </div>
+          <div onclick="playPause()" class="col h1">
+            <i class="fa-solid fa-play" id="controlIcon"></i>
+          </div>
+          <div class="col">
+            <i class="fa-solid fa-forward"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get a reference to the audio element
+    var progress = document.getElementById("mix_progress_bar");
+    var song = document.getElementById("song");
+    var controlIcon = document.getElementById("controlIcon");
+
+    song.onloadedmetadata = function () {
+      progress.max = song.duration;
+      progress.value = song.currentTime;
+    };
+
+    function playPause() {
+      if (controlIcon.classList.contains("fa-pause")) {
+        song.pause();
+        controlIcon.classList.remove("fa-pause");
+        controlIcon.classList.add("fa-play");
+      } else {
+        song.play();
+        controlIcon.classList.add("fa-pause");
+        controlIcon.classList.remove("fa-play");
+      }
+    }
+
+    if (song.play()) {
+      setInterval(() => {
+        progress.value = song.currentTime;
+      }, 500);
+    }
+
+    progress.onchange = function () {
+      song.play();
+      song.currentTime = progress.value;
+      controlIcon.classList.add("fa-pause");
+      controlIcon.classList.remove("fa-play");
+    };
+  </script>
+</div>
+{% endblock %}
