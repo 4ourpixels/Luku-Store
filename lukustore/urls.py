@@ -96,6 +96,10 @@ urlpatterns = [
     # Update Photo
     path('update/<int:pk>/', update, name='update'),
 
+    # Music Mixes
+    path('music/', music, name='music'),
+    path('music/<int:id>/', music_player, name='music_player'),
+
     # Trials
     path('gallery/', gallery, name='gallery'),
     path('photo/<str:pk>/', viewPhoto, name='photo'),
