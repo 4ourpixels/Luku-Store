@@ -92,6 +92,7 @@ def index(request):
     blogs = Blog.objects.all()
     homepages = HomePage.objects.all()
     categories = Category.objects.all()
+    mixes = Mix.objects.all()
 
     hat_category_icon = categories[6].icon
 
@@ -106,6 +107,8 @@ def index(request):
     trucker_hats = homepages[8]
     asorted_trucker_hats = homepages[9]
     green_trucker_hat = homepages[10]
+
+    latest_mix = mixes[0]
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -137,6 +140,7 @@ def index(request):
         'green_trucker_hat': green_trucker_hat,
         'categories': categories,
         'hat_category_icon': hat_category_icon,
+        'latest_mix': latest_mix,
     }
     return render(request, 'index.html', context)
 
