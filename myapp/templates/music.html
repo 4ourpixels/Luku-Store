@@ -98,23 +98,31 @@
       Albums
       <span class="float-end"><i class="fa-solid fa-folder"></i></span>
     </h1>
-    <div class="row">
+    <div class="container">
+      <div class="row">
       {% for album in mix_albums %}
-      <div class="col-4">
-        <div class="dropdown row g-1">
-          <button class="p-3 border bg-dark border-dark rounded-3 h6 text-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ album }}
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            {% for mix in mixes %}
-            <li><a class="dropdown-item" href="{% url 'music_player' mix.id %}">
-              {{ mix.title }}
-            </a></li>
-            {% endfor %}
-          </ul>
+        <div class="col">
+          <div class="dropdown row g-1">
+            <button 
+            class="p-3 border bg-dark border-dark rounded-3 h6 text-secondary dropdown-toggle" 
+            type="button" 
+            id="dropdownMenuButton1" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false"
+            >
+              {{ album }}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              {% for mix in mixes %}
+              <li><a class="dropdown-item" href="{% url 'music_player' mix.id %}">
+                {{ mix.title }}
+              </a></li>
+              {% endfor %}
+            </ul>
+          </div>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
     </div>
     <!-- Content -->
 
