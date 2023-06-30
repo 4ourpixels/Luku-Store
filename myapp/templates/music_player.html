@@ -17,21 +17,17 @@
     </div>
     <div class="row">
       <div class="audio-player py-3 px-5">
-        <audio id="song">
+        <audio id="song" autoplay="false">
           <source src="{{ mix.file.url }}" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
         <input class="my-5" type="range" value="0" id="mix_progress_bar" />
-        <div class="row d-flex justify-content-evenly">
-          <div class="col">
-            <i class="fa-solid fa-backward"></i>
+        <div class="d-flex justify-content-evenly">
+          <i class="fa-solid fa-backward text-white"></i>
+          <div onclick="playPause()">
+            <i class="fa-solid fa-play text-white fa-2xl" id="controlIcon"></i>
           </div>
-          <div onclick="playPause()" class="col h1">
-            <i class="fa-solid fa-play" id="controlIcon"></i>
-          </div>
-          <div class="col">
-            <i class="fa-solid fa-forward"></i>
-          </div>
+          <i class="fa-solid fa-forward text-white"></i>
         </div>
       </div>
     </div>
