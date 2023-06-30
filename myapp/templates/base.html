@@ -31,6 +31,14 @@
       type="text/css"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
     />
+    <!-- CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- FONT AWESOME -->
     <link
@@ -65,6 +73,14 @@
       href="{% static 'css/index.css' %}"
     />
     <!-- END OF MAIN CSS -->
+
+    <!-- MUSIC CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/music_list.css' %}"
+    />
+    <!-- END OF MUSIC CSS -->
 
     <!-- Javascript Cart -->
     <script type="text/javascript">
@@ -128,7 +144,7 @@
         /></a>
         <span>
           <button
-            class="navbar-toggler"
+            class="navbar-toggler border-muted"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent"
@@ -151,15 +167,15 @@
             <li class="nav-item">
               <a
                 id="nav-home"
-                class="nav-link text-bold"
+                class="nav-link fw-bold text-dark"
                 href="{% url 'index' %}"
                 >Home</a
               >
             </li>
-            <li class="nav-item">
+            <li class="nav-item fw-bold">
               <a
                 id="nav-shop"
-                class="nav-link text-bold"
+                class="nav-link fw-bold text-dark"
                 href="{% url 'store' %}"
                 >Shop</a
               >
@@ -167,7 +183,7 @@
             <li class="nav-item">
               <a
                 id="nav-blog"
-                class="nav-link text-bold"
+                class="nav-link fw-bold text-dark"
                 href="{% url 'blog_list' %}"
                 >Blogs</a
               >
@@ -175,7 +191,7 @@
             <li class="nav-item">
               <a
                 id="nav-about"
-                class="nav-link text-bold"
+                class="nav-link fw-bold text-dark"
                 href="{% url 'about_us' %}"
                 >About</a
               >
@@ -208,7 +224,7 @@
             </span>
             {% else %}
             <span>
-              <a href="{% url 'dashboard' %}">
+              <a href="{% url 'register' %}">
                 <i class="fa-solid fa-user"></i>
               </a>
             </span>
@@ -234,8 +250,8 @@
     {% block body %} {% endblock %}
     <!-- FOOTER ----------------------------->
     <footer
-      style="margin-bottom: 0 !important"
-      class="text-center text-lg-start text-light bg-dark mt-3"
+      style="margin-bottom: 0 !important; background-color: #000"
+      class="text-center text-lg-start text-light mt-3"
     >
       <!-- Section: Links  -->
       <div class="container col">
@@ -367,16 +383,21 @@
               <a class="text-white underline" href="/help/#privacyPolicy"
                 >Privacy Policy</a
               >
+              <a class="text-white underline" href="/help/#termsOfService"
+                >Terms of Service</a
+              >
               <a
                 class="text-white underline"
                 id="footer-year"
                 href="{% url 'about_us' %}"
               ></a>
-              <a class="text-white underline" href="/help/#termsOfService"
-                >Terms of Service</a
+              <a
+                class="text-white underline"
+                href="https://github.com/4ourpixels/4ourpixels"
+                >Website by 4our Pixels</a
               >
-              <a class="text-white underline" href="/help/#faqs">FAQs</a>
             </div>
+
             <!-- Grid column -->
           </div>
           <!-- Grid row -->
@@ -384,7 +405,7 @@
       </div>
     </footer>
     <!-- END OF FOOTER ----------------------------->
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="{% static 'js/base.js' %}"></script>
     <script type="module" src="{% static 'js/cart.js' %}"></script>
     <script
