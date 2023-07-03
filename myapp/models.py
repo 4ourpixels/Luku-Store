@@ -21,8 +21,8 @@ class Blog(models.Model):
     )
     youtube = models.TextField(blank=True, null=True)
     BRAND = (
-        ('lukustore', 'Luku Store.nl'),
-        ('akibastudios', 'Akiba Studios'),
+        ('Luku Store.nl', 'Luku Store.nl'),
+        ('Akiba Studios', 'Akiba Studios'),
     )
     brand = models.CharField(
         max_length=15,
@@ -123,14 +123,14 @@ class Photo(models.Model):
     rating = models.IntegerField(blank=True, default=0)
     popular = models.BooleanField(default=False, null=True, blank=False)
     SHOP = (
-        ('lukustore', 'Luku Store'),
-        ('akibastudios', 'Akiba Studios'),
+        ('Luku Store.nl', 'Luku Store.nl'),
+        ('Akiba Studios', 'Akiba Studios'),
     )
     shop = models.CharField(
         max_length=50,
         choices=SHOP,
         null=True,
-        default='lukustore'
+        default='Luku Store.nl'
     )
     digital = models.BooleanField(default=False, null=True, blank=False)
 
