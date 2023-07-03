@@ -59,11 +59,10 @@ hr {
 }
 
 .navbar {
-  padding: 0.5rem 3rem;
   border-radius: 25px;
   top: 1rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
 }
 
 .sticky-top {
@@ -157,7 +156,8 @@ hr {
 
 .thumbnail {
   object-fit: cover;
-  width: 100%;
+  width: auto;
+  height: 50px;
 }
 
 .overlay:hover {
@@ -170,4 +170,30 @@ hr {
   left: 0;
   opacity: 0;
   transition: opacity 1s ease-in-out;
+}
+
+#mix_progress_bar {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#mix_progress_bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.fa-2xl,
+.fa-forward,
+.fa-backward {
+  cursor: pointer;
+}
+.fa-2xl {
+  cursor: pointer;
 }
