@@ -227,15 +227,10 @@
                     <tr>
                       <th scope="col">ID</th>
                       <th scope="col">Product</th>
-                      <th scope="col">Category</th>
-                      <th scope="col">Type</th>
                       <th scope="col">Stock</th>
+                      <th scope="col">Category</th>
                       <th scope="col">Price</th>
-                      <th scope="col">Color</th>
-                      <th scope="col">Brand</th>
-                      <th scope="col">Size</th>
-                      <th scope="col">Rating</th>
-                      <th scope="col">Edit</th>
+                      <th scope="col">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -243,18 +238,104 @@
                   <tr>
                     <td>#{{ photo.pk }}</td>
                     <td><a class="underline text-dark fw-bold" href="{% url 'photo' photo.pk %}">{{ photo.name }}</a></td>
-                    <td>{{ photo.category }}</td>
-                    <td>{{ photo.type }}</td>
-                    <td>{{ photo.stock }}</td>
-                    <td>{{ photo.price }}</td>
-                    <td>{{ photo.color }}</td>
-                    <td>{{ photo.shop }}</td>
-                    <td>{{ photo.size }}</td>
-                    <td>{{ photo.rating }}</td>
                     <td>
-                      <a class="underline text-secondary" 
-                        href="{% url 'update' photo.pk %}"><i class="fa-solid fa-pencil"></i></a>
+                      {% if photo.stock <= 1 %}
+                      <span><p class="badge rounded-pill bg-danger">Low</p></span>
+                      {% else %}
+                      <span><p class="badge rounded-pill bg-primary">{{ photo.stock }}</p></span>
+                      {% endif %}
                     </td>
+                    <td>{{ photo.category }}</td>
+                    <td>{{ photo.price }}</td>
+                    <td>
+                        <!-- Button trigger modal -->
+                        <button 
+                        style="border: none; background: none"
+                        type="button" 
+                        href="{% url 'edit' photo.id %}" 
+                        class="text-success me-1" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#exampleModal{{ photo.id }}">
+                        <i class="fa-solid fa-circle-info"></i>
+                        </button>
+
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="exampleModal{{ photo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                              <div class="modal-header">
+                                  <h1 class="modal-title fs-5" id="exampleModalLabel{{ photo.id }}">
+                                      {{ photo.name }}
+                                  </h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true"></span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                                  <ul class="list-unstyled">
+                                      <li>Name: <strong>{{ photo.name }}</strong></li>
+                                      <li>Price: <strong>{{ photo.price }}</strong></li>
+                                      <li>Type: <strong>{{ photo.type }}</strong></li>
+                                      <li>Stock: <span>
+                                        {% if photo.stock <= 1 %}
+                                        <p class="badge rounded-pill bg-danger">{{ photo.stock }}</p>
+                                        {% else %}
+                                        <p class="badge rounded-pill bg-primary">{{ photo.stock }}</p>
+                                        {% endif %}
+                                      </span></li>
+                                      <li>Rating: <strong>{{ photo.rating }}</strong></li>
+                                      <li>Size: <strong>{{ photo.size }}</strong></li>
+                                      <li>Color: <strong>{{ photo.color }}</strong></li>
+                                      <li>Brand: <strong>{{ photo.shop }}</strong></li>
+                                      <li>Popular: <strong>{{ photo.popular }}</strong></li>
+                                      <li>Digital: <strong>{{ photo.digital }}</strong></li>
+                                      <li><img height="150" width="auto" class="thumbnail mt-3 rounded bg-light" src="{{ photo.image.url }}" alt="{{ photo.name }}"></li>
+                                  </ul>
+                              </div>
+                              <div class="modal-footer">
+                                  <a href="{% url 'edit' photo.id %}" class="btn btn-outline-success">Edit</a>
+                                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                              </div>
+                          </div>
+                        </div>
+
+                        <button
+                        style="border: none; background: none"
+                        data-bs-toggle="modal"
+                        data-bs-target="#delete{{ photo.id }}"
+                        type="button" 
+                        class="text-danger">
+                        <i class="fa-solid fa-trash"></i>
+                        </button>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="delete{{ photo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                              <div class="modal-header">
+                                  <h1 class="modal-title fs-5" id="delete{{ photo.id }}">
+                                    Delete {{ photo.name }}?
+                                  </h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true"></span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                                <p>Are you sure you want to delete {{ photo.name }}?</p>
+                              </div>
+                              <div class="modal-footer">
+                                <form action="{% url 'delete' photo.id %}" method="POST">
+                                  {% csrf_token %}
+                                  <input type="submit" class="btn btn-danger" value="Delete">
+                                </form>
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                              </div>
+                              </div>
+                          </div>
+                        </div>
+
+                        </td>
                     </tr>
                   </tr>
                   {% endfor %}
