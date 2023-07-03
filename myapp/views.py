@@ -573,55 +573,6 @@ def confirmed(request):
 
 
 @login_required(login_url='login')
-def add(request):
-    page_name = '| New Luku!'
-
-    photos = Photo.objects.order_by('-pk')
-    total_products = Photo.objects.count()
-
-    categories = Category.objects.all()
-
-    if request.method == 'POST':
-        data = request.POST
-        images = request.FILES.getlist('images')
-        name = request.POST.get('name')
-
-        if data['category'] != 'none':
-            category = Category.objects.get(pk=data['category'])
-        elif data['category_new'] != '':
-            category, created = Category.objects.get_or_create(
-                name=data['category_name'])
-        else:
-            category = None
-
-        for image in images:
-            photo = Photo.objects.create(
-                category=category,
-                description=data['description'],
-                image=image,
-                name=data['name'],
-                keywords=data['keywords'],
-                shop=data['shop'],
-                size=data['size'],
-                price=data['price'],
-                type=data['type'],
-                rating=data['rating'],
-                color=data['color'],
-            )
-        messages.success(request, ('Succesfully added new product!'))
-        return redirect('gallery')
-
-    context = {
-        'categories': categories,
-        'page_name': page_name,
-        'photos': photos,
-        'total_products': total_products,
-
-    }
-    return render(request, 'add.html', context)
-
-
-@login_required(login_url='login')
 def delete(request, pk):
     photo = get_object_or_404(Photo, id=pk)
 
@@ -772,32 +723,22 @@ def dashboard(request):
 
 
 @login_required(login_url='login')
-def update(request, pk):
-
-    print("Debugging Update view...")
-    print("Getting photo object using the Primary key")
-    photo = Photo.objects.get(pk=pk)
-    print("Getting a few methods from the request and using the Photo as an instance")
-    form = PhotoForm(request.POST or None, instance=photo)
-    print("Page name variable")
-    page_name = f"| Edit"
-
-    print("If condition starts here")
-    if form.is_valid():
-        print("Form is saved")
-        form.save()
-        print("Redirecting to dashboard")
-        return redirect('dashboard')
-
-    print("Context dictionary starts here")
-    context = {
-        'page_name': page_name,
+def edit(request, id):
+    if request.method == "POST":
+        photo = Photo.objects.get(pk=id)
+        form = PhotoForm(request.POST, instance=photo)
+        if form.is_valid():
+            form.save()
+            return render(request, 'edit.html', {
+                'form': form,
+                'success': True
+            })
+    else:
+        photo = Photo.objects.get(pk=id)
+        form = PhotoForm(instance=photo)
+    return render(request, 'edit.html', {
         'form': form,
-        'photo': photo,
-    }
-    print("Returning a copy of edit html with the context")
-
-    return render(request, 'edit.html', context)
+    })
 
 
 def music(request):
@@ -831,3 +772,53 @@ def music_player(request, id):
         'mix_albums': mix_albums,
     }
     return render(request, 'music_player.html', context)
+
+
+def add(request):
+    if request.method == 'POST':
+        form = PhotoForm(request.POST)
+        if form.is_valid():
+            new_photo_name = form.cleaned_data['name']
+            new_photo_name_link = form.cleaned_data['name_link']
+            new_photo_category = form.cleaned_data['category']
+            new_photo_image = form.cleaned_data['image']
+            new_photo_description = form.cleaned_data['description']
+            new_photo_similar_products = form.cleaned_data['similar_products']
+            new_photo_price = form.cleaned_data['price']
+            new_photo_stock = form.cleaned_data['stock']
+            new_photo_color = form.cleaned_data['color']
+            new_photo_size = form.cleaned_data['size']
+            new_photo_rating = form.cleaned_data['rating']
+            new_photo_popular = form.cleaned_data['popular']
+            new_photo_shop = form.cleaned_data['shop']
+            new_photo_digital = form.cleaned_data['digital']
+
+            new_photo = Photo(
+                name=new_photo_name,
+                name_link=new_photo_name_link,
+                category=new_photo_category,
+                image=new_photo_image,
+                description=new_photo_description,
+                similar_products=new_photo_similar_products,
+                price=new_photo_price,
+                stock=new_photo_stock,
+                color=new_photo_color,
+                size=new_photo_size,
+                rating=new_photo_rating,
+                popular=new_photo_popular,
+                shop=new_photo_shop,
+                digital=new_photo_digital,
+            )
+
+            new_photo.save()
+
+            return render(request, 'add.html', {
+                'form': PhotoForm(),
+                'success': True,
+                'message': "New product was added successfully!",
+            })
+        else:
+            form = PhotoForm()
+    return render(request, 'add.html', {
+        'form': PhotoForm()
+    })
