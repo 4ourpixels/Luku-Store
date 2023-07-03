@@ -94,7 +94,7 @@ urlpatterns = [
     path('delete/<int:pk>/', delete, name='delete'),
 
     # Update Photo
-    path('update/<int:pk>/', update, name='update'),
+    path('edit/<int:id>/', edit, name='edit'),
 
     # Music Mixes
     path('music/', music, name='music'),
