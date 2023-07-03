@@ -207,6 +207,7 @@ def cart(request):
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
+    discount = 0
 
     photos = Photo.objects.all()
 
@@ -216,6 +217,7 @@ def cart(request):
         'cartItems': cartItems,
         'order': order,
         'photos': photos,
+        'discount': discount,
     }
 
     return render(request, 'cart.html', context)
