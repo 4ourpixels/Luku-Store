@@ -4,7 +4,7 @@ import json
 import datetime
 from .models import *
 # Registration form import from the forms.py file
-from .forms import OrderForm, RegisterUserForm, PhotoForm
+from .forms import *
 from . utils import cookieCart, cartData, guestOrder, search_items
 import http.client
 from django.contrib.auth.decorators import user_passes_test
@@ -37,13 +37,17 @@ def error(request):
 # ABOUT US
 
 
-def about_us(request):
+def lukufam(request):
     page_name = f"| About Us"
 
     data = cartData(request)
     cartItems = data['cartItems']
 
-    summary = AboutUs.objects.all()
+    object = AboutUs.objects.all()
+
+    kendy = object[0]
+    djg400 = object[1]
+    fkinyash = object[2]
 
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -55,15 +59,17 @@ def about_us(request):
             message=message,
         )
         contact.save()
-        return redirect('about_us')
+        return redirect('lukufam')
 
     context = {
-        'summary': summary,
+        'kendy': kendy,
+        'djg400': djg400,
+        'fkinyash': fkinyash,
         'page_name': page_name,
         'cartItems': cartItems,
     }
 
-    return render(request, 'about_us.html', context)
+    return render(request, 'lukufam.html', context)
 # END OF ABOUT US
 
 # HELP SECTION - DONE
@@ -152,26 +158,28 @@ def contact_us(request):
     return render(request, 'contact_us.html', context)
 
 
-def store(request):
+def shop(request):
     page_name = f"| Shop"
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    blogs = Blog.objects.order_by('-pk')
     photos = Photo.objects.order_by('-pk')
-
     data = cartData(request)
     cartItems = data['cartItems']
+    blogs = Blog.objects.order_by('-pk')
+    category = request.GET.get('category')
+    categories = Category.objects.all()
+    if category == None:
+        photos = Photo.objects.all()
+    else:
+        photos = Photo.objects.filter(category__name=category)
 
     context = {
         'page_name': page_name,
         'cartItems': cartItems,
         'blogs': blogs,
         'photos': photos,
+        'categories': categories,
     }
 
-    return render(request, 'store.html', context)
+    return render(request, 'shop.html', context)
 
 
 def brand(request):
@@ -366,10 +374,7 @@ def brands(request):
         'description', flat=True))  # add more categories as needed
     keywords = categories
 
-    # print(keywords)
-    # data = {'KINYOZI Salon Street', 'OX Sheep bucket', 'Red stylish bucket hat by akiba studios', 'Stylish bucket hat', 'Cool vibes, Akiba Studio with a new Tropical, Hawaii theme', 'Black pants with RED AK embroidery', 'Blue Top, Ladies', 'White trucker hat from Akiba Studios', 'Farm boyz blue shirt', 'Stay cozy with our “World Wide Web” knit pullover Featuring our “spider web” embroidery', 'Stylish akiba asorted hats', 'Black Akiba Pants with AK embroidery', 'NFT wallpaper playing playstation', 'Akiba front side trucker hat', 'Yellow stylish bucket hat for summer with cartoon embroidery on front side.', 'Introducing our latest print Kintsungi graphic print and a scattered poem inspired by the Kintsungi philosophy', 'Black half jacket by Akiba Studios, Street Fashion', 'FARM BOYZ 1 - Pink Blue Jersey', 'Black pants with ORANGE AK embroidery', 'Green lukustore.nl limiteed edition of the bucket hat', 'Blue Akiba Studios Bucket Hat for summer'}
     akiba_studios_products = search_items(keywords)
-    # Products from akiba studios printed on the terminal
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -567,6 +572,7 @@ def confirmed(request):
     context = {
         'page_name': page_name,
         'cartItems': cartItems,
+        'success': True
     }
 
     return render(request, 'confirmed.html', context)
@@ -675,15 +681,12 @@ def dashboard(request):
     newsletters = Newsletter.objects.all()
     shippings = ShippingAddress.objects.all()
     orders = Order.objects.order_by('-pk')
-    order_lists = OrderItem.objects.all()
-    page_name = f" | Dashboard"
-
-    blogs = Blog.objects.all()
-    username = User.objects.all()
     customers = Customer.objects.all()
     helps = Help.objects.all()
-    order_item_list = OrderItem.objects.all()
+    blogs = Blog.objects.all()
     about_us = AboutUs.objects.all()
+    order_item_list = OrderItem.objects.all()
+    page_name = f" | Dashboard"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -712,7 +715,6 @@ def dashboard(request):
         'categories': categories,
         'orders': orders,
         'newsletters': newsletters,
-        'order_lists': order_lists,
         'category_json': category_json,
         'popular_number': popular_number,
         'regular_products': regular_products,
@@ -774,6 +776,7 @@ def music_player(request, id):
     return render(request, 'music_player.html', context)
 
 
+@login_required(login_url='login')
 def add(request):
     if request.method == 'POST':
         form = PhotoForm(request.POST)
@@ -821,4 +824,62 @@ def add(request):
             form = PhotoForm()
     return render(request, 'add.html', {
         'form': PhotoForm()
+    })
+
+
+@login_required(login_url='login')
+def add_blog(request):
+    if request.method == 'POST':
+        form = BlogForm(request.POST)
+        if form.is_valid():
+            new_blog_title = form.cleaned_data['title']
+            new_blog_summary = form.cleaned_data['summary']
+            new_blog_content = form.cleaned_data['content']
+            new_blog_author = form.cleaned_data['author']
+            new_blog_keywords = form.cleaned_data['keywords']
+            new_blog_image = form.cleaned_data['image']
+            new_blog_youtube = form.cleaned_data['youtube']
+            new_blog_brand = form.cleaned_data['brand']
+
+            new_blog = Blog(
+                title=new_blog_title,
+                summary=new_blog_summary,
+                content=new_blog_content,
+                author=new_blog_author,
+                keywords=new_blog_keywords,
+                image=new_blog_image,
+                youtube=new_blog_youtube,
+                brand=new_blog_brand,
+            )
+
+            new_blog.save()
+
+            return render(request, 'add_blog.html', {
+                'form': BlogForm(),
+                'success': True,
+                'message': "New blog was added successfully!",
+            })
+        else:
+            form = BlogForm()
+    return render(request, 'add_blog.html', {
+        'form': BlogForm()
+    })
+
+
+@login_required(login_url='login')
+def edit_blog(request, id):
+    if request.method == "POST":
+        blog = Blog.objects.get(pk=id)
+        form = BlogForm(request.POST, instance=blog)
+        if form.is_valid():
+            form.save()
+            return render(request, 'edit.html', {
+                'form': form,
+                'success': True
+            })
+    else:
+        blog = Blog.objects.get(pk=id)
+        form = BlogForm(instance=blog)
+    return render(request, 'edit_blog.html', {
+        'form': form,
     })
