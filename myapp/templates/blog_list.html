@@ -1,85 +1,96 @@
-{% extends 'base.html' %} {% load static %} {% block body %}
-
-<main style="margin-top: 3rem" id="top" class="container">
-  <div
-    style="border-radius: 25px"
-    class="container rounded text-bg-light d-flex justify-content-center"
-  >
-    <div class="col-md-6 px-0 text-center justify-content-center">
-      {% for blog in recent_blogs|slice:":1" %}
-      <h1 class="display-1 text-bold fw-bolder">Blogs</h1>
-      <hr class="border border-3" />
-      <p class="lead">{{ blog.summary }}</p>
-      <p>
-        <a href="{% url 'blog_detail' blog.pk %}" class="text-black underline"
-          >Read the latest blog</a
-        >
-      </p>
-      {% endfor %}
-    </div>
-  </div>
-
-  <div class="row mb-2">
-    {% for blog in recent_blogs %}
-    <div class="col-md-6">
-      <div
-        class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
-      >
-        <div class="col p-4 d-flex flex-column position-static">
-          <h3 class="mb-0">{{ blog.title }}</h3>
-          <div style="margin-top: 1rem" class="mb-1 text-muted">
-            {{ blog.pub_date }}
-          </div>
-          <p class="card-text mb-auto">{{ blog.summary|truncatechars:50 }}</p>
-          <a
-            href="{% url 'blog_detail' pk=blog.pk %}"
-            class="underline text-black"
-            >Continue reading</a
-          >
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          {% if blog.youtube %}
-          <iframe
-            class="bd-placeholder-img"
-            width="200"
-            height="250"
-            src="https://www.youtube.com/embed/XppZqa0BtoQ"
-            title="{{ blog.title }}"
-            preserveAspectRatio="xMidYMid slice"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-            focusable="false"
-          ></iframe>
-          {% elif blog.image %}
-          <img
-            style="object-fit: cover"
-            preserveAspectRatio="xMidYMid slice"
-            class="bd-placeholder-img"
-            width="200"
-            height="250"
-            src="{{ blog.imageURL }}"
-            alt="{{ blog.name }}"
-            width="200"
-            height="250"
-          />
-          {% endif %}
-        </div>
+{% extends 'base.html' %} {% load static %} {% block body %} {% if items %}
+<div class="container">
+  <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a class="text-dark underline" href="{% url 'gallery' %}">Back</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Cart</li>
+    </ol>
+  </nav>
+  <div class="row">
+    <div class="col-md-9 col-lg-9 col-sm-12">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+            <tr>
+              <td>
+                <img
+                  height="40"
+                  width="auto"
+                  style="object-fit: cover"
+                  class="thumbnail rounded bg-light"
+                  src="{{ item.photo.image.url }}"
+                  alt="{{ item.name }}"
+                />
+              </td>
+              <td>
+                {{ item.photo.name }} <br />
+                <span class="text-muted small"
+                  >{{ item.photo.color }} {{ item.photo.size }}</span
+                >
+              </td>
+              <td>
+                <div
+                  class="border rounded d-flex justify-content-evenly align-items-center py-1"
+                >
+                  <button
+                    style="background: none; border: none"
+                    data-product="{{ item.photo.pk }}"
+                    data-action="remove"
+                    class="update-cart"
+                  >
+                    -
+                  </button>
+                  <span>{{ item.quantity }}</span>
+                  <button
+                    style="background: none; border: none"
+                    data-product="{{ item.photo.pk }}"
+                    data-action="add"
+                    class="update-cart"
+                  >
+                    +
+                  </button>
+                </div>
+              </td>
+              <td>€{{ item.photo.price }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
-    {% endfor %}
-  </div>
-
-  <div class="row g-5">
-    <div class="col-md-8">
-      <a style="text-decoration: none"
-        ><h3 class="pb-4 mb-4 fst-italic border-bottom text-dark underline">
-          The SS23' Lukubook &raquo;
-        </h3></a
+    <div class="col-md-3 col-lg-3 col-sm-12 p-3 border rounded">
+      <div class="d-flex justify-content-between">
+        <span class="small text-muted">Subtotal</span>
+        <span class="fw-bold small">€ {{ order.get_cart_total }}</span>
+      </div>
+      <div class="d-flex justify-content-between mt-3">
+        <span class="small text-muted">Discount</span>
+        <span class="text-muted small">€ {{ discount }}</span>
+      </div>
+      <hr class="fw-bold" />
+      <div class="d-flex justify-content-between">
+        <span class="p">Grand total</span>
+        <span class="fw-bold">€ {{ order.get_cart_total }}</span>
+      </div>
+      <a class="btn btn-dark w-100 btn-lg mt-4" href="{% url 'checkout' %}"
+        >Checkout now</a
       >
     </div>
   </div>
-  <a class="underline text-dark" href="#top">Back to top</a>
-</main>
-
-{% endblock %}
+</div>
+{% else %}
+<div class="px-4 py-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">Oops! Your cart is empty!</h1>
+</div>
+{% endif %} {% endblock %}
