@@ -1,16 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
 
 <main style="margin-top: 3rem" id="top" class="container">
-  <nav aria-label="breadcrumb bg-dark">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a class="text-dark underline" href="{% url 'brands' %}">Brand</a>
-      </li>
-      <li class="breadcrumb-item active" aria-current="page">
-        {{ blog.brand }}
-      </li>
-    </ol>
-  </nav>
   <div style="margin-top: 1rem" class="row">
     {% if blog.youtube %}
     <iframe
@@ -28,12 +18,12 @@
       style="object-fit: cover"
       height="300"
       class="img-fluid. max-width: 100% bg-light"
-      src="{{ blog.imageURL }}"
+      src="{{ blog.image.url }}"
       alt="{{ blog.title }}"
     />{% endif %}
     <small style="margin-top: 0.5rem">
       <em>Published on: {{ blog.pub_date }}</em> by
-      <a href="{% url 'about_us' %}" class="underline text-black"
+      <a href="{% url 'lukufam' %}" class="underline text-black"
         >{{ blog.author }}</a
       ></small
     >
@@ -51,7 +41,7 @@
             style="object-fit: cover; margin-bottom: 1.5rem"
             height="500"
             class="img-fluid. max-width: 100% bg-light"
-            src="{{ blog.imageURL }}"
+            src="{{ blog.image.url }}"
             alt="{{ blog.title }}"
           />
         </div>
@@ -63,7 +53,11 @@
           href="{% url 'blog_list' %}"
           >Older</a
         >
-        <a class="btn btn-outline-secondary rounded-pill disabled">Newer</a>
+        <a
+          href="{% url 'blog_detail' 9 %}"
+          class="btn btn-outline-secondary rounded-pill"
+          >Newer</a
+        >
       </nav>
     </div>
 
