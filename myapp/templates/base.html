@@ -135,7 +135,7 @@
   </head>
   <body id="top">
     <!-- NAVIGATION BAR STARTS HERE ----------------------------->
-    <nav class="navbar sticky-top navbar-expand-lg bg-white w-auto">
+    <nav class="navbar sticky-top navbar-expand-sm bg-white w-auto">
       <div class="container-fluid mx-3">
         <a class="navbar-brand" href="{% url 'index' %}"
           ><img
@@ -176,7 +176,7 @@
               <a
                 id="nav-shop"
                 class="nav-link fw-bold text-dark"
-                href="{% url 'store' %}"
+                href="{% url 'shop' %}"
                 >Shop</a
               >
             </li>
@@ -192,16 +192,12 @@
               <a
                 id="nav-about"
                 class="nav-link fw-bold text-dark"
-                href="{% url 'about_us' %}"
+                href="{% url 'lukufam' %}"
                 >About</a
               >
             </li>
           </ul>
           <div class="d-flex soci">
-            <span
-              ><a href="{% url 'gallery' %}">
-                <i class="fa-solid fa-magnifying-glass"></i></a
-            ></span>
             <span>
               <a href="{% url 'cart' %}">
                 <i class="fa-solid fa-cart-shopping">
@@ -261,7 +257,7 @@
             <!-- Grid column -->
             <div class="col-12 col-lg-3 col-sm-12 mb-2">
               <!-- Content -->
-              <a href="/about_us/" class="text-white navbar-brand">
+              <a href="{% url 'lukufam' %}" class="text-white navbar-brand">
                 <img
                   style="filter: invert(100%); margin-bottom: 1.5rem"
                   height="50"
@@ -296,18 +292,28 @@
               <h6 class="text-white mb-2">Quick Links</h6>
               <ul class="list-unstyled mb-4">
                 <li>
-                  <a class="text-white underline" href="{% url 'store' %}"
+                  <a class="text-white underline" href="{% url 'shop' %}"
                     ><small>Shop</small></a
                   >
                 </li>
                 <li>
-                  <a class="text-white underline" href="{% url 'brands' %}"
-                    ><small>Brands</small></a
+                  <a class="text-white underline" href="{% url 'cart' %}"
+                    ><small>Cart</small></a
                   >
                 </li>
                 <li>
                   <a class="text-white underline" href="{% url 'blog_list' %}"
                     ><small>Blogs</small></a
+                  >
+                </li>
+                <li>
+                  <a class="text-white underline" href="{% url 'music' %}"
+                    ><small>Music</small></a
+                  >
+                </li>
+                <li>
+                  <a class="text-white underline" href="{% url 'lukufam' %}"
+                    ><small>Luku Fam</small></a
                   >
                 </li>
               </ul>
@@ -389,7 +395,7 @@
               <a
                 class="text-white underline"
                 id="footer-year"
-                href="{% url 'about_us' %}"
+                href="{% url 'lukufam' %}"
               ></a>
               <a
                 class="text-white underline"
