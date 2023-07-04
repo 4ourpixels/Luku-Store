@@ -297,12 +297,24 @@
             <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
               <article>
                 <a href="{% url 'blog_detail' pk=blog.pk %}" class="img-fluid underline text-dark">
+                  {% if blog.youtube %}
+                  <iframe 
+                    src="https://www.youtube.com/embed/XppZqa0BtoQ" 
+                    frameborder="0"
+                    width="200"
+                    height="250"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen
+                    >
+                  </iframe>
+                  {% else %}
                   <img
                     class="rounded w-100"
                     src="{{ blog.image.url }}"
                     style="object-fit: cover"
                     height="160"
                   />
+                  {% endif %}
                 <div class="mt-2 text-muted small d-block mb-1">
                   <h6 class="text-dark">{{ blog.title|truncatechars:50 }}</h6></a>
                   <p class="small">{{ blog.summary|truncatechars:50}}</p>
