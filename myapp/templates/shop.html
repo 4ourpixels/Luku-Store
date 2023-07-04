@@ -1,0 +1,109 @@
+{% extends 'base.html' %}{% load static %} {% block body %}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+  integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA="
+  crossorigin="anonymous"
+/>
+
+<section>
+  <div class="container">
+    <div class="dropdown my-3">
+      <button
+        class="category-btn dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Select category
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a class="dropdown-item" href="{% url 'gallery' %}">All</a>
+        </li>
+
+        {% for category in categories %}
+        <li>
+          <a
+            class="dropdown-item"
+            href="{% url 'gallery' %}?category={{ category.name }}"
+            >{{ category.name }}</a
+          >
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="row">
+      {% for photo in photos %}
+      <div class="col-sm-6 col-lg-3 mb-2-6">
+        <div class="card-wrapper mb-4">
+          <div class="card-img">
+            <img
+              class="image-gallery"
+              src="{{ photo.image.url }}"
+              alt="{{ photo.name }}"
+            />
+          </div>
+          <div class="card-body">
+            <button
+              style="background: none; border: none; height: 5rem"
+              data-product="{{ photo.pk }}"
+              data-action="add"
+              class="update-cart fa-lg rounded-circle px-3 bg-white"
+              onmouseover="toggleDim(this, true)"
+              onmouseout="toggleDim(this, false)"
+            >
+              <i class="text-black fa-solid fa-2xl fa-cart-arrow-down"></i>
+            </button>
+          </div>
+        </div>
+        <div class="text-start">
+          <h4 class="h5 mb-2">
+            <a href="{% url 'photo' photo.id %}" class="text-black underline"
+              >{{ photo.name }}</a
+            >
+          </h4>
+          <small>{{ photo.description|truncatechars:20 }}</small>
+          <h5 class="text-black mt-3">
+            €{{ photo.price }}
+            <small cl style="margin-left: 1rem">
+              {% if photo.rating == 1 %}
+              <i class="fas fa-star fa-2xs"></i>
+              {% elif photo.rating == 2 %}
+              <i class="fas fa-star fa-2xs"></i>
+              <i class="fas fa-star fa-2xs"></i>
+              {% elif photo.rating == 3 %}
+              <i class="fas fa-star fa-2xs"></i>
+              <i class="fas fa-star fa-2xs"></i>
+              <i class="fas fa-star fa-2xs"></i>
+              {% elif photo.rating == 4 %}
+              <i class="fas fa-star fa-2xs"></i>
+              <i class="fas fa-star fa-2xs"></i>
+              <i class="fas fa-star fa-2xs"></i>
+              <i class="fas fa-star fa-2xs"></i>
+              {% elif photo.rating == 5 %}
+              <i class="fas fa-star fa-2xs"></i>
+              <i class="fas fa-star fa-2xs"></i>
+              <i class="fas fa-star fa-2xs"></i>
+              <i class="fas fa-star fa-2xs"></i>
+              <i class="fas fa-star fa-2xs"></i>
+              {% endif %}
+            </small>
+          </h5>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <script>
+    function toggleDim(button, dim) {
+      var cardWrapper = button.closest(".card-wrapper");
+      if (dim) {
+        cardWrapper.classList.add("dim");
+      } else {
+        cardWrapper.classList.remove("dim");
+      }
+    }
+  </script>
+</section>
+{% endblock %}
