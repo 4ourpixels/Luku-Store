@@ -242,7 +242,7 @@
         </div>
       </div>
 
-      <div class="row d-flex justify-content-around">
+      <div class="row">
         {% for photo in photos %} {% if photo.popular|slice:":4" %}
         <div class="col-lg-3 col-md-6 col-sm-6 d-flex">
           <div style="border: none" class="card w-100 my-2 shadow-2-strong">
@@ -292,7 +292,7 @@
       <section class="mt-5 mb-4">
         <div class="container text-dark">
           <h1 class="text-center mb-5">Blog posts</h1>
-          <div class="row d-flex justify-content-around">
+          <div class="row">
             {% for blog in blogs|slice:":4" %}
             <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
               <article>
@@ -301,18 +301,18 @@
                   <iframe 
                     src="https://www.youtube.com/embed/XppZqa0BtoQ" 
                     frameborder="0"
-                    width="200"
                     height="250"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                     allowfullscreen
+                    class="w-100"
                     >
                   </iframe>
                   {% else %}
                   <img
-                    class="rounded w-100"
+                    class="w-100"
                     src="{{ blog.image.url }}"
                     style="object-fit: cover"
-                    height="160"
+                    height="250"
                   />
                   {% endif %}
                 <div class="mt-2 text-muted small d-block mb-1">
