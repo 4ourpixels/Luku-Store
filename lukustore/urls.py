@@ -1,109 +1,38 @@
-"""lukustore URL Configuration
+{% extends 'base.html' %}{% load static %} {% block body %}
+<div class="container">
+  <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a class="text-dark underline" href="{% url 'dashboard' %}"
+          >Dashboard</a
+        >
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">New Blog</li>
+    </ol>
+  </nav>
+  <div class="row rounded border p-4">
+    <h3>New Blog!</h3>
+    <hr />
+    {% if success %}
+    <div class="alert alert-success" role="alert">
+      The blog was added successfully.
+      <a href="{% url 'dashboard' %}" class="alert-link">Dashboard</a>
+    </div>
+    {% else %}
+    <div class="justify-content-center col-8">
+      <form action="{% url 'add_blog' %}" method="POST">
+        {% csrf_token %} {{ form.as_p }}
+        <button class="btn btn-success">Add</button>
+        <a class="btn btn-secondary" href="{% url 'index' %}">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  var form_fields = document.getElementsByTagName("input");
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path
-from myapp.views import *
-from django.conf.urls.static import static
-from django.conf import settings
-
-urlpatterns = [
-
-    # Admin
-    path("admin/", admin.site.urls),
-
-    # Home page
-    path('', index, name='index'),
-
-    # <---- Shop/Store - All products in store
-    path('store/', store, name='store'),
-
-    # ----- Single product view
-    path('product/<int:pk>/', product_detail, name='product_detail'),
-
-    # <---- All Blogs
-    path('blog/', blog_list, name='blog_list'),
-
-    # ----> Single Blog View
-    path('blog/<int:pk>/', blog_detail, name='blog_detail'),
-
-    # About Us
-    path('about_us/', about_us, name='about_us'),
-
-    # <---- Brands
-    path('brands/', brands, name='brands'),
-
-    # ----> Loads a single brand
-    path('brand/<str:brand>/', brand, name='brand'),
-
-    # Dashboard
-    path('dashboard/', dashboard, name='dashboard'),
-
-    # Login
-    path('login/', loginPage, name='login'),
-
-    # Logout
-    path('logout/', logoutUser, name='logout'),
-
-    # Register User
-    path('register/', registerPage, name='register'),
-
-    # Error 404 Page
-    path('error/', error, name='error'),
-
-    # <---- Cart view
-    path('cart/', cart, name='cart'),
-
-    # ----- Cart view
-    path('confirmed/', confirmed, name='confirmed'),
-
-    # ----> Checkout view
-    path('checkout/', checkout, name='checkout'),
-
-    # Wishlist
-    path('wishlist/', wishlist, name='wishlist'),
-
-    # Newsletter
-    path('newsletter/', newsletter, name='newsletter'),
-
-    # Help
-    path('help/', help, name='help'),
-
-    # Updates the item to the backend
-    path('updateItem/', updateItem, name='updateItem'),
-
-    # Processes the data in the backend
-    path('processOrder/', processOrder, name='processOrder'),
-
-    # Adds a product to the database/inventory
-    path('add/', add, name='add'),
-
-    # Delete Photo
-    path('delete/<int:pk>/', delete, name='delete'),
-
-    # Update Photo
-    path('edit/<int:id>/', edit, name='edit'),
-
-    # Music Mixes
-    path('music/', music, name='music'),
-    path('music/<int:id>/', music_player, name='music_player'),
-
-    # Trials
-    path('gallery/', gallery, name='gallery'),
-    path('photo/<str:pk>/', viewPhoto, name='photo'),
-    path('addphoto/', addPhoto, name='addphoto'),
-
-]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+  for (var field in form_fields) {
+    form_fields[field].className += "form-control";
+  }
+</script>
+{% endif %} {% endblock %}
