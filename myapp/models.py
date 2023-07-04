@@ -29,21 +29,13 @@ class Blog(models.Model):
         choices=BRAND,
         null=True,
         blank=True,
-        default='lukustore'
+        default='Luku Store.nl'
     )
     pub_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.title} || Published On: {self.pub_date.strftime('%A, %B %d, %Y')}"
-
-    @property
-    def imageURL(self):
-        try:
-            url = self.image.url
-        except:
-            url = ''
-        return url
 # END OF BLOG ENTRY
 
 # ABOUT US
@@ -66,14 +58,6 @@ class AboutUs(models.Model):
 
     def __str__(self):
         return f"{self.name} || {self.role}"
-
-    @property
-    def imageURL(self):
-        try:
-            url = self.image.url
-        except:
-            url = ''
-        return url
 
 # END OF ABOUT US
 
