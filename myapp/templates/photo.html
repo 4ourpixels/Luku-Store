@@ -4,7 +4,7 @@
     <section class="py-4">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item "><a class="text-dark underline" href="{% url 'store' %}">Store</a></li>
+          <li class="breadcrumb-item "><a class="text-dark underline" href="{% url 'shop' %}">Shop</a></li>
           <li class="breadcrumb-item active" aria-current="page"><a class="text-muted underline" href="{% url 'gallery' %}?category={{ photo.category.name }}">{{ photo.category }}</a></li>
         </ol>
       </nav>
@@ -90,9 +90,7 @@
                 <i class="me-1 fa fa-shopping-basket"></i> Add to cart
               </button>
               <a
-                data-product="{{ photo.pk }}"
-                data-action="add"
-                class="btn btn-outline-dark update-cart w-100 mb-3"
+                class="btn btn-outline-dark w-100 mb-1"
                 href="{% url 'cart' %}"
                 >View Cart</a
               >
