@@ -49,7 +49,7 @@
     >
       <a
         class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6"
-        href="{% url 'about_us' %}"
+        href="{% url 'lukufam' %}"
         >Luku Store.nl</a
       >
       <button
@@ -157,7 +157,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white" href="{% url 'add' %}">
+                <a class="nav-link text-white" href="{% url 'add_blog' %}">
                   <span
                     data-feather="file-text"
                     class="align-text-bottom"
@@ -183,10 +183,10 @@
                   Home
                 </a>
                 <a
-                  href="{% url 'store' %}"
+                  href="{% url 'shop' %}"
                   class="btn btn-sm btn-outline-dark"
                 >
-                  Store
+                  Shop
                 </a>
               </div>
               <div class="dropdown">
@@ -441,8 +441,81 @@
                   <td>{{ blog.author }}</td>
                   <td>{{ blog.brand }}</td>
                   <td>{{ blog.pub_date }}</td>
-                  <td><a class="underline text-secondary" 
-                        href="#"><i class="fa-solid fa-pencil"></i></a></td>
+                  <td>
+                    <!-- Button trigger modal -->
+                    <button 
+                    style="border: none; background: none"
+                    type="button" 
+                    href="{% url 'edit_blog' blog.id %}" 
+                    class="text-success me-1" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#exampleModalBlog{{ blog.id }}">
+                    <i class="fa-solid fa-circle-info"></i>
+                    </button>
+
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="exampleModalBlog{{ blog.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                          <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="exampleModalBlogLabel{{ blog.id }}">
+                                  {{ blog.title }}
+                              </h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true"></span>
+                              </button>
+                          </div>
+                          <div class="modal-body">
+                              <ul class="list-unstyled">
+                                  <li>Title: <strong>{{ blog.title }}</strong></li>
+                                  <li>Author: <strong>{{ blog.author }}</strong></li>
+                                  <li>Published On: <strong>{{ blog.pub_date }}</strong></li>
+                                  <li><img height="150" width="auto" class="thumbnail mt-3 rounded bg-light" src="{{ blog.image.url }}" alt="{{ blog.name }}"></li>
+                              </ul>
+                          </div>
+                          <div class="modal-footer">
+                              <a href="{% url 'edit_blog' blog.id %}" class="btn btn-outline-success">Edit</a>
+                              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <button
+                    style="border: none; background: none"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteBlog{{ blog.id }}"
+                    type="button" 
+                    class="text-danger">
+                    <i class="fa-solid fa-trash"></i>
+                    </button>
+
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteBlog{{ blog.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                          <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="deleteBlog{{ blog.id }}">
+                                Delete {{ blog.title }}?
+                              </h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true"></span>
+                              </button>
+                          </div>
+                          <div class="modal-body">
+                            <p>Are you sure you want to delete {{ blog.title }}?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <form action="{% url 'delete' blog.id %}" method="POST">
+                              {% csrf_token %}
+                              <input type="submit" class="btn btn-danger" value="Delete">
+                            </form>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          </div>
+                          </div>
+                      </div>
+                    </div>
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>
