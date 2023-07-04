@@ -24,10 +24,6 @@ h3 {
   font-size: 0.9rem;
 }
 
-hr {
-  border-color: #e0e0e0;
-}
-
 .footer-ul a {
   font-size: 0.7rem;
   color: #737373;
@@ -197,3 +193,108 @@ hr {
 .fa-2xl {
   cursor: pointer;
 }
+
+/* Product Page CSS */
+
+.product-rating {
+  line-height: 22px;
+}
+.product-rating i {
+  color: #fc0;
+  display: inline-block;
+  margin-right: 2px;
+  font-size: 14px;
+}
+@media screen and (max-width: 1199px) {
+  .product-rating {
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .product-rating i {
+    font-size: 13px;
+  }
+}
+.card-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+.card-wrapper .card-img {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-out;
+}
+.card-wrapper .card-img img {
+  transition: all 0.3s ease-in-out;
+}
+.card-wrapper .card-body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  visibility: hidden;
+  padding: 30px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateX(-100%);
+  transition: 0.8s;
+  z-index: 11;
+}
+.card-wrapper:before {
+  content: "";
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 100%;
+  z-index: 9;
+  transition: 0.8s;
+}
+.card-wrapper:hover:before {
+  right: 0;
+}
+.card-wrapper h3,
+.card-wrapper p {
+  color: #fff;
+}
+.card-wrapper .read-more {
+  color: #fff;
+}
+.card-wrapper .read-more:after {
+  color: #fff;
+}
+.card-wrapper:hover .card-body {
+  visibility: visible;
+  transform: translateX(0px);
+}
+.card-wrapper:hover .backgound-color {
+  right: 0;
+}
+.ti-shopping-cart:before {
+  content: "\e60d";
+}
+.mb-2-6,
+.my-2-6 {
+  margin-bottom: 2.6rem;
+}
+
+.image-gallery {
+  height: 17rem;
+  width: 100%;
+  object-fit: cover;
+}
+
+.category-btn {
+  background: none;
+  border: 2px;
+}
+.card-wrapper.dim .card-img img {
+  opacity: 0.5;
+}
+/* End of Product Page CSS */
