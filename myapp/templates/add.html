@@ -1,6 +1,16 @@
 {% extends 'base.html' %}{% load static %} {% block body %}
 <div class="container">
-  <div class="row rounded border">
+  <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a class="text-dark underline" href="{% url 'dashboard' %}"
+          >Dashboard</a
+        >
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">New Luku</li>
+    </ol>
+  </nav>
+  <div class="row rounded border p-4">
     <h3>New Luku!</h3>
     <hr />
     {% if success %}
@@ -12,7 +22,7 @@
     <div class="justify-content-center col-8">
       <form action="{% url 'add' %}" method="POST">
         {% csrf_token %} {{ form.as_p }}
-        <button class="btn btn-success mb-3">Add</button>
+        <button class="btn btn-success">Add</button>
         <a class="btn btn-secondary" href="{% url 'index' %}">Cancel</a>
       </form>
     </div>
