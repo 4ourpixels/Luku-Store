@@ -25,6 +25,9 @@
             <tr>
               <td>
                 <img
+                  height="40"
+                  width="auto"
+                  style="object-fit: cover"
                   class="thumbnail rounded bg-light"
                   src="{{ item.photo.image.url }}"
                   alt="{{ item.name }}"
@@ -87,10 +90,7 @@
   </div>
 </div>
 {% else %}
-<h5 class="alert text-center justify-content-center">
-  You've got nothing in the cart.
-  <a class="underline text-dark fw-dark" href="{% url 'store' %}"
-    >Click here and start shopping now!</a
-  >
-</h5>
+<div class="px-4 py-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">Oops! Your cart is empty!</h1>
+</div>
 {% endif %} {% endblock %}
