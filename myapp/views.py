@@ -92,13 +92,15 @@ def help(request):
 
 
 def index(request):
-    page_name = "| Online Clothing Store | Affordable and Stylish Clothes from Kenya"
+    page_name = "| Home of African Streetwear | Online Clothing Store"
 
     photos = Photo.objects.all()
     blogs = Blog.objects.all()
     homepages = HomePage.objects.all()
     categories = Category.objects.all()
     mixes = Mix.objects.all()
+
+    popular_items = Photo.objects.filter(popular=True)[:4]
 
     hat_category_icon = categories[6].icon
 
@@ -147,6 +149,7 @@ def index(request):
         'categories': categories,
         'hat_category_icon': hat_category_icon,
         'latest_mix': latest_mix,
+        'popular_items': popular_items,
     }
     return render(request, 'index.html', context)
 
@@ -166,6 +169,9 @@ def shop(request):
     blogs = Blog.objects.order_by('-pk')
     category = request.GET.get('category')
     categories = Category.objects.all()
+
+    total_products = Photo.objects.count()
+
     if category == None:
         photos = Photo.objects.all()
     else:
@@ -177,6 +183,7 @@ def shop(request):
         'blogs': blogs,
         'photos': photos,
         'categories': categories,
+        'total_products': total_products,
     }
 
     return render(request, 'shop.html', context)
@@ -748,13 +755,14 @@ def music(request):
 
     mix_albums = MixAlbum.objects.all()
     mixes = Mix.objects.all()
-    playlists = ['Hip Hop', 'RnB', 'Trap', 'Afrobeats', 'Dancehall']
+
+    latest_mix = mixes[2]
 
     context = {
         'page_name': page_name,
         'mixes': mixes,
         'mix_albums': mix_albums,
-        'playlists': playlists,
+        'latest_mix': latest_mix,
     }
     return render(request, 'music.html', context)
 
@@ -765,7 +773,7 @@ def music_player(request, id):
     mix_albums = MixAlbum.objects.all()
     mixes = Mix.objects.all()
 
-    page_name = f"| Playing {mix.title}"
+    page_name = f"- Playing {mix.title}"
 
     context = {
         'page_name': page_name,
