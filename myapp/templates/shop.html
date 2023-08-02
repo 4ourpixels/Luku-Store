@@ -1,99 +1,108 @@
 {% extends 'base.html' %}{% load static %} {% block body %}
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
-  integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA="
-  crossorigin="anonymous"
-/>
+  <div id="top" class="container">
 
-<section>
-  <div class="container">
-    <div class="dropdown my-3">
-      <button
-        class="category-btn dropdown-toggle"
-        type="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        Select category
-      </button>
-      <ul class="dropdown-menu">
-        <li>
-          <a class="dropdown-item" href="{% url 'gallery' %}">All</a>
-        </li>
+    <div class="row my-4">
+      <div class="float-right">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-lg btn-dark dropdown-toggle" data-bs-toggle="modal" data-bs-target="#categoryModal">
+          Shop By Category
+        </button>
 
-        {% for category in categories %}
-        <li>
-          <a
-            class="dropdown-item"
-            href="{% url 'gallery' %}?category={{ category.name }}"
-            >{{ category.name }}</a
-          >
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-    <div class="row">
-      {% for photo in photos %}
-      <div class="col-sm-6 col-lg-3 mb-2-6">
-        <div class="card-wrapper mb-4">
-          <div class="card-img">
-            <img
-              class="image-gallery"
-              src="{{ photo.image.url }}"
-              alt="{{ photo.name }}"
-            />
+        <!-- Modal -->
+        <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="categoryModalLabel">Select Category</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 mb-3">
+                      <div class="card">
+                        <div class="card-body">
+                          <h1><i class="fa-brands fa-shopify fa-xxl"></i></h1>
+                          <p class="card-text">
+                            <a class="dropdown-item" href="{% url 'gallery' %}"
+                              >View All</a
+                            >
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    {% for category in categories %}
+                    <div class="col-sm-4 col-md-4 mb-3">
+                      <div class="card">
+                        <a
+                          class="dropdown-item"
+                          href="{% url 'gallery' %}?category={{ category.name }}"
+                        >
+                          <div class="card-body">
+                            <h1><i class="{{ category.icon }} fa-xxl"></i></h1>
+                            <p class="card-text">{{ category.name }}</p>
+                          </div></a
+                        >
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Back</button>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <button
-              style="background: none; border: none; height: 5rem"
-              data-product="{{ photo.pk }}"
-              data-action="add"
-              class="update-cart fa-lg rounded-circle px-3 bg-white"
-              onmouseover="toggleDim(this, true)"
-              onmouseout="toggleDim(this, false)"
-            >
-              <i class="text-black fa-solid fa-2xl fa-cart-arrow-down"></i>
-            </button>
-          </div>
-        </div>
-        <div class="text-start">
-          <h4 class="h5 mb-2">
-            <a href="{% url 'photo' photo.id %}" class="text-black underline"
-              >{{ photo.name }}</a
-            >
-          </h4>
-          <small>{{ photo.description|truncatechars:20 }}</small>
-          <h5 class="text-black mt-3">
-            €{{ photo.price }}
-            <small cl style="margin-left: 1rem">
-              {% if photo.rating == 1 %}
-              <i class="fas fa-star fa-2xs"></i>
-              {% elif photo.rating == 2 %}
-              <i class="fas fa-star fa-2xs"></i>
-              <i class="fas fa-star fa-2xs"></i>
-              {% elif photo.rating == 3 %}
-              <i class="fas fa-star fa-2xs"></i>
-              <i class="fas fa-star fa-2xs"></i>
-              <i class="fas fa-star fa-2xs"></i>
-              {% elif photo.rating == 4 %}
-              <i class="fas fa-star fa-2xs"></i>
-              <i class="fas fa-star fa-2xs"></i>
-              <i class="fas fa-star fa-2xs"></i>
-              <i class="fas fa-star fa-2xs"></i>
-              {% elif photo.rating == 5 %}
-              <i class="fas fa-star fa-2xs"></i>
-              <i class="fas fa-star fa-2xs"></i>
-              <i class="fas fa-star fa-2xs"></i>
-              <i class="fas fa-star fa-2xs"></i>
-              <i class="fas fa-star fa-2xs"></i>
-              {% endif %}
-            </small>
-          </h5>
         </div>
       </div>
-      {% endfor %}
+
     </div>
+
+    <div class="container">
+      <div
+      class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
+    >
+        {% for photo in photos %}
+        <div class="col mb-5">
+          <div class="card-wrapper mb-4">
+            <div class="card-img">
+              <img
+                class="card-img-top"
+                src="{{ photo.image.url }}"
+                alt="{{ photo.name }}"
+              />
+            </div>
+            <div class="card-body">
+              <button
+                style="background: none; border: none; height: 4rem"
+                data-product="{{ photo.pk }}"
+                data-action="add"
+                class="update-cart  rounded-circle px-3 bg-white"
+                onmouseover="toggleDim(this, true)"
+                onmouseout="toggleDim(this, false)"
+              >
+                <i class="text-black fa-solid fa-2xl fa-cart-arrow-down"></i>
+              </button>
+            </div>
+          </div>
+          <div class="text-start">
+            <a href="{% url 'photo' photo.id %}" class="text-black  fw-bold underline my-2"
+              >{{ photo.name }}</a
+            >
+            <br>
+            <small class="small">{{ photo.description|truncatechars:25 }}</small> <br>
+            <h6 class="text-black my-2">€{{ photo.price }}</h6>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <hr />
+      <div class="text-center my-4">
+        <a href="#top" class="btn btn-dark">Back to top</a>
+      </div>
+    </div>
+    
   </div>
   <script>
     function toggleDim(button, dim) {
