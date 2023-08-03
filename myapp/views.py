@@ -107,6 +107,7 @@ def index(request):
     slide1 = homepages[0]
     slide2 = homepages[1]
     slide3 = homepages[2]
+
     collection = homepages[3]
     definition = homepages[4]
     new_release = homepages[5]
@@ -115,6 +116,11 @@ def index(request):
     trucker_hats = homepages[8]
     asorted_trucker_hats = homepages[9]
     green_trucker_hat = homepages[10]
+
+    # Home page carousel slides
+    slider_01 = homepages[11]
+    slider_02 = homepages[12]
+    slider_03 = homepages[13]
 
     latest_mix = mixes[0]
 
@@ -150,6 +156,10 @@ def index(request):
         'hat_category_icon': hat_category_icon,
         'latest_mix': latest_mix,
         'popular_items': popular_items,
+
+        'slider_01': slider_01,
+        'slider_02': slider_02,
+        'slider_03': slider_03,
     }
     return render(request, 'index.html', context)
 

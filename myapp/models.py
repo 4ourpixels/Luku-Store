@@ -281,7 +281,7 @@ class HomePage(models.Model):
         upload_to="media/",
         default='image.jpg',
     )
-    button = models.CharField(max_length=10, null=True, blank=True)
+    button = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.name
