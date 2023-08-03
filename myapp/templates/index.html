@@ -43,15 +43,10 @@
       <div class="carousel-item active">
         <img
         class="d-block w-100"
-        src="{% static 'images/hero/mid_thumbnail_matatu_tee.png' %}"
+        src="{{ slider_01.image.url }}"
         />
         <div class="container">
           <div class="carousel-caption text-start">
-            <img
-              style="filter: invert(100%); margin-bottom: 1.5rem"
-              height="200"
-              src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
-            />
             <p>
               <a class="btn btn-lg btn-outline-light" href="#">SS23' Lukubook</a>
             </p>
@@ -61,7 +56,7 @@
       <div class="carousel-item">
         <img
           class="d-block w-100"
-          src="{% static 'images/hero/mid_thumbnail_OX_2_HERO.png' %}"
+          src="{{ slider_03.image.url }}"
         />
         <div class="container">
           <div class="carousel-caption">
@@ -74,7 +69,7 @@
                   It’s a creative process.
                 </h1>
               </blockquote>
-              <figcaption class="blockquote-footer">Virgil Abloh</figcaption>
+              <figcaption class="blockquote-footer text-white">Virgil Abloh</figcaption>
             </figure>
             <p>
               <a class="btn btn-lg btn-outline-light" href="{% url 'shop' %}"
@@ -87,14 +82,14 @@
       <div class="carousel-item">
         <img
           class="d-block w-100"
-          src="{% static 'images/hero/mid_thumbnail_sweatshirt.png' %}"
+          src="{{ slider_02.image.url }}"
         />
 
         <div class="container">
-          <div class="carousel-caption text-end">
+          <div class="carousel-caption text-start">
             <img
               style="filter: invert(100%); margin-bottom: 1.5rem"
-              height="200"
+              height="150"
               src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
             />
             <p>
@@ -147,42 +142,45 @@
     <div class="row d-flex justify-content-around">
       <div class="col-lg-4 col-md-12 col-sm-12 my-4">
         <img
-          class="rounded img-fluid mb-3 w-100"
+          style="height: 100%; object-fit: cover"
+          class="rounded img-fluid mb-3 w-auto"
           src="{{ new_release.image.url }}"
         />
-        <div style="margin-left: 3rem; margin-top: -10rem; ">
-          <h3 class="text-white">{{ new_release.name }}</h3>
+        <div style="margin-left: 3rem; margin-top: -10rem;">
+          <h3 class="text-white">{{ new_release.name|safe }}</h3>
           <p class="text-white">
             {{ new_release.quote_author }}
           </p>
-          <p>
-            <a class="btn btn-outline-light" href="{% url 'gallery' %}" role="button"
-            >{{ new_release.button }} &raquo;</a
-            >
-          </div>
-        </p>
+            <a class="btn btn-outline-light" href="{% url 'gallery' %}"
+            >{{ new_release.button }} &raquo;</a>
+        </div>
       </div>
       <!-- /.col-lg-4 -->
       <div class="col-lg-4 col-md-12 col-sm-12 my-4">
-        <div class="row mt-4">
-          <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
-          <img
-            class="rounded img-fluid w-100 mb-3"
-            src="{{ sweater.image.url }}"
-          /></a>
+        <div class="container">
+          <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center mt-4">
+            <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
+            <img
+              style="height: 100%; object-fit: cover"
+              class="rounded img-fluid w-100 mb-3"
+              src="{{ sweater.image.url }}"
+            /></a>
 
-          <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
-          <img
-            class="rounded img-fluid  w-100"
-            src="{{ jacket.image.url }}"
-          />
-          </a>
+            <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
+            <img
+              style="height: 100%; object-fit: cover"
+              class="rounded img-fluid  w-100"
+              src="{{ jacket.image.url }}"
+            />
+            </a>
+          </div>
         </div>
       </div>
       <!-- /.col-lg-4 -->
       <div class="col-lg-4 col-md-12 col-sm-12">
         <a class="overlay" href="{% url 'gallery' %}?category=Hats%20And%20Caps">
         <img
+          style="height: 100%; object-fit: cover"
           class="rounded img-fluid  w-100"
           src="{{ trucker_hats.image.url }}"
         /></a>
