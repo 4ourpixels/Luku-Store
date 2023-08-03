@@ -200,7 +200,7 @@ def shop(request):
 
 
 def brand(request):
-    page_name = f"| Brands"
+    page_name = f"- Brands"
 
     list_of_brand_products = Photo.objects.filter(brand=brand)
     list_of_brand_blogs = Blog.objects.filter(brand=brand)
@@ -226,7 +226,7 @@ def brand(request):
 
 
 def cart(request):
-    page_name = f"| Cart"
+    page_name = f"- Cart"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -254,7 +254,7 @@ def cart(request):
 
 def checkout(request):
 
-    page_name = f"| Checkout"
+    page_name = f"- Checkout"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -291,7 +291,7 @@ def product_detail(request, pk):
         Q(brand__icontains=keywords[0])
     ).exclude(pk=pk).distinct()
 
-    page_name = f"| {photo.name}"
+    page_name = f"- {photo.name}"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -319,7 +319,7 @@ def product_detail(request, pk):
 def blog_list(request):
     blogs = Blog.objects.all()
     recent_blogs = Blog.objects.order_by('-pk')
-    page_name = f"| Blogs"
+    page_name = f"- Blogs"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -901,3 +901,12 @@ def edit_blog(request, id):
     return render(request, 'edit_blog.html', {
         'form': form,
     })
+
+
+def spring(request):
+    page_name = "- Spring/Summer 23 Collection"
+
+    context = {
+        'page_name': page_name,
+    }
+    return render(request, 'spring.html', context)
