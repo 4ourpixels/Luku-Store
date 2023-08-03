@@ -1,5 +1,5 @@
-// Set the date of 4th August 2023 (months are 0-indexed)
-const targetDate = new Date(2023, 7, 4);
+// Set the date of 4th August 2023 at 5:00 PM (months are 0-indexed, hours are 0-23 indexed)
+const targetDate = new Date(2023, 7, 4, 17, 0, 0);
 
 function updateCountdown() {
   const now = new Date();
@@ -19,7 +19,7 @@ function updateCountdown() {
 
     document.getElementById(
       "countdown"
-    ).innerHTML = `${days} day, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+    ).innerHTML = `${hours} hours, ${minutes} minutes, ${seconds} seconds`;
   }
 }
 
