@@ -151,28 +151,33 @@
           <p class="text-white">
             {{ new_release.quote_author }}
           </p>
-            <a class="btn btn-outline-light" href="{% url 'gallery' %}"
+            <a class="btn btn-outline-light" href="{% url 'spring' %}"
             >{{ new_release.button }} &raquo;</a>
         </div>
       </div>
       <!-- /.col-lg-4 -->
       <div class="col-lg-4 col-md-12 col-sm-12 my-4">
         <div class="container">
-          <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center mt-4">
-            <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
-            <img
-              style="height: 100%; object-fit: cover"
-              class="rounded img-fluid w-100 mb-3"
-              src="{{ sweater.image.url }}"
-            /></a>
+          <div class="row row-cols-2 justify-content-center">
+            <div class="col-md-12">
+              <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
+              <img
+                style="height: auto; width:100%; object-fit: cover"
+                class="rounded"
+                src="{{ jacket.image.url }}"
+              />
+              </a>
+            </div>
 
-            <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
-            <img
-              style="height: 100%; object-fit: cover"
-              class="rounded img-fluid  w-100"
-              src="{{ jacket.image.url }}"
-            />
-            </a>
+            <div class="col-md-12">
+              <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
+              <img
+                style="height: auto; width:100%; object-fit: cover"
+                class="rounded"
+                src="{{ sweater.image.url }}"
+              />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -180,22 +185,22 @@
       <div class="col-lg-4 col-md-12 col-sm-12">
         <a class="overlay" href="{% url 'gallery' %}?category=Hats%20And%20Caps">
         <img
-          style="height: 100%; object-fit: cover"
-          class="rounded img-fluid  w-100"
+          style="height: 100%; width:100%; object-fit: cover"
+          class="rounded"
           src="{{ trucker_hats.image.url }}"
         /></a>
       </div>
       <!-- /.col-lg-4 -->
     </div>
     <!-- /.row -->
-
   </div>
   <br />
   <br />
   <br />
   <!-- END OF  SECTION -->
-    <!-- LUKU DEFINITION -->
-
+  <!-- LUKU DEFINITION -->
+  
+  <hr>
     <div class="text-center">
       <h1 style="font-size: 7rem;" class="display-1 fw-bold">luku</h1>
       <p class="text-muted h4">/ loo-koo /</p>
@@ -207,32 +212,6 @@
     </div>
     <!-- END OF LUKU DEFINITION -->
     <br />
-    <div class="container">
-      <div class="row">
-        <div class="audio-player">
-            <audio id="song">
-              <source type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-          <input
-            class="float-end hidden"
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value="1"
-            id="volume_control"
-            oninput="changeVolume()"
-          />
-          <input
-            class="mb-5 w-100"
-            type="range"
-            value="0"
-            id="mix_progress_bar"
-          />
-      </div>
-    </div>
     <br />
     <br />
     <hr />
@@ -285,7 +264,7 @@
             <h6 class="text-black my-2">€{{ photo.price }}</h6>
           </div>
         </div>
-         {% endfor %}
+        {% endfor %}
       </div>
     </div>
     <br>

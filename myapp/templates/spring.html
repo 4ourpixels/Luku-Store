@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% load static %} {% block body %}
+<div class="container">
+  <h1 class="display-1 text-black text-center">
+    Spring/Summer 23 Collection by Akiba Studios
+  </h1>
+
+  <div
+    class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
+  >
+    <div class="col-4 mb-2">
+      <img
+        class="my-4"
+        src="{% static 'images/shop/image.jpg' %}"
+        alt="Image goes here"
+      />
+      <h4>Product</h4>
+      <p>Price</p>
+    </div>
+  </div>
+
+  <hr />
+  <h1 class="text-center text-danger my-5">No Socks!</h1>
+</div>
+{% endblock %}
