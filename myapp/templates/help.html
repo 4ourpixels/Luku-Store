@@ -1,16 +1,21 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<div class="help">
-  <p id="privacyPolicy">{{ help.privacy_policy|safe }}</p>
+<div class="container">
+  <h1>Privacy Policy</h1>
+  <div class="row">
+    <p class="mb-4" id="privacyPolicy">{{ help.privacy_policy|safe }}</p>
 
-  <p id="termsOfService">{{ help.terms_of_service|safe }}</p>
+    <p class="mb-4" id="termsOfService">{{ help.terms_of_service|safe }}</p>
 
-  <p id="faqs">{{ help.faqs|safe }}</p>
+    <p class="mb-4" id="faqs">{{ help.faqs|safe }}</p>
 
-  <p id="ordersAndDelivery">{{ help.orders_n_delivery|safe }}</p>
+    <p class="mb-4" id="ordersAndDelivery">{{ help.orders_n_delivery|safe }}</p>
 
-  <p id="returnAndRefundsPolicy">{{ help.return_n_refunds_policy|safe }}</p>
+    <p class="mb-4" id="returnAndRefundsPolicy">
+      {{ help.return_n_refunds_policy|safe }}
+    </p>
 
-  <p id="paymentMethods">{{ help.payment_methods|safe }}</p>
+    <p class="mb-4" id="paymentMethods">{{ help.payment_methods|safe }}</p>
+  </div>
 </div>
 
 {% endblock %}

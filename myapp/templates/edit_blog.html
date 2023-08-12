@@ -1,10 +1,10 @@
 {% extends 'base.html' %}{% load static %}{% block body %} {% if success %}
 <div class="px-4 py-5 my-5 text-center">
-  <h3 class="alert alert-success" role="alert">Luku successfully updated.</h3>
+  <h3 class="alert alert-success" role="alert">Blog successfully updated.</h3>
   <a class="underline text-dark" href="{% url 'account' %}">Back to account</a>
 </div>
 {% else %}
-<div id="top" class="bg-light">
+<div id="top">
   <main class="my-3 container p-4">
     <header class="row text-small">
       <a
@@ -14,14 +14,14 @@
         >Back to account</a
       >
     </header>
-    <h1 class="my-3">Edit Luku</h1>
-    <div class="shadow p-5">
+    <h1 class="my-3">Edit Blog</h1>
+    <div class="border rounded p-5">
       <div class="row">
         <div class="col-md-5 col-lg-4 order-md-last py-4">
           <img
             class="w-100"
             style="object-fit: cover"
-            src="{{ photo.image.url }}"
+            src="{{ blog.image.url }}"
           />
         </div>
         <div class="col-8">
@@ -29,7 +29,7 @@
             {% csrf_token %} {{ form.as_p }}
             <hr />
             <button class="mt-3 btn btn-success" type="submit">
-              Update Product
+              Update Blog
             </button>
           </form>
         </div>
@@ -41,6 +41,7 @@
   </main>
 </div>
 {% endif %}
+
 <script>
   var form_fields = document.getElementsByTagName("input");
 

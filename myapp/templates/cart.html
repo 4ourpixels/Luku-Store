@@ -90,7 +90,18 @@
   </div>
 </div>
 {% else %}
-<div class="px-4 py-5 my-5 text-center">
-  <h1 class="display-5 fw-bold">Oops! Your cart is empty!</h1>
+<div class="container">
+  <div class="col align-items-center">
+    <div class="">
+      <img
+        style="margin-top: -7rem"
+        src="{% static 'images/cart/undraw_window_shopping_re_0kbm.svg' %}"
+        class="img-fluid text-center"
+      />
+      <h1 class="display-5 text-center mb-4 fw-bold">
+        Looks like your cart is empty!
+      </h1>
+    </div>
+  </div>
 </div>
 {% endif %} {% endblock %}

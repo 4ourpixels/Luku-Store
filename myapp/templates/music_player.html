@@ -1,73 +1,74 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<div style="background: #000" class="container-fluid">
-  <div
-    style="background-image: url('{{ mix.image.url }}'); object-fit: cover;"
-    class="p-4 p-md-5 mb-4 text-white"
-  >
-    <div class="col-md-12 p-5">
-      <small
-        ><a class="underline text-white" href="{% url 'music' %}"
-          >Back to mixes</a
-        ></small
-      >
-      <h1 class="display-4 fst-italic text-white">{{ mix.title }}</h1>
-      <p class="lead my-3">{{ mix.genre }}</p>
-      <p class="my-3">{{ mix.featured_artists }}</p>
-      <small class="my-3">Released: {{ mix.release_date|timesince }} ago</small>
+<div class="container">
+  <div class="row d-flex justify-content-between">
+    <div class="col-lg-6 col-sm-12 col-md-6">
+      <img
+        width="100%"
+        class="mb-4"
+        style="height: 60vh; object-fit: cover"
+        src="{{ mix.image.url }}"
+      />
     </div>
-    <div class="row">
-      <div class="audio-player py-3 px-5">
-        <audio id="song" autoplay="false">
-          <source src="{{ mix.file.url }}" type="audio/mpeg" />
+    <div class="col-lg-6 col-sm-12 col-md-6">
+      <h1 class="mb-4">{{ mix.title}}</h1>
+      <div class="mb-4">
+        <audio id="song">
+          <source src="{{ mix.stream_link }}" />
           Your browser does not support the audio element.
         </audio>
-        <input class="my-5" type="range" value="0" id="mix_progress_bar" />
-        <div class="d-flex justify-content-evenly">
-          <i class="fa-solid fa-backward text-white"></i>
-          <div onclick="playPause()">
-            <i class="fa-solid fa-play text-white fa-2xl" id="controlIcon"></i>
-          </div>
-          <i class="fa-solid fa-forward text-white"></i>
+        <div class="display-5 mb-3 hover" onclick="playPause()">
+          <i class="fa-solid fa-play text-black" id="controlIcon"></i>
         </div>
+        <input class="mb-5" type="range" value="0" id="mix_progress_bar" />
+        <br />
+        <small
+          >Genre: {{ mix.genre }} <br />
+          Featured Artists: {{ mix.featured_artists }} <br />
+          Album: {{ mix.album }} <br />
+        </small>
+        <hr class="mt-5" />
+        <small class="float-end text-muted">
+          Released: {{ mix.release_date }} <br
+        /></small>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    // Get a reference to the audio element
-    var progress = document.getElementById("mix_progress_bar");
-    var song = document.getElementById("song");
-    var controlIcon = document.getElementById("controlIcon");
+<script>
+  // Get a reference to the audio element
+  var progress = document.getElementById("mix_progress_bar");
+  var song = document.getElementById("song");
+  var controlIcon = document.getElementById("controlIcon");
 
-    song.onloadedmetadata = function () {
-      progress.max = song.duration;
-      progress.value = song.currentTime;
-    };
+  song.onloadedmetadata = function () {
+    progress.max = song.duration;
+    progress.value = song.currentTime;
+  };
 
-    function playPause() {
-      if (controlIcon.classList.contains("fa-pause")) {
-        song.pause();
-        controlIcon.classList.remove("fa-pause");
-        controlIcon.classList.add("fa-play");
-      } else {
-        song.play();
-        controlIcon.classList.add("fa-pause");
-        controlIcon.classList.remove("fa-play");
-      }
-    }
-
-    if (song.play()) {
-      setInterval(() => {
-        progress.value = song.currentTime;
-      }, 500);
-    }
-
-    progress.onchange = function () {
+  function playPause() {
+    if (song.paused) {
       song.play();
-      song.currentTime = progress.value;
       controlIcon.classList.add("fa-pause");
       controlIcon.classList.remove("fa-play");
-    };
-  </script>
-</div>
+    } else {
+      song.pause();
+      controlIcon.classList.remove("fa-pause");
+      controlIcon.classList.add("fa-play");
+    }
+  }
+
+  if (song.play) {
+    setInterval(() => {
+      progress.value = song.currentTime;
+    }, 500);
+  }
+
+  progress.onchange = function () {
+    song.currentTime = progress.value;
+    controlIcon.classList.add("fa-pause");
+    controlIcon.classList.remove("fa-play");
+  };
+</script>
+
 {% endblock %}

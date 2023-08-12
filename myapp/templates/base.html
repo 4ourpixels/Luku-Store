@@ -5,18 +5,20 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Luku Store.nl {{ page_name }}</title>
-
-    <meta property="og:title" content="Luku Store.nl" />
-    <meta
-      property="og:description"
-      content="online clothing store, Netherlands, affordable clothes, young men, young women, 18-35 years old, stylish clothes, streetwear, local designers, Kenya, Africa, Kenyan culture, unique outfits, colorful outfits, fashion, independent clothing designers, reasonable price, blog posts, stories behind designers, collections, community, socially-conscious shoppers, different cultures, handmade clothes, high quality, authenticity, free shipping, african streetwear"
-    />
     <meta
       property="og:image"
       content="{% static 'images/lukustorenl-banner.jpg' %}"
     />
+    <title>Luku Store.nl {{ page_name }}</title>
 
+    <meta
+      property="og:title"
+      content="Luku Store.nl - Home of African Streetwear | Online Clothing Store"
+    />
+    <meta
+      property="og:description"
+      content="Online clothing store, Netherlands, affordable clothes, young men, young women, 18-35 years old, stylish clothes, streetwear, local designers, Kenya, Africa, Kenyan culture, unique outfits, colorful outfits, fashion, independent clothing designers, reasonable price, blog posts, stories behind designers, collections, community, socially-conscious shoppers, different cultures, handmade clothes, high quality, authenticity, free shipping, african streetwear"
+    />
     <meta
       name="keywords"
       content="Lukustore.nl, online clothing store, Netherlands, affordable clothes, young men, young women, 18-35 years old, stylish clothes, streetwear, local designers, Kenya, Africa, Kenyan culture, unique outfits, colorful outfits, fashion, independent clothing designers, reasonable price, blog posts, stories behind designers, collections, community, socially-conscious shoppers, different cultures, handmade clothes, high quality, authenticity, free shipping"
@@ -192,8 +194,15 @@
               </a>
             </span>
             {% if user.is_authenticated %}
-            <span
-              ><a href="{% url 'dashboard' %}">
+
+            <div class="dropdown">
+              <button
+                style="background: none; border: none"
+                class="dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <img
                   style="
                     object-fit: cover;
@@ -202,8 +211,22 @@
                     border-radius: 25px;
                   "
                   src="{{ user.customer.image.url }}"
-              /></a>
-            </span>
+                />
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="{% url 'account' %}"
+                    >Account</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'cart' %}">Cart</a>
+                </li>
+              </ul>
+            </div>
             {% else %}
             <span>
               <a href="{% url 'register' %}">

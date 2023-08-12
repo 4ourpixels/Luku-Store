@@ -1,193 +1,37 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<div class="container-fluid bg-black text-white">
-  <div class="container px-4 py-5" id="custom-cards">
-    <h1 class="p-3 border-bottom">
-      DJ G400 <span class="float-end"><i class="fa-solid fa-list"></i></span>
-    </h1>
-
-    <div  id="mixes" class="container mt-5 overflow-hidden">
-      <div class="row gy-5">
-        <div class="col-6">
-          <a style="text-decoration: none" href="#mixes"
-            ><div
-              class="p-3 border bg-dark border-dark rounded-3 h6 text-secondary"
-            >
-              Mixes
-              <span class="float-end h5"
-                ><i class="fa-solid fa-music"></i
-              ></span></div
-          ></a>
-        </div>
-        <div class="col-6">
-          <a style="text-decoration: none" href="#mobile-box"
-            ><div
-              class="p-3 border bg-dark border-dark rounded-3 h6 text-secondary"
-            >
-              Albums
-              <span class="float-end h5"
-                ><i class="fa-solid fa-folder"></i
-              ></span></div
-          ></a>
-        </div>
-        <div class="col-6">
-          <a style="text-decoration: none" href="#playlists"
-            ><div
-              class="p-3 border bg-dark border-dark rounded-3 h6 text-secondary"
-            >
-              Playlists
-              <span class="float-end h5"
-                ><i class="fa-brands fa-spotify"></i></span></div
-          ></a>
-        </div>
-        <div class="col-6">
-          <a style="text-decoration: none" href="#popular"
-            ><div
-              class="p-3 border bg-dark border-dark rounded-3 h6 text-secondary"
-            >
-              Popular
-              <span class="float-end h5"
-                ><i class="fa-solid fa-heart"></i
-              ></span></div
-          ></a>
-        </div>
-      </div>
+<img
+  style="margin-top: -7rem; height: 100vh; width: 100%; object-fit: cover"
+  src="{% static 'images/djg400-wallpaper-web.jpg' %}"
+/>
+<div class="container pt-5">
+  <h1 class="display-2 fw-bold">Listen to DJ G400</h1>
+  <p class="text-muted fw-bold">Latest Mixes</p>
+  {% for mix in mixes %}
+  <hr />
+  <div class="my-4 row d-flex justify-content-between p-3">
+    <div class="col">
+      <a
+        class="underline text-dark mb-3"
+        href="{% url 'music_player' mix.id %}"
+      >
+        <h3>{{ mix.title}}</h3></a
+      >
+      <p>Genre: {{ mix.genre }}</p>
+      <small>
+        Featured Artists: {{ mix.featured_artists }} <br />
+        Released: {{ mix.release_date }} <br />
+        Album: {{ mix.album }} <br />
+      </small>
     </div>
-
-    <!-- Content -->
-    <h1 class="p-3 my-3 border-bottom text-secondary">
-      All Mixes
-      <span class="float-end"><i class="fa-solid fa-music"></i></span>
-    </h1>
-    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4">
-
-      {% for mix in mixes %}
-      <div class="container d-flex justify-content-center my-4 mb-5">
-        <div id="mobile-box" class="table-responsive">
-          <!-- Card -->
-          <div class="">
-            <div
-              class="bg-image hover-overlay ripple"
-              data-mdb-ripple-color="light"
-            ><a
-                  class="text-white underline"
-                  href="{% url 'music_player' mix.id %}"
-                  >
-              <img class="card-img-top" src="{{ mix.image.url }}" />
-            </div>
-            <div class="card-body text-center">
-              <h5 class="h4 my-3 font-weight-bold">
-                {{ mix.title }}</a
-                >
-              </h5>
-              <p class="mb-0 my-3">
-                Featured artists: {{ mix.featured_artists }}
-              </p>
-              <p class="mb-0 my-3 small">Genre: {{ mix.genre }}</p>
-              <p id="mobile-box" class="mb-0 my-3 small"><i class="fa-solid fa-clock"></i>  {{ mix.duration }} Minutes</p>
-            </div>
-          </div>
-          <!-- Card -->
-        </div>
-      </div>
-      {% endfor %}
+    <div class="col">
+      <a class="underline text-dark" href="{% url 'music_player' mix.id %}">
+        <img
+          style="height: 200px; width: 200px; object-fit: cover"
+          src="{{ mix.image.url }}"
+      /></a>
     </div>
-    <!-- Content -->
-
-    <!-- Content -->
-    <h1 id="albums" class="p-3 my-3 border-bottom text-secondary">
-      Albums
-      <span class="float-end"><i class="fa-solid fa-folder"></i></span>
-    </h1>
-    <div class="container">
-      <div class="row">
-      {% for album in mix_albums %}
-        <div class="col">
-          <div class="dropdown row g-1">
-            <button 
-            class="p-3 border bg-dark border-dark rounded-3 h6 text-secondary dropdown-toggle" 
-            type="button" 
-            id="dropdownMenuButton1" 
-            data-bs-toggle="dropdown" 
-            aria-expanded="false"
-            >
-              {{ album }}
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              {% for mix in mixes %}
-              <li><a class="dropdown-item" href="{% url 'music_player' mix.id %}">
-                {{ mix.title }}
-              </a></li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <!-- Content -->
-
-    {% if playlists %}
-    <!-- Content -->
-    <h1 id="playlists" class="p-3 my-3 border-bottom text-secondary">
-      Playlists
-      <span class="float-end"><i class="fa-solid fa-list-ol"></i></span>
-    </h1>
-    
-    <div class="row">
-      {% for playlist in playlists %}
-      <div class="col-4">
-        <div class="row g-1">
-          <button class="p-3 border bg-dark border-dark rounded-3 h6 text-secondary" >
-            {{ playlist }}
-          </button>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
-    <!-- Content -->
-
-    {% if mixes.popular %}
-    <!-- Content -->
-    <h1 class="p-3 my-3 border-bottom text-secondary">
-      Popular
-      <span id="popular" class="float-end"><i class="fa-solid fa-heart"></i></span>
-    </h1>
-    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4">
-
-      {% for mix in mixes.popular %}
-      <div class="container d-flex justify-content-center my-4 mb-5">
-        <div >
-          <!-- Card -->
-          <div >
-            <div
-              class="bg-image hover-overlay ripple"
-              data-mdb-ripple-color="light"
-            ><a
-                  class="text-white underline"
-                  href="{% url 'music_player' mix.id %}"
-                  >
-              <img class="card-img-top" src="{{ mix.image.url }}" />
-            </div>
-            <div class="card-body text-center">
-              <h5 class="h4 my-3 font-weight-bold">
-                {{ mix.title }}</a
-                >
-              </h5>
-              <p class="mb-0 my-3">
-                Featured artists: {{ mix.featured_artists }}
-              </p>
-              <p class="mb-0 my-3 small">Genre: {{ mix.genre }}</p>
-              <p class="mb-0 my-3 small"><i class="fa-solid fa-clock"></i>  {{ mix.duration }} Minutes</p>
-            </div>
-          </div>
-          <!-- Card -->
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
-    <!-- Content -->
   </div>
+  {% endfor %}
 </div>
+
 {% endblock %}

@@ -7,15 +7,15 @@
   <div class="row">
     <main id="main">
       <!-- ======= About Us Section ======= -->
-      <div class="container col-xxl-8 px-4 py-5">
+
+      <div class="container px-4 py-5">
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-          <div class="col-10 col-sm-8 col-lg-6">
+          <div class="col-10 col-sm-12 col-lg-6">
             <img
               src="{{ kendy.image.url }}"
-              class="d-block mx-lg-auto img-fluid"
+              class="w-100 h-100"
+              style="object-fit: cover"
               alt="{{ kendy.name }}"
-              width="100%"
-              height="300"
               loading="lazy"
             />
           </div>
@@ -37,15 +37,15 @@
           </div>
         </div>
       </div>
-      <div class="container col-xxl-8 px-4 py-5">
+
+      <div class="container px-4 py-5">
         <div class="row flex-lg-row-reverse align-items-center">
-          <div class="col-10 col-sm-8 col-lg-6">
+          <div class="col-10 col-sm-12 col-lg-6">
             <img
               src="{{ fkinyash.image.url }}"
-              class="d-block mx-lg-auto img-fluid mb-3"
+              class="w-100 h-100 mb-3"
+              style="object-fit: cover; filter: grayscale()"
               alt="{{ fkinyash.name }}"
-              width="100%"
-              height="300"
               loading="lazy"
             />
           </div>
@@ -67,15 +67,42 @@
           </div>
         </div>
       </div>
-      <div class="container col-xxl-8 px-4 py-5">
+
+      <div class="container px-4 py-5">
         <div class="row flex-lg-row-reverse align-items-center">
-          <div class="col-10 col-sm-8 col-lg-6">
+          <div class="col-10 col-sm-12 col-lg-6">
+            <img
+              src="{{ tarela.image.url }}"
+              class="w-100 h-100 mb-3"
+              style="object-fit: cover"
+              alt="{{ fkinyash.name }}"
+              loading="lazy"
+            />
+          </div>
+          <div class="col-lg-6">
+            <h3 class="fw-bold text-body-emphasis lh-1 mb-3">
+              {{ tarela.name }} || {{ tarela.role }}
+            </h3>
+            <hr />
+            <p class="lead mt-3">{{ tarela.bio }}</p>
+            <br />
+            <div class="d-flex justify-content-md-start">
+              <a class="underline text-black" href="{{ tarela.instagram }}"
+                ><i class="fa-brands fa-2xl fa-instagram"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container px-4 py-5">
+        <div class="row flex-lg-row-reverse align-items-center">
+          <div class="col-10 col-sm-12 col-lg-6">
             <img
               src="{{ djg400.image.url }}"
-              class="d-block mx-lg-auto img-fluid mb-3"
+              class="w-100 h-100 mb-3"
+              style="object-fit: cover; filter: grayscale()"
               alt="{{ fkinyash.name }}"
-              width="100%"
-              height="300"
               loading="lazy"
             />
           </div>
@@ -90,9 +117,6 @@
               <a class="underline text-black" href="{{ djg400.instagram }}"
                 ><i class="fa-brands fa-2xl fa-instagram"></i
               ></a>
-              <a class="underline ms-3 text-black" href="{{ djg400.twitter }}"
-                ><i class="fa-brands fa-2xl fa-twitter"></i
-              ></a>
               <a class="underline ms-3 text-black" href="{% url 'music' %}"
                 ><i class="fa-solid fa-2xl fa-music"></i
               ></a>
@@ -103,8 +127,8 @@
               ></a>
               <a
                 class="underline ms-3 text-black"
-                href="https://www.youtube.com/channel/UC9HP_DqruMAplsz0-ynveaQ"
-                ><i class="fa-brands fa-2xl fa-youtube"></i
+                href="https://4ourpixels.github.io/4ourpixels/djg400.html"
+                ><i class="fa-solid fa-2xl fa-headphones"></i
               ></a>
             </div>
           </div>
