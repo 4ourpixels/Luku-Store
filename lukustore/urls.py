@@ -30,9 +30,6 @@ urlpatterns = [
     # <---- Shop/Store - All products in store
     path('shop/', shop, name='shop'),
 
-    # ----- Single product view
-    path('product/<int:pk>/', product_detail, name='product_detail'),
-
     # <---- All Blogs
     path('blog/', blog_list, name='blog_list'),
 
@@ -48,14 +45,8 @@ urlpatterns = [
     # About Us
     path('lukufam/', lukufam, name='lukufam'),
 
-    # <---- Brands
-    path('brands/', brands, name='brands'),
-
-    # ----> Loads a single brand
-    path('brand/<str:brand>/', brand, name='brand'),
-
-    # Dashboard
-    path('dashboard/', dashboard, name='dashboard'),
+    # Account
+    path('account/', account, name='account'),
 
     # Login
     path('login/', loginPage, name='login'),
@@ -78,9 +69,6 @@ urlpatterns = [
     # ----> Checkout view
     path('checkout/', checkout, name='checkout'),
 
-    # Wishlist
-    path('wishlist/', wishlist, name='wishlist'),
-
     # Newsletter
     path('newsletter/', newsletter, name='newsletter'),
 
@@ -95,9 +83,6 @@ urlpatterns = [
 
     # Adds a product to the database/inventory
     path('add/', add, name='add'),
-
-    # Delete Photo
-    path('delete/<int:pk>/', delete, name='delete'),
 
     # Update Photo
     path('edit/<int:id>/', edit, name='edit'),
