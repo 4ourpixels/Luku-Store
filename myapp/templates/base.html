@@ -121,10 +121,10 @@
     </script>
     <!-- End of Javascript Cart -->
   </head>
-  <body id="top">
+  <body style="padding-top: 3rem" id="top">
     <!-- END OF NAVIGATION BAR ----------------------------->
     {% if messages %} {% for message in messages %}
-    <div class="container mb-4">
+    <div class="container mb-5">
       <div class="alert alert-warning alert-dismissable fade show" role="alert">
         {{ message }}
         <button
@@ -205,7 +205,6 @@
               </a>
             </span>
             {% if user.is_authenticated %}
-
             <div class="dropdown">
               <button
                 style="background: none; border: none"

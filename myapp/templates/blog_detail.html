@@ -1,89 +1,163 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-
-<div id="top" class="container">
-  <div class="row">
-    {% if blog.youtube %}
-    <iframe
-      height="500"
-      src="{{ blog.yotube }}"
-      title="{{ blog.title }}"
-      preserveAspectRatio="xMidYMid slice"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen
-      focusable="false"
-    ></iframe>
-    {% elif blog.image %}
-    <img
-      style="object-fit: cover; height: 50vh"
-      class="img-fluid"
-      src="{{ blog.image.url }}"
-      alt="{{ blog.title }}"
-    />{% endif %}
-    <small class="my-5">
-      <em>Published on: {{ blog.pub_date }}</em> by
-      <a href="{% url 'lukufam' %}" class="underline text-black"
-        >{{ blog.author }}</a
-      ></small
-    >
-  </div>
-
-  <div class="row">
+<div class="container">
+  <div class="row text-black">
     <h1>{{ blog.title }}</h1>
-    <div class="col-md-8">
-      <article class="blog-post">
-        <p>{{ blog.content|safe }}</p>
-        <div class="row">
-          <img
-            style="object-fit: cover; margin-bottom: 1.5rem"
-            height="500"
-            class="img-fluid. max-width: 100% bg-light"
-            src="{{ blog.image.url }}"
-            alt="{{ blog.title }}"
-          />
+    <article class="row blog-post col-md-12 col-lg-8 main-content">
+      <p>
+        No African experience is the same. We are a diverse continent full of
+        vibrant cultures. You can see it in the way we talk, the way we live and
+        the way we dance to the beat of our own drums. We welcome you to engage
+        in this dialogue in our SS23' Luku-book featuring fits from Akiba
+        Haiozi, creative director behind Nairobi based Akiba Studios.
+      </p>
+      <!-- Image Masonry -->
+      <div class="post-content-body">
+        <div class="row my-4">
+          <!-- Image 1 -->
+          <div class="col-md-12 mb-4">
+            <img
+              src="{{ blog.image.url }}"
+              alt="{{ blog.title }}"
+              class="img-fluid"
+            />
+          </div>
+          <!-- End of Image 1 -->
+
+          <!-- Image 2 -->
+          <div class="col-md-6 mb-4">
+            <img
+              src="{{ blog.image.url }}"
+              alt="{{ blog.title }}"
+              class="img-fluid"
+            />
+          </div>
+          <!-- End of Image 2 -->
+
+          <!-- Image 3 -->
+          <div class="col-md-6 mb-4">
+            <img
+              src="{{ blog.image.url }}"
+              alt="{{ blog.title }}"
+              class="img-fluid"
+            />
+          </div>
+          <!-- End of Image 3 -->
+
+          <!-- Image 4 -->
+          <div class="col-md-12 mb-4">
+            <img
+              src="{{ blog.image.url }}"
+              alt="{{ blog.title }}"
+              class="img-fluid"
+            />
+          </div>
+          <!-- End of Image 4 -->
         </div>
-      </article>
+      </div>
+      <!-- End of image masonry -->
 
-      <nav class="blog-pagination" aria-label="Pagination">
-        <a
-          class="btn btn-outline-dark rounded-pill"
-          href="{% url 'blog_list' %}"
-          >Older</a
-        >
-        <a
-          href="{% url 'blog_detail' 9 %}"
-          class="btn btn-outline-secondary rounded-pill"
-          >Newer</a
-        >
-      </nav>
-    </div>
+      <p>
+        the forefront of the streetwear fashion scene. Akiba is a multi-
+        disciplinary visual artist who uses various mediums to tell new African
+        narratives. His journey of creativity began when he was introduced to an
+        art project in primary school. He has always been a connoisseur of
+        fashion and art, and once he started thrifting garments for himself, he
+        The fashion industry in Nairobi is growing, and Akiba Studios is at
+        began to enjoy the process and fully immersed himself in it.
+      </p>
 
-    <div class="col-md-4">
-      <div class="position-sticky" style="top: 6rem">
-        <div class="p-4 mb-3 bg-light rounded">
-          <h4 class="fst-italic">Summary</h4>
-          <p class="mb-0">{{ blog.summary }}</p>
-        </div>
+      <p>
+        Akiba's art is based on traditional cultural aesthetics, Afro Futurism,
+        street culture, and science fiction. He tries to make a product that
+        speaks for Kenyan streetwear by using his art techniques as an
+        illustrator to transition into fashion. He infuses all these elements
+        when designing. His collections are the canvas for a kaleidoscope of
+        unique stories that ignite nostalgia and evoke a sense of belonging.
+      </p>
 
-        <div class="p-4">
-          <h4 class="fst-italic">Follow</h4>
-          <ol class="list-unstyled">
-            <li>
-              <a
-                class="text-dark underline"
-                href="https://instagram.com/lukustore.nl"
-                >Instagram</a
-              >
-            </li>
-          </ol>
+      <p>
+        Shot in Amsterdam. <br />
+        Love, Lukufam.
+      </p>
+    </article>
+
+    <!-- Image Masonry -->
+    <div class="col-md-12 col-lg-8 main-content">
+      <div class="post-content-body">
+        <div class="row my-4">
+          <!-- Image 1 -->
+          <div class="col-md-12 mb-4">
+            <img
+              src="{{ blog.image.url }}"
+              alt="{{ blog.title }}"
+              class="img-fluid rounded"
+            />
+          </div>
+          <!-- End of Image 1 -->
+
+          <!-- Image 2 -->
+          <div class="col-md-6 mb-4">
+            <img
+              src="{{ blog.image.url }}"
+              alt="{{ blog.title }}"
+              class="img-fluid rounded"
+            />
+          </div>
+          <!-- End of Image 2 -->
+
+          <!-- Image 3 -->
+          <div class="col-md-6 mb-4">
+            <img
+              src="{{ blog.image.url }}"
+              alt="{{ blog.title }}"
+              class="img-fluid rounded"
+            />
+          </div>
+          <!-- End of Image 3 -->
+
+          <!-- Image 4 -->
+          <div class="col-md-12 mb-4">
+            <img
+              src="{{ blog.image.url }}"
+              alt="{{ blog.title }}"
+              class="img-fluid rounded"
+            />
+          </div>
+          <!-- End of Image 4 -->
         </div>
       </div>
     </div>
-    <hr />
-    <div class="text-center">
-      <a class="underline text-dark" href="#top">Back to top</a>
+    <!-- End of image masonry -->
+
+    <div class="col-md-12 col-lg-4 sidebar">
+      <div class="sidebar-box">
+        <h3 class="heading">Popular Posts</h3>
+        {% for blog in recent_blogs %}
+        <div class="post-entry-sidebar">
+          <ul class="list-unstyled">
+            <li>
+              <a
+                class="underline text-dark"
+                href="{% url 'blog_detail' blog.pk %}"
+              >
+                <img
+                  src="{{ blog.image.url }}"
+                  class="me-4 img-fluid rounded"
+                />
+                <div class="text">
+                  <h4>{{ blog.title }}</h4>
+                  <div class="post-meta">
+                    <span class="mr-2">{{ blog.pub_date }} </span>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+      <!-- END sidebar-box -->
     </div>
   </div>
 </div>
-
 {% endblock %}
