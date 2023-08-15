@@ -8,11 +8,11 @@ from django.utils import timezone
 
 
 class Blog(models.Model):
-    title = models.CharField(max_length=50)
-    summary = models.CharField(max_length=80)
+    title = models.CharField(max_length=200)
+    summary = models.CharField(max_length=500)
     content = models.TextField()
-    author = models.CharField(max_length=100)
-    keywords = models.CharField(max_length=255, blank=True)
+    author = models.CharField(max_length=200)
+    keywords = models.TextField(null=True, blank=True)
     image = models.ImageField(
         null=True,
         blank=True,
@@ -84,8 +84,9 @@ class Category(models.Model):
 
 class Photo(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
+    product_code = models.TextField(null=True, blank=True)
     name_link = models.CharField(max_length=200, null=True, blank=True)
-    similar_products = models.CharField(max_length=100, blank=True)
+    similar_products = models.CharField(max_length=300, blank=True)
     type = models.CharField(max_length=100, blank=True, null=True)
     category = models.ForeignKey(
         Category,
@@ -296,51 +297,24 @@ class ContactForm(models.Model):
         return self.name
 
 
-class MixAlbum(models.Model):
-    name = models.CharField(max_length=100, null=False, blank=False)
-    genre = models.CharField(max_length=50, null=True, blank=True)
-    image = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to="media/",
-        default='image.jpg',
-    )
-
-    def __str__(self):
-        return self.name
-
-
 class Mix(models.Model):
     title = models.CharField(max_length=100)
     mix_artist = models.CharField(max_length=100)
-    featured_artists = models.CharField(max_length=100)
-    album = models.ForeignKey(
-        MixAlbum,
-        on_delete=models.SET_NULL,
-        null=True
-    )
+    featured_artists = models.TextField()
     image = models.ImageField(
         null=True,
         blank=True,
         upload_to="media/",
-        default='image.jpg',
+        default='mix-cover.jpg',
     )
-    genre = models.CharField(max_length=50)
-    duration = models.PositiveIntegerField()
+    genre = models.CharField(max_length=100)
     release_date = models.DateField()
     file = models.FileField(upload_to='mix/', blank=True, null=True)
 
     play_count = models.PositiveIntegerField(default=0)
     favorite_count = models.PositiveIntegerField(default=0)
     download_count = models.PositiveIntegerField(default=0)
-    listen_count = models.PositiveIntegerField(default=0)
-
-    youtube_link = models.TextField(blank=True, null=True)
-    download_link = models.TextField(blank=True, null=True)
     stream_link = models.TextField(blank=True, null=True)
-    hearthis_link = models.TextField(blank=True, null=True)
-    apple_link = models.TextField(blank=True, null=True)
-    mixcloud_link = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.title

@@ -48,6 +48,7 @@ def lukufam(request):
     kendy = object[0]
     djg400 = object[1]
     fkinyash = object[2]
+    tarela = object[3]
 
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -65,6 +66,7 @@ def lukufam(request):
         'kendy': kendy,
         'djg400': djg400,
         'fkinyash': fkinyash,
+        'tarela': tarela,
         'page_name': page_name,
         'cartItems': cartItems,
     }
@@ -92,7 +94,7 @@ def help(request):
 
 
 def index(request):
-    page_name = "| Home of African Streetwear | Online Clothing Store"
+    page_name = "- Home of African Streetwear | Online Clothing Store"
 
     photos = Photo.objects.all()
     blogs = Blog.objects.all()
@@ -121,8 +123,6 @@ def index(request):
     slider_01 = homepages[11]
     slider_02 = homepages[12]
     slider_03 = homepages[13]
-
-    latest_mix = mixes[0]
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -154,21 +154,14 @@ def index(request):
         'green_trucker_hat': green_trucker_hat,
         'categories': categories,
         'hat_category_icon': hat_category_icon,
-        'latest_mix': latest_mix,
         'popular_items': popular_items,
+        'mixes': mixes,
 
         'slider_01': slider_01,
         'slider_02': slider_02,
         'slider_03': slider_03,
     }
     return render(request, 'index.html', context)
-
-
-def contact_us(request):
-    page_name = f"| Contact Us"
-
-    context = {'page_name': page_name}
-    return render(request, 'contact_us.html', context)
 
 
 def shop(request):
@@ -198,41 +191,17 @@ def shop(request):
 
     return render(request, 'shop.html', context)
 
-
-def brand(request):
-    page_name = f"- Brands"
-
-    list_of_brand_products = Photo.objects.filter(brand=brand)
-    list_of_brand_blogs = Blog.objects.filter(brand=brand)
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    recent_products = Photo.objects.order_by('-pk')
-    recent_blogs = Blog.objects.order_by('-pk')
-    photos = Photo.objects.all()
-
-    context = {
-        'photos': photos,
-        'page_name': page_name,
-        'cartItems': cartItems,
-        'recent_products': recent_products,
-        'recent_blogs': recent_blogs,
-        'list_of_brand_products': list_of_brand_products,
-        'list_of_brand_blogs': list_of_brand_blogs,
-    }
-    return render(request, 'brand.html', context)
 # CART
 
 
 def cart(request):
-    page_name = f"- Cart"
 
     data = cartData(request)
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
     discount = 0
+    page_name = f"- Cart({cartItems})"
 
     photos = Photo.objects.all()
 
@@ -273,49 +242,6 @@ def checkout(request):
 # END OF CHECKOUT
 
 
-# PRODUCT DETAIL
-
-def product_detail(request, pk):
-    photo = get_object_or_404(Photo, pk=pk)
-    price_range = Photo.objects.filter(
-        price__lte=photo.price + 25).exclude(pk=pk)
-
-    rating = 0
-
-    keywords = photo.keywords.split(',')
-    similar_products = Photo.objects.filter(
-        Q(keywords__icontains=keywords[0]) |
-        Q(description__icontains=keywords[0]) |
-        Q(name__icontains=keywords[0]) |
-        Q(shop__icontains=keywords[0]) |
-        Q(brand__icontains=keywords[0])
-    ).exclude(pk=pk).distinct()
-
-    page_name = f"- {photo.name}"
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-    shop = photo.shop
-
-    colors = photo.colors.split(',')
-    sizes = photo.sizes.split(',')
-
-    context = {
-        'photo': photo,
-        'page_name': page_name,
-        'shop': shop,
-        'colors': colors,
-        'cartItems': cartItems,
-        'sizes': sizes,
-        'keywords': keywords,
-        'similar_products': similar_products,
-        'price_range': price_range,
-    }
-
-    return render(request, 'product_detail.html', context)
-# END OF PRODUCT DETAIL METHOD
-
-
 def blog_list(request):
     blogs = Blog.objects.all()
     recent_blogs = Blog.objects.order_by('-pk')
@@ -348,70 +274,8 @@ def blog_detail(request, pk):
     return render(request, 'blog_detail.html', context)
 
 
-def signup(request):
-    page_name = f"| Log In/Sign Up"
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    context = {
-        'cartItems': cartItems,
-        'page_name': page_name,
-    }
-    return render(request, 'signup.html', context)
-
-
-@login_required(login_url='login')
-def wishlist(request):
-    photos = Photo.objects.all()
-    page_name = f"| My Wishlist"
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    context = {
-        'photos': photos,
-        'page_name': page_name,
-        'cartItems': cartItems,
-    }
-    return render(request, 'wishlist.html', context)
-# END OF WISHLIST
-
-# BRAND
-
-
-def brands(request):
-    page_name = f"| Brands"
-
-    photos = Photo.objects.all()
-    blogs = Blog.objects.all()
-
-    brands_list = set(Photo.objects.values_list('shop', flat=True))
-    categories = set(Photo.objects.values_list(
-        'description', flat=True))  # add more categories as needed
-    keywords = categories
-
-    akiba_studios_products = search_items(keywords)
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    context = {
-        'brands_list': brands_list,
-        'page_name': page_name,
-        'cartItems': cartItems,
-        'categories': categories,
-        'keywords': keywords,
-        'akiba_studios_products': akiba_studios_products,
-        'blogs': blogs,
-        'photos': photos,
-    }
-    return render(request, 'brands.html', context)
-# END OF BRAND
-
-
 def newsletter(request):
-    page_name = f" | Newsletter Subscription"
+    page_name = f"- Newsletter"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -505,12 +369,12 @@ def processOrder(request):
             zipcode=data['shipping']['zipcode'],
         )
     messages.success(request, ("Payment Complete!"))
-    return JsonResponse('Payment Complete', safe=False)
+    return JsonResponse('Payment Complete!', safe=False)
 
 
 def loginPage(request):
 
-    page_name = f" | Log In"
+    page_name = f"- Log In"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -527,7 +391,7 @@ def loginPage(request):
             if user is not None:
                 login(request, user)
                 if user.is_staff:
-                    return redirect('dashboard')
+                    return redirect('account')
                 else:
                     return redirect('register')
             else:
@@ -594,15 +458,6 @@ def confirmed(request):
 
     return render(request, 'confirmed.html', context)
 
-
-@login_required(login_url='login')
-def delete(request, pk):
-    photo = get_object_or_404(Photo, id=pk)
-
-    if request.method == 'POST':
-        photo.delete()
-        return redirect('dashboard')
-    return render(request, 'delete.html', {'photo': photo})
 
 # Trials ===========================
 
@@ -690,55 +545,36 @@ def addPhoto(request):
     return render(request, 'addphoto.html', context)
 
 
-# DASHBOARD
+# ACCOUNT
 @login_required(login_url='login')
-def dashboard(request):
+def account(request):
     photos = Photo.objects.all()
-    categories = Category.objects.all()
-    newsletters = Newsletter.objects.all()
+
     shippings = ShippingAddress.objects.all()
     orders = Order.objects.order_by('-pk')
-    customers = Customer.objects.all()
-    helps = Help.objects.all()
-    blogs = Blog.objects.all()
-    about_us = AboutUs.objects.all()
+
     order_item_list = OrderItem.objects.all()
-    page_name = f" | Dashboard"
+    page_name = f"- Account"
 
     data = cartData(request)
     cartItems = data['cartItems']
 
-    total_products = Photo.objects.count()
-
-    category_list = [category.name for category in categories]
-    category_json = json.dumps(category_list)
-
-    popular_list = [photo.popular for photo in photos]
-    popular_number = popular_list.count(True)
-
-    regular_products = total_products - popular_number
+    order = data['order']
+    items = data['items']
 
     context = {
-        'blogs': blogs,
-        'customers': customers,
-        'helps': helps,
         'order_item_list': order_item_list,
-        'about_us': about_us,
-        'total_products': total_products,
         'shippings': shippings,
         'cartItems': cartItems,
         'page_name': page_name,
         'photos': photos,
-        'categories': categories,
         'orders': orders,
-        'newsletters': newsletters,
-        'category_json': category_json,
-        'popular_number': popular_number,
-        'regular_products': regular_products,
+        'order': order,
+        'items': items,
     }
 
-    return render(request, 'dashboard.html', context)
-# END OF DASHBOARD
+    return render(request, 'account.html', context)
+# END OF ACCOUNT
 
 
 @login_required(login_url='login')
@@ -763,7 +599,6 @@ def edit(request, id):
 def music(request):
     page_name = "| DJ G400 Mixes"
 
-    mix_albums = MixAlbum.objects.all()
     mixes = Mix.objects.all()
 
     latest_mix = mixes[2]
@@ -771,7 +606,6 @@ def music(request):
     context = {
         'page_name': page_name,
         'mixes': mixes,
-        'mix_albums': mix_albums,
         'latest_mix': latest_mix,
     }
     return render(request, 'music.html', context)
@@ -780,7 +614,6 @@ def music(request):
 def music_player(request, id):
 
     mix = Mix.objects.get(pk=id)
-    mix_albums = MixAlbum.objects.all()
     mixes = Mix.objects.all()
 
     page_name = f"- Playing {mix.title}"
@@ -789,7 +622,6 @@ def music_player(request, id):
         'page_name': page_name,
         'mix': mix,
         'mixes': mixes,
-        'mix_albums': mix_albums,
     }
     return render(request, 'music_player.html', context)
 
@@ -901,12 +733,3 @@ def edit_blog(request, id):
     return render(request, 'edit_blog.html', {
         'form': form,
     })
-
-
-def spring(request):
-    page_name = "- Spring/Summer 23 Collection"
-
-    context = {
-        'page_name': page_name,
-    }
-    return render(request, 'spring.html', context)
