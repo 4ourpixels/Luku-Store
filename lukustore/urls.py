@@ -96,7 +96,5 @@ urlpatterns = [
     path('photo/<str:pk>/', viewPhoto, name='photo'),
     path('addphoto/', addPhoto, name='addphoto'),
     path('addphoto/', addPhoto, name='addphoto'),
-
-    path('spring-summer-collection/', spring, name='spring'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
