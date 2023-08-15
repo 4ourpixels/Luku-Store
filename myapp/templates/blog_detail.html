@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
 
-<main style="margin-top: 3rem" id="top" class="container">
-  <div style="margin-top: 1rem" class="row">
+<div id="top" class="container">
+  <div class="row">
     {% if blog.youtube %}
     <iframe
       height="500"
-      src="https://www.youtube.com/embed/XppZqa0BtoQ"
+      src="{{ blog.yotube }}"
       title="{{ blog.title }}"
       preserveAspectRatio="xMidYMid slice"
       frameborder="0"
@@ -15,13 +15,12 @@
     ></iframe>
     {% elif blog.image %}
     <img
-      style="object-fit: cover"
-      height="300"
-      class="img-fluid. max-width: 100% bg-light"
+      style="object-fit: cover; height: 50vh"
+      class="img-fluid"
       src="{{ blog.image.url }}"
       alt="{{ blog.title }}"
     />{% endif %}
-    <small style="margin-top: 0.5rem">
+    <small class="my-5">
       <em>Published on: {{ blog.pub_date }}</em> by
       <a href="{% url 'lukufam' %}" class="underline text-black"
         >{{ blog.author }}</a
@@ -29,10 +28,8 @@
     >
   </div>
 
-  <div style="margin-top: 1rem" class="row">
+  <div class="row">
     <h1>{{ blog.title }}</h1>
-  </div>
-  <div class="row g-5">
     <div class="col-md-8">
       <article class="blog-post">
         <p>{{ blog.content|safe }}</p>
@@ -74,22 +71,8 @@
             <li>
               <a
                 class="text-dark underline"
-                href="https://instagram.com/lukustorenl"
+                href="https://instagram.com/lukustore.nl"
                 >Instagram</a
-              >
-            </li>
-            <li>
-              <a
-                class="text-dark underline"
-                href="https://tiktok.com/lukustorenl"
-                >Tik Tok</a
-              >
-            </li>
-            <li>
-              <a
-                class="text-dark underline"
-                href="https://facebook.com/lukustorenl"
-                >Facebook</a
               >
             </li>
           </ol>
@@ -101,6 +84,6 @@
       <a class="underline text-dark" href="#top">Back to top</a>
     </div>
   </div>
-</main>
+</div>
 
 {% endblock %}

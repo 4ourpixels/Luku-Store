@@ -149,7 +149,7 @@
           <p class="text-white">
             {{ new_release.quote_author }}
           </p>
-            <a class="btn btn-outline-light" href="{% url 'spring' %}"
+            <a class="btn btn-outline-light" href="#"
             >{{ new_release.button }} &raquo;</a>
         </div>
       </div>
@@ -217,32 +217,6 @@
     <div class="container">
       <h1 class="mt-5 text-center">Listen to DJ G400</h1>
       <h6 class="small mb-5 text-center">Latest mixes from DJ G400, Nairobi, Kenya.</h6>
-      <!-- trial -->
-
-      <!-- Button trigger djg400 modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#djg400Modal">
-        Listen DJ G400 Mixes
-      </button>
-
-      <!-- Modal -->
-      <div class="modal fade" id="djg400Modal" tabindex="-1" aria-labelledby="djg400ModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="djg400ModalLabel">Listen DJ G400</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Continue Shopping With <i class="fa-solid fa-music"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- end of trial -->
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center">
         {% for mix in mixes %}
         <div class="col mb-5">
@@ -393,7 +367,7 @@
                   {% endif %}
                 <div class="mt-2 text-muted small d-block mb-1">
                   <h6 class="text-dark">{{ blog.title|truncatechars:50 }}</h6></a>
-                  <p class="small">{{ blog.summary|truncatechars:50}}</p>
+                  <p class="small">{{ blog.summary }}</p>
                   <hr>
                   <i class="fa fa-calendar-alt fa-sm"></i>
                   {{ blog.pub_date }}
