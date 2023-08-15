@@ -262,6 +262,7 @@ def blog_list(request):
 def blog_detail(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     page_name = f"| {blog.title}"
+    recent_blogs = Blog.objects.order_by('-pk')
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -269,7 +270,8 @@ def blog_detail(request, pk):
     context = {
         'blog': blog,
         'page_name': page_name,
-        'cartItems': cartItems
+        'recent_blogs': recent_blogs,
+        'cartItems': cartItems,
     }
     return render(request, 'blog_detail.html', context)
 
