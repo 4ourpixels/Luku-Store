@@ -1,121 +1,140 @@
  {% extends 'base.html' %} {% load static %} {% block body %}
-<!-- HERO SECTION -->
-<div class="container-fluid p-0 m-0">
-  <div class="row">
-    <div style="margin-top: -5.5rem;" id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide-to="0"
-            class="active"
-            aria-current="true"
-            aria-label="Slide 1"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide-to="1"
-            aria-label="Slide 2"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide-to="2"
-            aria-label="Slide 3"
-          ></button>
-        </div>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="{{ slider_01.image.url }}" class="img-fluid">
-            <div class="container">
-              <div class="carousel-caption text-start">
-                <img
-                class="img-fluid"
-                style="
-                filter: invert(100%); 
-                margin-bottom: 1.5rem;
-                height:5rem;
-                "
-                src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
-                />
-                <p>
-                  <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}">SS23' Lukubook</a>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img
-              class="img-fluid"
-              src="{{ slider_03.image.url }}"
-            />
-            <div class="container">
-              <div class="carousel-caption">
-                <figure class="text-center">
-                  <blockquote class="blockquote">
-                    <h1>
-                      Streetwear is an artistic movement.
-                      It’s a creative process.
-                    </h1>
-                  </blockquote>
-                  <figcaption class="blockquote-footer text-white">Virgil Abloh</figcaption>
-                </figure>
-                <p>
-                  <a class="btn btn-outline-light" href="{% url 'shop' %}"
-                    >Shop &#8599;</a
-                  >
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img
-              class="img-fluid"
-              src="{{ slider_02.image.url }}"
-            />
+<!-- -------------------- -->
+<!-- -------------------- -->
 
-            <div class="container">
-              <div class="carousel-caption text-start">
-                <img
-                  class="img-fluid"
-                  style="filter: invert(100%); margin-bottom: 1.5rem; height: 5rem;"
-                  src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
-                />
-                <p>
-                  <a class="btn  btn-outline-light" href="{% url 'gallery' %}?category=Streetwear%20Brands"
-                    >Akiba Studios &#8594;</a
-                  >
-                </p>
-              </div>
-            </div>
+<!-- HERO SECTION -->
+<div class="container">
+  <div
+    style="
+      margin-top: 0 !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+    "
+    id="myCarousel"
+    class="carousel slide"
+    data-bs-ride="carousel"
+  >
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#myCarousel"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#myCarousel"
+        data-bs-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#myCarousel"
+        data-bs-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
+    </div>
+
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img
+        class="img-fluid"
+        src="{{ slider_01.image.url }}"
+        />
+        <div class="container">
+          <div class="carousel-caption text-start">
+            <img
+            style="
+            filter: invert(100%); 
+            margin-bottom: 1.5rem;
+            height:10rem;
+            "
+            src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
+            />
+            <p>
+              <a class="btn btn-lg btn-outline-light" href="{% url 'shop' %}">SS23' Lukubook</a>
+            </p>
           </div>
         </div>
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#myCarousel"
-          data-bs-slide="prev"
-        >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#myCarousel"
-          data-bs-slide="next"
-        >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
       </div>
+      <div class="carousel-item">
+        <img
+          class="img-fluid"
+          src="{{ slider_03.image.url }}"
+        />
+        <div class="container">
+          <div class="carousel-caption">
+            <figure class="text-center">
+              <blockquote class="blockquote">
+                <h1>
+                  Streetwear is an artistic movement. <br />
+                  It’s a creative process.
+                </h1>
+              </blockquote>
+              <figcaption class="blockquote-footer text-white">Virgil Abloh</figcaption>
+            </figure>
+            <p>
+              <a class="btn btn-lg btn-outline-light" href="{% url 'shop' %}"
+                >Shop &#8599;</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img
+          class="img-fluid"
+          src="{{ slider_02.image.url }}"
+        />
+
+        <div class="container">
+          <div class="carousel-caption text-start">
+            <img
+              style="filter: invert(100%); margin-bottom: 1.5rem"
+              height="150"
+              src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
+            />
+            <p>
+              <a class="btn btn-lg btn-outline-light" href="{% url 'gallery' %}?category=Streetwear%20Brands"
+                >Akiba Studios &#8594;</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#myCarousel"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#myCarousel"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
-</div>
-<!-- END OF HERO SECTION -->
-<div class="container mt-5">
-  <h2 class="text-center">{{ collection.name }}</h2>
-  <p class="text-muted text-center">{{ collection.quote }}.</p>
+
+  <!-- END OF HERO SECTION -->
+
+  <!-- -------------------- -->
+  <!-- -------------------- -->
+  <!--  SECTION -->
+<div class="container">
+  <h3>{{ collection.name }}</h3>
+  <p class="text-muted">{{ collection.quote }}</p>
   <div>
     <!-- Three columns of text below the carousel -->
     <div class="row d-flex justify-content-around">
@@ -130,7 +149,7 @@
           <p class="text-white">
             {{ new_release.quote_author }}
           </p>
-            <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}"
+            <a class="btn btn-outline-light" href="#"
             >{{ new_release.button }} &raquo;</a>
         </div>
       </div>
@@ -267,8 +286,8 @@
     <div class="container">
       <div class="row">
         <div id="popular-this-week" class="index-heading">
-          <h2 class="text-center">Popular This Week</h2>
-          <p class="text-mute text-center">
+          <h3>Popular This Week</h3>
+          <p class="text-muted">
             Akiba is back with unique and colorful outfits that reflect the Kenyan
             culture and lifestyle.
           </p>

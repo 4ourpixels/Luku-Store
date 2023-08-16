@@ -121,21 +121,7 @@
     </script>
     <!-- End of Javascript Cart -->
   </head>
-  <body style="padding-top: 3rem" id="top">
-    <!-- END OF NAVIGATION BAR ----------------------------->
-    {% if messages %} {% for message in messages %}
-    <div class="container mb-5">
-      <div class="alert alert-warning alert-dismissable fade show" role="alert">
-        {{ message }}
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-        ></button>
-      </div>
-    </div>
-    {% endfor %} {% endif %}
+  <body id="top">
     <!-- NAVIGATION BAR STARTS HERE ----------------------------->
     <nav class="navbar sticky-top navbar-expand-sm bg-white w-auto">
       <div class="container-fluid mx-3">
@@ -248,7 +234,20 @@
         </div>
       </div>
     </nav>
-    {% block body %} {% endblock %}
+    <!-- End of navigation bar -->
+    {% if messages %} {% for message in messages %}
+    <div class="container mb-5">
+      <div class="alert alert-warning alert-dismissable fade show" role="alert">
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+    {% endfor %} {% endif %} {% block body %} {% endblock %}
 
     <!-- FOOTER ----------------------------->
     <footer class="container-fluid py-5 px-5 text-white bg-black">

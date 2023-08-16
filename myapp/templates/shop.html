@@ -1,69 +1,24 @@
 {% extends 'base.html' %}{% load static %} {% block body %}
-  <div id="top" class="container">
+  <div id="top" class="container mt-3">
 
-    <div class="row my-4">
-      <div class="float-right">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-lg btn-dark dropdown-toggle" data-bs-toggle="modal" data-bs-target="#categoryModal">
-          Shop By Category
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="categoryModalLabel">Select Category</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 mb-3">
-                      <div class="card">
-                        <div class="card-body">
-                          <h1><i class="fa-brands fa-shopify fa-xxl"></i></h1>
-                          <p class="card-text">
-                            <a class="dropdown-item" href="{% url 'gallery' %}"
-                              >View All</a
-                            >
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    {% for category in categories %}
-                    <div class="col-sm-4 col-md-4 mb-3">
-                      <div class="card">
-                        <a
-                          class="dropdown-item"
-                          href="{% url 'gallery' %}?category={{ category.name }}"
-                        >
-                          <div class="card-body">
-                            <h1><i class="{{ category.icon }} fa-xxl"></i></h1>
-                            <p class="card-text">{{ category.name }}</p>
-                          </div></a
-                        >
-                      </div>
-                    </div>
-                    {% endfor %}
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Back</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div class="mt-3 text-black mb-3">
+      <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link {% if not active_category %}active{% endif %} text-black" style="text-decoration: none;" aria-current="page" href="{% url 'shop' %}">All</a>
+        </li>
+        {% for category in categories %}
+        <li class="nav-item">
+          <a class="nav-link {% if active_category == category.name %}active{% endif %} text-black" style="text-decoration: none;"  href="{% url 'gallery' %}?category={{ category.name }}">{{ category.name }}</a>
+        </li>
+        {% endfor %}
+      </ul>
     </div>
 
     <div class="container">
       <div
       class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
     >
-        {% for photo in photos %}
+        {% for photo in unique_photos %}
         <div class="col mb-5">
           <div class="card-wrapper mb-4">
             <div class="card-img">
@@ -97,6 +52,7 @@
         </div>
         {% endfor %}
       </div>
+      
       <hr />
       <div class="text-center my-4">
         <a href="#top" class="btn btn-dark">Back to top</a>
