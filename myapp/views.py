@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import random
 import http.client
+from django.db.models import F
 
 
 # ERROR - DONE
@@ -38,7 +39,7 @@ def error(request):
 
 
 def lukufam(request):
-    page_name = f"| About Us"
+    page_name = f"- About Us"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -78,7 +79,7 @@ def lukufam(request):
 
 
 def help(request):
-    page_name = f" | Help"
+    page_name = f"- Help"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -165,8 +166,9 @@ def index(request):
 
 
 def shop(request):
-    page_name = f"| Shop"
+    page_name = f"- Shop"
     photos = Photo.objects.order_by('-pk')
+
     data = cartData(request)
     cartItems = data['cartItems']
     blogs = Blog.objects.order_by('-pk')
@@ -174,6 +176,17 @@ def shop(request):
     categories = Category.objects.all()
 
     total_products = Photo.objects.count()
+
+    unique_product_codes = Photo.objects.filter(
+        product_code__isnull=False).values_list('product_code', flat=True).distinct()
+    unique_photos = []
+
+    for product_code in unique_product_codes:
+        latest_photo = Photo.objects.filter(
+            product_code=product_code).order_by('-id').first()
+        unique_photos.append(latest_photo)
+
+    active_category = request.GET.get('category', None)
 
     if category == None:
         photos = Photo.objects.all()
@@ -187,6 +200,8 @@ def shop(request):
         'photos': photos,
         'categories': categories,
         'total_products': total_products,
+        'unique_photos': unique_photos,
+        'active_category': active_category,
     }
 
     return render(request, 'shop.html', context)
@@ -261,7 +276,7 @@ def blog_list(request):
 
 def blog_detail(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
-    page_name = f"| {blog.title}"
+    page_name = f"- {blog.title}"
     recent_blogs = Blog.objects.order_by('-pk')
 
     data = cartData(request)
@@ -414,7 +429,7 @@ def logoutUser(request):
 
 def registerPage(request):
 
-    page_name = f" | Sign Up"
+    page_name = f"- Sign Up"
 
     form = RegisterUserForm()
 
@@ -447,7 +462,7 @@ def registerPage(request):
 
 
 def confirmed(request):
-    page_name = f"| Order Complete!"
+    page_name = f"- Order Complete!"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -477,10 +492,23 @@ def gallery(request):
 
     categories = Category.objects.all()
 
+    unique_product_codes = Photo.objects.filter(
+        product_code__isnull=False).values_list('product_code', flat=True).distinct()
+    unique_photos = []
+
+    for product_code in unique_product_codes:
+        latest_photo = Photo.objects.filter(
+            product_code=product_code).order_by('-id').first()
+        unique_photos.append(latest_photo)
+
+    active_category = request.GET.get('category', None)
+
     context = {
         'categories': categories,
         'photos': photos,
         'cartItems': cartItems,
+        'active_category': active_category,
+        'unique_photos': unique_photos,
     }
     return render(request, 'gallery.html', context)
 
@@ -599,7 +627,7 @@ def edit(request, id):
 
 
 def music(request):
-    page_name = "| DJ G400 Mixes"
+    page_name = "- DJ G400 Mixes"
 
     mixes = Mix.objects.all()
 
