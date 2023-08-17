@@ -45,23 +45,7 @@ class RegisterUserForm(UserCreationForm):
 class PhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
-        fields = (
-            'name',
-            'name_link',
-            'type',
-            'category',
-            'image',
-            'description',
-            'similar_products',
-            'price',
-            'stock',
-            'color',
-            'size',
-            'rating',
-            'popular',
-            'shop',
-            'digital',
-        )
+        fields = ("__all__")
 
         def __init__(self, *args, **kwagrs):
             super(PhotoForm, self).__init__(*args, **kwagrs)
@@ -86,16 +70,7 @@ class PhotoForm(forms.ModelForm):
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = (
-            'title',
-            'summary',
-            'content',
-            'author',
-            'keywords',
-            'image',
-            'youtube',
-            'brand',
-        )
+        fields = ("__all__")
 
         def __init__(self, *args, **kwagrs):
             super(BlogForm, self).__init__(*args, **kwagrs)
@@ -107,4 +82,3 @@ class BlogForm(forms.ModelForm):
             self.fields['keywords'].widget.attrs['class'] = 'form-control'
             self.fields['image'].widget.attrs['class'] = 'form-control'
             self.fields['youtube'].widget.attrs['class'] = 'form-control'
-            self.fields['brand'].widget.attrs['class'] = 'form-control'

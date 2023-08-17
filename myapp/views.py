@@ -280,11 +280,16 @@ def blog_detail(request, pk):
     data = cartData(request)
     cartItems = data['cartItems']
 
+    # Retrieve photos from the category named "SS23"
+    category_ss23 = Category.objects.get(name='SS23')
+    photos_in_ss23_category = Photo.objects.filter(category=category_ss23)
+
     context = {
         'blog': blog,
         'page_name': page_name,
         'recent_blogs': recent_blogs,
         'cartItems': cartItems,
+        'photos_in_ss23_category': photos_in_ss23_category,
     }
     return render(request, 'blog_detail.html', context)
 

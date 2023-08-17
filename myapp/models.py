@@ -20,22 +20,15 @@ class Blog(models.Model):
         default='blog.jpg'
     )
     youtube = models.TextField(blank=True, null=True)
-    BRAND = (
-        ('Luku Store.nl', 'Luku Store.nl'),
-        ('Akiba Studios', 'Akiba Studios'),
-    )
-    brand = models.CharField(
-        max_length=15,
-        choices=BRAND,
-        null=True,
-        blank=True,
-        default='Luku Store.nl'
-    )
+
     pub_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+    contentOne = models.TextField(null=True, blank=True)
+    contentTwo = models.TextField(null=True, blank=True)
+
     def __str__(self):
-        return f"{self.title} || Published On: {self.pub_date.strftime('%A, %B %d, %Y')}"
+        return f"{self.title} | Published On: {self.pub_date.strftime('%A, %B %d, %Y')}"
 # END OF BLOG ENTRY
 
 # ABOUT US
