@@ -8,18 +8,29 @@
           <li class="breadcrumb-item active" aria-current="page"><a class="text-muted underline" href="{% url 'gallery' %}?category={{ photo.category.name }}">{{ photo.category }}</a></li>
         </ol>
       </nav>
-
-      <div class="container mt-1">
+      <div class="container pt-1">
         <div class="row gx-5">
-
           <aside class="col-lg-6">
-            <div class="mb-3 d-flex justify-content-center">
-              <img
-                style="object-fit: cover;"
-                class="img-fluid"
-                src="{{ photo.image.url }}"
-                id="productImg"
-              />
+            <div class="border rounded-4 mb-3 d-flex justify-content-center">
+              <a
+                data-fslightbox="mygalley"
+                class="rounded-4"
+                target="_blank"
+                data-type="image"
+                href="{{ photo.image.url }}"
+              >
+                <img
+                  style="
+                    max-width: 100%;
+                    max-height: 100vh;
+                    margin: auto;
+                    object-fit: cover;
+                  "
+                  class="rounded-4 fit"
+                  src="{{ photo.image.url }}"
+                  id="productImg"
+                />
+              </a>
             </div>
             {% if similar_images %}
             <div class="d-flex justify-content-center mb-3">
@@ -27,7 +38,7 @@
                 style="object-fit: cover"
                 width="60"
                 height="60"
-                class="img-fluid small-img  mx-1"
+                class="rounded-2 small-img border mx-1 rounded-2"
                 src="{{ photo.image.url }}"
               />
               {% for photo in similar_images %}
@@ -35,7 +46,7 @@
                 style="object-fit: cover"
                 width="60"
                 height="60"
-                class="small-img mx-1 img-fluid"
+                class="rounded-2 small-img border mx-1 rounded-2"
                 src="{{ photo.image.url }}"
               />
               {% endfor %}
@@ -53,6 +64,14 @@
               </div>
 
               <div class="row">
+                <dt class="col-3">Type:</dt>
+                <dd class="col-9">{{ photo.type }}</dd>
+
+                <dt class="col-3">Color</dt>
+                <dd class="col-9">{{ photo.color }}</dd>
+
+                <dt class="col-3">Brand</dt>
+                <dd class="col-9">{{ photo.shop }}</dd>
 
                 <dt class="col-3">Size</dt>
                 <dd class="col-9">{{ photo.size }}</dd>
@@ -77,7 +96,6 @@
               >
             </div>
           </main>
-
         </div>
       </div>
 

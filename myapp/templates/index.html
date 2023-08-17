@@ -40,7 +40,7 @@
                 src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
                 />
                 <p>
-                  <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}">SS23' Lukubook</a>
+                  <a class="btn btn-outline-light" href="{% url 'gallery' %}?category=SS23">SS23' Lukubook</a>
                 </p>
               </div>
             </div>
@@ -83,8 +83,8 @@
                   src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
                 />
                 <p>
-                  <a class="btn  btn-outline-light" href="{% url 'gallery' %}?category=Streetwear%20Brands"
-                    >Akiba Studios &#8594;</a
+                  <a class="btn  btn-outline-light" href="{% url 'photo' 22 %}"
+                    >Akiba Studios</a
                   >
                 </p>
               </div>
@@ -113,289 +113,245 @@
   </div>
 </div>
 <!-- END OF HERO SECTION -->
+
+
 <div class="container mt-5">
+
   <h2 class="text-center">{{ collection.name }}</h2>
   <p class="text-muted text-center">{{ collection.quote }}.</p>
-  <div>
-    <!-- Three columns of text below the carousel -->
-    <div class="row d-flex justify-content-around">
-      <div class="col-lg-4 col-md-12 col-sm-12 my-4">
-        <img
-          style="height: 100%; object-fit: cover"
-          class="rounded img-fluid mb-3 w-auto"
-          src="{{ new_release.image.url }}"
-        />
-        <div style="margin-left: 3rem; margin-top: -10rem;">
-          <h3 class="text-white">{{ new_release.name|safe }}</h3>
-          <p class="text-white">
-            {{ new_release.quote_author }}
-          </p>
-            <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}"
-            >{{ new_release.button }} &raquo;</a>
-        </div>
-      </div>
-      <!-- /.col-lg-4 -->
-      <div class="col-lg-4 col-md-12 col-sm-12 my-4">
-        <div class="container">
-          <div class="row row-cols-2 justify-content-center">
-            <div class="col-md-12">
-              <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
-              <img
-                style="height: auto; width:100%; object-fit: cover"
-                class="rounded"
-                src="{{ jacket.image.url }}"
-              />
-              </a>
-            </div>
 
-            <div class="col-md-12">
-              <a class="overlay" href="{% url 'gallery' %}?category=Jackets%20And%20Coats">
-              <img
-                style="height: auto; width:100%; object-fit: cover"
-                class="rounded"
-                src="{{ sweater.image.url }}"
-              />
-              </a>
-            </div>
+  <div class="row d-flex align-items-center justify-content-around">
+
+    <!-- New release div -->
+    <div class="col-lg-4 col-md-12 col-sm-12 my-4">
+
+      <img
+        class="rounded img-fluid mb-3"
+        src="{{ new_release.image.url }}"
+      />
+
+      <div style="margin-left: 3rem; margin-top: -10rem;">
+        <h3 class="text-white">{{ new_release.name|safe }}</h3>
+        <p class="text-white">{{ new_release.quote_author }}</p>
+        <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}">{{ new_release.button }} &raquo;</a>
+      </div>
+      
+    </div>
+    <!-- End of New release div -->
+
+    <!-- /.col-lg-4 -->
+    <div class="col-lg-4 col-md-12 col-sm-12 my-4">
+      <div class="container">
+        <div class="row row-cols-2 justify-content-center">
+
+          <div class="col-md-12">
+            <a class="overlay" href="{% url 'gallery' %}?category=Jackets">
+            <img
+              style="object-fit: cover"
+              class="rounded img-fluid"
+              src="{{ jacket.image.url }}"
+            />
+            </a>
           </div>
+
+          <div class="col-md-12">
+            <a class="overlay" href="{% url 'gallery' %}?category=Sweaters">
+            <img
+              style="object-fit: cover"
+              class="rounded img-fluid"
+              src="{{ sweater.image.url }}"
+            />
+            </a>
+          </div>
+          
         </div>
       </div>
-      <!-- /.col-lg-4 -->
-      <div class="col-lg-4 col-md-12 col-sm-12">
-        <a class="overlay" href="{% url 'gallery' %}?category=Hats%20And%20Caps">
-        <img
-          style="height: 100%; width:100%; object-fit: cover"
-          class="rounded"
-          src="{{ trucker_hats.image.url }}"
-        /></a>
-      </div>
-      <!-- /.col-lg-4 -->
     </div>
-    <!-- /.row -->
+    
+    <!-- /.col-lg-4 -->
+    <div class="col-lg-4 col-md-12 col-sm-12">
+      <a class="overlay" href="{% url 'gallery' %}?category=Headwear">
+      <img
+        style="object-fit: cover"
+        class="rounded img-fluid"
+        src="{{ trucker_hats.image.url }}"
+      /></a>
+    </div>
+
+  </div>
+
+  <!-- LUKU DEFINITION -->
+  <hr>
+  <div class="text-center my-5">
+    <h1 style="font-size: 7rem;" class="display-1 fw-bold">luku</h1>
+    <h4 class="text-muted ">/ loo-koo /</h4>
+    <br />
+    <p class="display-6">
+      <strong>(n.)</strong>
+      {{ definition.quote|safe }}
+    </p>
+  </div>
+  <hr>
+  <!-- END OF LUKU DEFINITION -->
+
+  <br>
+  <br>
+  <br>
+  <div class="container">
+    <h2 class="mt-5 text-center">Listen to DJ G400</h2>
+    <p class="mb-5 text-center">Latest mixes from DJ G400, Nairobi, Kenya.</p>
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center">
+      {% for mix in mixes %}
+      <div class="col mb-5">
+        <img
+          height="150"
+          class="img-fluid"
+          style="object-fit: cover;"
+          src="{{ mix.image.url }}"
+          alt="{{ mix.title }}"
+        />
+        <div class="text-start">
+          <a href="{% url 'music_player' mix.pk %}" class="text-black  fw-bold underline my-2">{{ mix.title }}</a>
+          <h6 class="small">{{ mix.description|truncatechars:25 }}</h6>
+          <h6 class="text-black my-2">{{ mix.genre }}</h6>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
   </div>
   <br />
   <br />
   <br />
-  <!-- END OF  SECTION -->
-  <!-- LUKU DEFINITION -->
-  
-  <hr>
-    <div class="text-center mb-5">
-      <h1 style="font-size: 7rem;" class="display-1 fw-bold">luku</h1>
-      <p class="text-muted h4">/ loo-koo /</p>
-      <br />
-      <p class="display-6">
-        <strong>(n.)</strong>
-        {{ definition.quote|safe }}
-      </p>
+  <hr />
+  <br />
+  <!-- -------------------- -->
+  <!-- -------------------- -->
+  <!-- POPULAR THIS WEEK -->
+
+  <div class="container">
+    <div class="row">
+      <div id="popular-this-week" class="index-heading">
+        <h2 class="text-center">Popular This Week</h2>
+        <p class="text-muted text-center">
+          Akiba is back with unique and colorful outfits that reflect the Kenyan
+          culture and lifestyle.
+        </p>
+      </div>
     </div>
-    <hr>
-    <!-- END OF LUKU DEFINITION -->
 
-    <br>
-    <br>
-    <br>
-    <div class="container">
-      <h1 class="mt-5 text-center">Listen to DJ G400</h1>
-      <h6 class="small mb-5 text-center">Latest mixes from DJ G400, Nairobi, Kenya.</h6>
-      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center">
-        {% for mix in mixes %}
-        <div class="col mb-5">
-          <div class="card-wrapper mb-4">
-            <div class="card-img">
-              <img
-                height="250"
-                width="250"
-                style="object-fit: cover;"
-                src="{{ mix.image.url }}"
-                alt="{{ mix.title }}"
-              />
-            </div>
-            <div class="card-body">
-              <!-- Button trigger djg400 modal -->
-              <button
-                style="background: none; border: none; height: 4rem"
-                onmouseover="toggleDim(this, true)"
-                onmouseout="toggleDim(this, false)"
-                type="button" 
-                class="btn btn-primary" 
-                data-bs-toggle="modal" data-bs-target="#djg400Modal{{ mix.pk }}">
-                <i class="fa-solid fa-play fa-2xl"></i>
-              </button>
-
-              <!-- Modal -->
-              <div class="modal fade" id="djg400Modal" tabindex="-1" aria-labelledby="djg400Modal{{ mix.pk }}Label" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="djg400Modal{{ mix.pk }}Label">{{ mix.title }}</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <p>{{ mix.title }}</p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Continue Shopping With <i class="fa-solid fa-music"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center">
+      {% for photo in popular_items %}
+      <div class="col mb-5">
+        <div class="card-wrapper mb-4">
+          <div class="card-img">
+            <img
+              class="card-img-top"
+              src="{{ photo.image.url }}"
+              alt="{{ photo.name }}"
+            />
           </div>
-          <div class="text-start">
-            <a href="{% url 'music_player' mix.pk %}" class="text-black  fw-bold underline my-2"
-              >{{ mix.title }}</a
+          <div class="card-body">
+            <button
+              style="background: none; border: none; height: 4rem"
+              data-product="{{ photo.pk }}"
+              data-action="add"
+              class="update-cart  rounded-circle px-3 bg-white"
+              onmouseover="toggleDim(this, true)"
+              onmouseout="toggleDim(this, false)"
             >
-            <br>
-            <small class="small">{{ mix.description|truncatechars:25 }}</small> <br>
-            <h6 class="text-black my-2">{{ mix.genre }}</h6>
+              <i class="text-black fa-solid fa-2xl fa-cart-arrow-down"></i>
+            </button>
           </div>
         </div>
-        {% endfor %}
-      </div>
-    </div>
-    <br />
-    <br />
-    <br />
-    <hr />
-    <br />
-    <!-- -------------------- -->
-    <!-- -------------------- -->
-    <!-- POPULAR THIS WEEK -->
-
-    <div class="container">
-      <div class="row">
-        <div id="popular-this-week" class="index-heading">
-          <h2 class="text-center">Popular This Week</h2>
-          <p class="text-mute text-center">
-            Akiba is back with unique and colorful outfits that reflect the Kenyan
-            culture and lifestyle.
-          </p>
+        <div class="text-start">
+          <a href="{% url 'photo' photo.id %}" class="text-black  fw-bold underline my-2"
+            >{{ photo.name }}</a
+          >
+          <br>
+          <small class="small">{{ photo.description|truncatechars:25 }}</small> <br>
+          <h6 class="text-black my-2">€{{ photo.price }}</h6>
         </div>
       </div>
+      {% endfor %}
+    </div>
+  </div>
+  <br>
+  <hr>
+  <!-- END OF POPULAR THIS WEEK -->
 
-      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center">
-        {% for photo in popular_items %}
+  <!-- Blog -->
+  <section class="mt-5 mb-4">
+    <div class="container text-dark">
+      <h1 class="text-center mb-5">Blog posts</h1>
+      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-2 row-cols-xl-2 justify-content-start">
+        {% for blog in blogs|slice:":4" %}
         <div class="col mb-5">
-          <div class="card-wrapper mb-4">
-            <div class="card-img">
+            <a href="{% url 'blog_detail' pk=blog.pk %}" class="img-fluid underline text-dark">
+              {% if blog.youtube %}
+              <iframe 
+                src="https://www.youtube.com/embed/XppZqa0BtoQ" 
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen
+                class="card-img-top"
+                style="height: 50vh"
+                width="auto"
+                >
+              </iframe>
+              {% else %}
               <img
                 class="card-img-top"
-                src="{{ photo.image.url }}"
-                alt="{{ photo.name }}"
+                src="{{ blog.image.url }}"
+                style="object-fit: cover; height: 50vh"
+                width="auto"
               />
+              {% endif %}
+            <div class="mt-2 text-muted small d-block mb-1">
+              <h6 class="text-dark">{{ blog.title|truncatechars:50 }}</h6></a>
+              <p class="small">{{ blog.summary }}</p>
+              <hr>
+              <i class="fa fa-calendar-alt fa-sm"></i>
+              {{ blog.pub_date }}
             </div>
-            <div class="card-body">
-              <button
-                style="background: none; border: none; height: 4rem"
-                data-product="{{ photo.pk }}"
-                data-action="add"
-                class="update-cart  rounded-circle px-3 bg-white"
-                onmouseover="toggleDim(this, true)"
-                onmouseout="toggleDim(this, false)"
-              >
-                <i class="text-black fa-solid fa-2xl fa-cart-arrow-down"></i>
-              </button>
-            </div>
-          </div>
-          <div class="text-start">
-            <a href="{% url 'photo' photo.id %}" class="text-black  fw-bold underline my-2"
-              >{{ photo.name }}</a
-            >
-            <br>
-            <small class="small">{{ photo.description|truncatechars:25 }}</small> <br>
-            <h6 class="text-black my-2">€{{ photo.price }}</h6>
-          </div>
         </div>
         {% endfor %}
       </div>
     </div>
-    <br>
-    <hr>
-    <!-- END OF POPULAR THIS WEEK -->
-    <!-- -------------------- -->
-    <!-- -------------------- -->
+  </section>
+  <!-- Blog -->
 
-      <!-- BLOG SECTION -->
+  <!-- END OF BLOG SECTION -->
+  <!-- -------------------- -->
+  <!-- -------------------- -->
 
-      <!-- Blog -->
-      <section class="mt-5 mb-4">
-        <div class="container text-dark">
-          <h1 class="text-center mb-5">Blog posts</h1>
-          <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-2 row-cols-xl-2 justify-content-start">
-            {% for blog in blogs|slice:":4" %}
-            <div class="col mb-5">
-                <a href="{% url 'blog_detail' pk=blog.pk %}" class="img-fluid underline text-dark">
-                  {% if blog.youtube %}
-                  <iframe 
-                    src="https://www.youtube.com/embed/XppZqa0BtoQ" 
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowfullscreen
-                    class="card-img-top"
-                    style="height: 50vh"
-                    width="auto"
-                    >
-                  </iframe>
-                  {% else %}
-                  <img
-                    class="card-img-top"
-                    src="{{ blog.image.url }}"
-                    style="object-fit: cover; height: 50vh"
-                    width="auto"
-                  />
-                  {% endif %}
-                <div class="mt-2 text-muted small d-block mb-1">
-                  <h6 class="text-dark">{{ blog.title|truncatechars:50 }}</h6></a>
-                  <p class="small">{{ blog.summary }}</p>
-                  <hr>
-                  <i class="fa fa-calendar-alt fa-sm"></i>
-                  {{ blog.pub_date }}
-                </div>
-            </div>
-            {% endfor %}
+  <!-- HOT SALE -->
+  <div class="row">
+    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img style="height: 300px; " src="{% static 'index/blue_trucker_hat.png' %}" class="rounded d-block w-100 grayscale" alt="Akiba Trucker Hats">
+          <div class="carousel-caption d-md-block">
+            <h4 style="margin-bottom: 6rem;" class="text-start"><a class="underline text-white" href="{% url 'gallery' %}?category=Hats%20And%20Caps">Explore our <br>Trucker Hats &#8594;</a></h4>
           </div>
         </div>
-      </section>
-      <!-- Blog -->
-
-      <!-- END OF BLOG SECTION -->
-      <!-- -------------------- -->
-      <!-- -------------------- -->
-
-      <!-- HOT SALE -->
-      <div class="row">
-        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img style="height: 300px; " src="{% static 'index/blue_trucker_hat.png' %}" class="rounded d-block w-100 grayscale" alt="Akiba Trucker Hats">
-              <div class="carousel-caption d-md-block">
-                <h4 style="margin-bottom: 6rem;" class="text-start"><a class="underline text-white" href="{% url 'gallery' %}?category=Hats%20And%20Caps">Explore our <br>Trucker Hats &#8594;</a></h4>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <img style="height: 300px;" src="{% static 'index/pink_trucker_hat.png' %}" class="rounded d-block w-100" alt="Trucker Hat">
-            </div>
-            <div class="carousel-item">
-              <img style="height: 300px;" src="{% static 'index/bucket_hats.png' %}" class="rounded d-block w-100" alt="Bucket Hats">
-              <div class="carousel-caption d-md-block">
-                <a class="btn btn-outline-light" href="{% url 'gallery' %}?category=Hats%20And%20Caps">Akiba Bucket Hats</a>
-              </div>
-            </div>
+        <div class="carousel-item">
+          <img style="height: 300px;" src="{% static 'index/pink_trucker_hat.png' %}" class="rounded d-block w-100" alt="Trucker Hat">
+        </div>
+        <div class="carousel-item">
+          <img style="height: 300px;" src="{% static 'index/bucket_hats.png' %}" class="rounded d-block w-100" alt="Bucket Hats">
+          <div class="carousel-caption d-md-block">
+            <a class="btn btn-outline-light" href="{% url 'gallery' %}?category=Hats%20And%20Caps">Akiba Bucket Hats</a>
           </div>
         </div>
-      </div>
-      <hr />
-      <!-- END OF HOT SALE -->
-      <!-- -------------------- -->
-      <!-- -------------------- -->
-      <div class="container text-center">
-        <a class="underline text-dark" href="#myCarousel">Back to top</a>
       </div>
     </div>
+    <a class="underline text-center my-5 text-dark" href="#myCarousel">Back to top</a>
   </div>
-  <script>
+</div>
+
+
+
+<script>
   // Get a reference to the audio element
   var progress = document.getElementById("mix_progress_bar");
   var song = document.getElementById("song");
@@ -430,8 +386,5 @@
     controlIcon.classList.remove("fa-play");
   };
 </script>
-</div>
-
-<script src="{% static 'js/countdown.js' %}"></script>
 
 {% endblock %}
