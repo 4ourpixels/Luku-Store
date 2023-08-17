@@ -105,8 +105,6 @@ def index(request):
 
     popular_items = Photo.objects.filter(popular=True)[:4]
 
-    hat_category_icon = categories[6].icon
-
     slide1 = homepages[0]
     slide2 = homepages[1]
     slide3 = homepages[2]
@@ -154,7 +152,7 @@ def index(request):
         'asorted_trucker_hats': asorted_trucker_hats,
         'green_trucker_hat': green_trucker_hat,
         'categories': categories,
-        'hat_category_icon': hat_category_icon,
+
         'popular_items': popular_items,
         'mixes': mixes,
 
@@ -183,7 +181,7 @@ def shop(request):
 
     for product_code in unique_product_codes:
         latest_photo = Photo.objects.filter(
-            product_code=product_code).order_by('-id').first()
+            product_code=product_code).order_by('id').first()
         unique_photos.append(latest_photo)
 
     active_category = request.GET.get('category', None)
@@ -532,11 +530,14 @@ def viewPhoto(request, pk):
         Q(name__icontains=similar_products[0])
     ).exclude(pk=pk).distinct()
 
+    page_name = f"- {photo.name}"
+
     context = {
         'photo': photo,
         'cartItems': cartItems,
         'similar_images': similar_images,
-        'similar_products': similar_products
+        'similar_products': similar_products,
+        'page_name': page_name,
     }
 
     return render(request, 'photo.html', context)
