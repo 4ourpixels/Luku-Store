@@ -1,35 +1,30 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<div class="container">
-  <div class="row text-black">
-    <h1>{{ blog.title }}</h1>
-    <div>{{ blog.content|safe }}</div>
+<div class="container-fluid p-0 m-0">
+  <img
+    src="{{ blog.image.url }}"
+    alt="{{ blog.name }}"
+    class="img-fluid w-100 mt-3"
+  />
+</div>
+<div class="container my-5">
+  <h6 class="text-muted small mb-2">{{ blog.pub_date }}</h6>
+  <h1>{{ blog.title }}</h1>
 
-    <div class="col-md-12 col-lg-4 sidebar">
-      <div class="sidebar-box">
-        <h3 class="heading">Popular Posts</h3>
-        {% for blog in recent_blogs %}
-        <div class="post-entry-sidebar">
-          <ul class="list-unstyled">
-            <li>
-              <a
-                class="underline text-dark"
-                href="{% url 'blog_detail' blog.pk %}"
-              >
-                <img src="{{ blog.image.url }}" class="me-4 img-fluid" />
-                <div class="text">
-                  <h4>{{ blog.title }}</h4>
-                  <div class="post-meta">
-                    <span class="mr-2">{{ blog.pub_date }} </span>
-                  </div>
-                </div>
-              </a>
-            </li>
-          </ul>
-        </div>
-        {% endfor %}
-      </div>
-      <!-- END sidebar-box -->
-    </div>
+  <div class="row">
+    <div class="my-5 p">{{ blog.content|safe }}</div>
+
+    {% for photo in photos_in_ss23_category %}
+    <a style="text-decoration: none" href="{% url 'photo' photo.id %}"
+      ><img
+        src="{{ photo.image.url }}"
+        alt="A {{ photo.type }} from the SS23 Luku Book"
+        class="img-fluid"
+    /></a>
+    {% endfor %}
+
+    <div class="my-5 p">{{ blog.contentOne|safe }}</div>
+
+    <div class="my-5 p">{{ blog.contentTwo|safe }}</div>
   </div>
 </div>
 {% endblock %}
