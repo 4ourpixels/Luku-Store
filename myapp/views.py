@@ -98,7 +98,7 @@ def index(request):
     page_name = "- Home of African Streetwear | Online Clothing Store"
 
     photos = Photo.objects.all()
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.order_by('-pk')
     homepages = HomePage.objects.all()
     categories = Category.objects.all()
     mixes = Mix.objects.all()
