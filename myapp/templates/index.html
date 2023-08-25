@@ -126,7 +126,7 @@
     <div class="col-lg-4 col-md-12 col-sm-12 my-4">
 
       <img
-        class="rounded img-fluid mb-3"
+        class=" img-fluid mb-3"
         src="{{ new_release.image.url }}"
       />
 
@@ -148,7 +148,7 @@
             <a class="overlay" href="{% url 'gallery' %}?category=Jackets">
             <img
               style="object-fit: cover"
-              class="rounded img-fluid"
+              class=" img-fluid"
               src="{{ jacket.image.url }}"
             />
             </a>
@@ -158,7 +158,7 @@
             <a class="overlay" href="{% url 'gallery' %}?category=Sweaters">
             <img
               style="object-fit: cover"
-              class="rounded img-fluid"
+              class=" img-fluid"
               src="{{ sweater.image.url }}"
             />
             </a>
@@ -173,7 +173,7 @@
       <a class="overlay" href="{% url 'gallery' %}?category=Headwear">
       <img
         style="object-fit: cover"
-        class="rounded img-fluid"
+        class=" img-fluid"
         src="{{ trucker_hats.image.url }}"
       /></a>
     </div>
@@ -193,6 +193,34 @@
   </div>
   <hr>
   <!-- END OF LUKU DEFINITION -->
+
+
+  <!-- Summer Jam -->
+  <div class="container my-5">
+    <div class="row d-flex justify-content-between">
+      
+      <div class="col-6">
+        <img class="img-fluid" src="{{ lukubookImage.image.url }}" alt="{{ lukubookImage.name }}">
+      </div>
+      
+      <div class="col-6">
+        <div class="container">
+          <div class="row">
+            <div class="col me-2">
+              <img class="img-fluid" src="{{ lukubookImage.image.url }}" alt="{{ lukubookImage.name }}">
+            </div>
+            <div class="col">
+              <p class="fw-bold">{{ lukubookImage.name }}</p>
+              <p>{{ lukubookImage.description|truncatechars:25 }}</p>
+              <p>€{{ lukubookImage.price }}</p>
+              <a class="btn btn-dark" href="#!">View</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Summer Jam -->
 
   <br>
   <br>
@@ -329,18 +357,18 @@
     <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img style="height: 300px; " src="{% static 'index/blue_trucker_hat.png' %}" class="rounded d-block w-100 grayscale" alt="Akiba Trucker Hats">
+          <img style="height: 300px; " src="{% static 'index/blue_trucker_hat.png' %}" class="d-block w-100 grayscale" alt="Akiba Trucker Hats">
           <div class="carousel-caption d-md-block">
-            <h4 style="margin-bottom: 6rem;" class="text-start"><a class="underline text-white" href="{% url 'gallery' %}?category=Hats%20And%20Caps">Explore our <br>Trucker Hats &#8594;</a></h4>
+            <h4 style="margin-bottom: 6rem;" class="text-start"><a class="underline text-white" href="{% url 'gallery' %}?category=Headwear">Explore our <br>Trucker Hats &#8594;</a></h4>
           </div>
         </div>
         <div class="carousel-item">
-          <img style="height: 300px;" src="{% static 'index/pink_trucker_hat.png' %}" class="rounded d-block w-100" alt="Trucker Hat">
+          <img style="height: 300px;" src="{% static 'index/pink_trucker_hat.png' %}" class="d-block w-100" alt="Trucker Hat">
         </div>
         <div class="carousel-item">
-          <img style="height: 300px;" src="{% static 'index/bucket_hats.png' %}" class="rounded d-block w-100" alt="Bucket Hats">
+          <img style="height: 300px;" src="{% static 'index/bucket_hats.png' %}" class="d-block w-100" alt="Bucket Hats">
           <div class="carousel-caption d-md-block">
-            <a class="btn btn-outline-light" href="{% url 'gallery' %}?category=Hats%20And%20Caps">Akiba Bucket Hats</a>
+            <a class="btn btn-outline-light" href="{% url 'gallery' %}?category=Headwear">Akiba Bucket Hats</a>
           </div>
         </div>
       </div>

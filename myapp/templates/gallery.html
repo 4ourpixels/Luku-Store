@@ -54,9 +54,9 @@
       <div class="text-start">
         <a
           href="{% url 'photo' photo.id %}"
-          class="text-black fw-bold underline my-2"
+          class="text-black h5 fw-bold underline my-2"
           >{{ photo.name }} {% if photo.stock == 0 %}
-          <span class="badge bg-success">Sold Out</span>
+          <span class="badge h5 bg-danger">Sold Out</span>
           {% endif %}
         </a>
         <h6 class="text-black my-2">€{{ photo.price }}</h6>
