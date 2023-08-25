@@ -123,6 +123,9 @@ def index(request):
     slider_02 = homepages[12]
     slider_03 = homepages[13]
 
+    # Lukubook image
+    lukubookImage = get_object_or_404(Photo, pk=20)
+
     data = cartData(request)
     cartItems = data['cartItems']
 
@@ -159,6 +162,8 @@ def index(request):
         'slider_01': slider_01,
         'slider_02': slider_02,
         'slider_03': slider_03,
+
+        'lukubookImage': lukubookImage,
     }
     return render(request, 'index.html', context)
 
