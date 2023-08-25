@@ -55,21 +55,15 @@
         <a
           href="{% url 'photo' photo.id %}"
           class="text-black fw-bold underline my-2"
-          >{{ photo.name }}</a
-        >
-        <br />
-        <small class="small">{{ photo.description|truncatechars:25 }}</small>
-        <br />
+          >{{ photo.name }} {% if photo.stock == 0 %}
+          <span class="badge bg-success">Sold Out</span>
+          {% endif %}
+        </a>
         <h6 class="text-black my-2">€{{ photo.price }}</h6>
       </div>
     </div>
     {% endfor %}
   </div>
-  <hr />
-  <div class="text-center my-4">
-    <a href="{% url 'shop' %}" class="btn btn-dark">Back to shop</a>
-  </div>
-
   <script>
     function toggleDim(button, dim) {
       var cardWrapper = button.closest(".card-wrapper");

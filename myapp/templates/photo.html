@@ -4,18 +4,25 @@
     <section class="py-4">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item "><a class="text-dark underline" href="{% url 'shop' %}">Shop</a></li>
-          <li class="breadcrumb-item active" aria-current="page"><a class="text-muted underline" href="{% url 'gallery' %}?category={{ photo.category.name }}">{{ photo.category }}</a></li>
+          <li class="breadcrumb-item">
+            <a class="text-dark underline" href="{% url 'shop' %}">Shop</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <a
+              class="text-muted underline"
+              href="{% url 'gallery' %}?category={{ photo.category.name }}"
+              >{{ photo.category }}</a
+            >
+          </li>
         </ol>
       </nav>
 
       <div class="container mt-1">
         <div class="row gx-5">
-
           <aside class="col-lg-6">
             <div class="mb-3 d-flex justify-content-center">
               <img
-                style="object-fit: cover;"
+                style="object-fit: cover"
                 class="img-fluid"
                 src="{{ photo.image.url }}"
                 id="productImg"
@@ -27,7 +34,7 @@
                 style="object-fit: cover"
                 width="60"
                 height="60"
-                class="img-fluid small-img  mx-1"
+                class="img-fluid small-img mx-1"
                 src="{{ photo.image.url }}"
               />
               {% for photo in similar_images %}
@@ -45,18 +52,22 @@
 
           <main class="col-lg-6">
             <div class="ps-lg-3">
-              <h4 class="title text-dark">{{ photo.name }} ({{ photo.color }})</h4>
-              <h2 class="title text-dark">€{{ photo.price }}</h4>
+              <h4 class="title text-dark">
+                {{ photo.name }} ({{ photo.color }})
+              </h4>
+              <h2 class="title text-dark">€{{ photo.price }}</h2>
+              {% if photo.stock == 0 %}
+              <span class="badge bg-success">Sold Out</span>
+              {% endif %}
               <button
                 class="btn btn-dark my-3 w-100"
                 data-product="{{ photo.pk }}"
                 data-action="add"
-                >
-                  Add to cart <i class="ms-1 fa-solid fa-cart-shopping"></i>
+              >
+                Add to cart <i class="ms-1 fa-solid fa-cart-shopping"></i>
               </button>
             </div>
           </main>
-
         </div>
       </div>
 
@@ -64,14 +75,24 @@
         <div class="accordion" id="accordionExample">
           <div class="accordion-item w-auto">
             <h2 class="accordion-header" id="headingOne">
-              <button class="accordion-button text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              <button
+                class="accordion-button text-dark"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOne"
+                aria-expanded="false"
+                aria-controls="collapseOne"
+              >
                 Read more about the product
               </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-              <div class="accordion-body">
-                {{ photo.description }}
-              </div>
+            <div
+              id="collapseOne"
+              class="accordion-collapse collapse show"
+              aria-labelledby="headingOne"
+              data-bs-parent="#accordionExample"
+            >
+              <div class="accordion-body">{{ photo.description }}</div>
             </div>
           </div>
           {% if user.is_authenticated %}
@@ -79,13 +100,26 @@
           {% else %}
           <div class="accordion-item w-auto">
             <h2 class="accordion-header" id="headingTwo">
-              <button class="accordion-button text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <button
+                class="accordion-button text-dark"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo"
+                aria-expanded="false"
+                aria-controls="collapseTwo"
+              >
                 Shipping Info
               </button>
             </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div
+              id="collapseTwo"
+              class="accordion-collapse collapse show"
+              aria-labelledby="headingTwo"
+              data-bs-parent="#accordionExample"
+            >
               <div class="accordion-body">
-                Create an account with us by clicking <a class="" href="{% url 'register' %}">here.</a>
+                Create an account with us by clicking
+                <a class="" href="{% url 'register' %}">here.</a>
               </div>
             </div>
           </div>
@@ -94,11 +128,13 @@
       </div>
     </section>
   </div>
-  
+
   {% if similar_products %}
   <div class="container">
     <h5 class="card-title mb-3">Similar items</h5>
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-start">
+    <div
+      class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-start"
+    >
       {% for photo in similar_products %}
       <div class="col mb-4">
         <div style="border: none" class="card w-100 my-2 shadow-2-strong">
@@ -106,10 +142,7 @@
             <img
               src="{{ photo.image.url }}"
               class="img-fluid"
-              style="
-                object-fit: cover;
-                height: 25rem;
-                width: auto;"
+              style="object-fit: cover"
               alt="{{ photo.name }}"
           /></a>
           <div class="row d-flex flex-column mt-2">
@@ -127,35 +160,35 @@
 </div>
 
 <script>
-  var ProductImg = document.getElementById("productImg");
-  var SmallImg = document.getElementsByClassName("small-img");
+  var productImg = document.getElementById("productImg");
+  var smallImg = document.getElementsByClassName("small-img");
 
-  SmallImg[0].onclick = function () {
-    ProductImg.src = SmallImg[0].src;
+  smallImg[0].onclick = function () {
+    productImg.src = smallImg[0].src;
   };
-  SmallImg[1].onclick = function () {
-    ProductImg.src = SmallImg[1].src;
+  smallImg[1].onclick = function () {
+    productImg.src = smallImg[1].src;
   };
-  SmallImg[2].onclick = function () {
-    ProductImg.src = SmallImg[2].src;
+  smallImg[2].onclick = function () {
+    productImg.src = smallImg[2].src;
   };
-  SmallImg[3].onclick = function () {
-    ProductImg.src = SmallImg[3].src;
+  smallImg[3].onclick = function () {
+    productImg.src = smallImg[3].src;
   };
-  SmallImg[4].onclick = function () {
-    ProductImg.src = SmallImg[4].src;
+  smallImg[4].onclick = function () {
+    productImg.src = smallImg[4].src;
   };
-  SmallImg[5].onclick = function () {
-    ProductImg.src = SmallImg[5].src;
+  smallImg[5].onclick = function () {
+    productImg.src = smallImg[5].src;
   };
-  SmallImg[6].onclick = function () {
-    ProductImg.src = SmallImg[6].src;
+  smallImg[6].onclick = function () {
+    productImg.src = smallImg[6].src;
   };
-  SmallImg[7].onclick = function () {
-    ProductImg.src = SmallImg[7].src;
+  smallImg[7].onclick = function () {
+    productImg.src = smallImg[7].src;
   };
-  SmallImg[8].onclick = function () {
-    ProductImg.src = SmallImg[8].src;
+  smallImg[8].onclick = function () {
+    productImg.src = smallImg[8].src;
   };
 </script>
 {% endblock %}
