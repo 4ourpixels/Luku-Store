@@ -197,12 +197,13 @@
 
   <!-- Summer Jam -->
   <div class="container my-5">
+    <h2 class="text-center my-3">SS23 Lukubook Inspiration</h2>
     <div class="row d-flex justify-content-between">
-      
+
       <div class="col-md-6 col-sm-12 mb-3">
         <img class="img-fluid" src="{{ lukubookImage.image.url }}" alt="{{ lukubookImage.name }}">
       </div>
-      
+
       <div class="col-md-6 col-sm-12">
         <div class="container">
           <div class="row">
@@ -218,15 +219,17 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
-  <!-- Summer Jam -->
+  <!-- End of Summer Jam -->
 
+<hr>
   <br>
   <br>
   <br>
   <div class="container">
-    <h2 class="mt-5 text-center">Listen to DJ G400</h2>
+    <h2 class="text-center">Music Mix</h2>
     <p class="mb-5 text-center">Latest mixes from DJ G400, Nairobi, Kenya.</p>
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center">
       {% for mix in mixes %}
@@ -273,7 +276,8 @@
         <div class="card-wrapper mb-4">
           <div class="card-img">
             <img
-              class="card-img-top"
+              class="img-fluid"
+              style="object-fit: cover;"
               src="{{ photo.image.url }}"
               alt="{{ photo.name }}"
             />
@@ -328,9 +332,9 @@
               </iframe>
               {% else %}
               <img
-                class="card-img-top"
+                class="img-fluid"
                 src="{{ blog.image.url }}"
-                style="object-fit: cover; height: 50vh"
+                style="object-fit: cover;"
                 width="auto"
               />
               {% endif %}
