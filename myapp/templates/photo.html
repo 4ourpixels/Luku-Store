@@ -52,10 +52,31 @@
 
           <main class="col-lg-6">
             <div class="ps-lg-3">
-              <h4 class="title text-dark">
-                {{ photo.name }} ({{ photo.color }})
-              </h4>
+              <h4 class="title text-dark">{{ photo.name }}</h4>
               <h2 class="title text-dark">€{{ photo.price }}</h2>
+              <div class="rating">
+                {% if photo.rating == 1 %}
+                <i class="fa fa-star"></i>
+                {% elif photo.rating == 2 %}
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                {% elif photo.rating == 3 %}
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                {% elif photo.rating == 4 %}
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                {% else %}
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                {% endif %}
+              </div>
               {% if photo.stock == 0 %}
               <h4><span class="badge bg-danger">Sold Out</span></h4>
               {% endif %}
