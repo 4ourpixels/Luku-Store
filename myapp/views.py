@@ -94,6 +94,7 @@ def help(request):
 # END OF HELP SECTION - DONE
 
 
+
 def index(request):
     page_name = "- Home of African Streetwear | Online Clothing Store"
 
@@ -125,6 +126,12 @@ def index(request):
 
     # Lukubook image
     lukubookImage = get_object_or_404(Photo, pk=20)
+
+    # Luku Inspo Images
+    red_bucket_hat = homepages[14]
+    kintsugi_top_blue = homepages[15]
+    utility_jacket = homepages[16]
+    kintsugi_flare = homepages[17]
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -164,9 +171,13 @@ def index(request):
         'slider_03': slider_03,
 
         'lukubookImage': lukubookImage,
+        'red_bucket_hat': red_bucket_hat,
+        'kintsugi_top_blue': kintsugi_top_blue,
+        'utility_jacket': utility_jacket,
+        'kintsugi_flare': kintsugi_flare,
+
     }
     return render(request, 'index.html', context)
-
 
 def shop(request):
     page_name = f"- Shop"
