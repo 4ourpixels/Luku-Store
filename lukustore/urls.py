@@ -96,5 +96,8 @@ urlpatterns = [
     path('photo/<str:pk>/', viewPhoto, name='photo'),
     path('addphoto/', addPhoto, name='addphoto'),
     path('addphoto/', addPhoto, name='addphoto'),
+    
+    # Product Details
+    path('details/<str:pk>/', product_details, name='product_details'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
