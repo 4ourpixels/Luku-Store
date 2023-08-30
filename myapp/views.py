@@ -564,6 +564,55 @@ def viewPhoto(request, pk):
     return render(request, 'photo.html', context)
 
 
+def product_details(request, id):
+
+    # Retrieve the 'requested' product using the 'pk' as the 'id' parameter
+    product = Product.objects.get(pk=id)
+
+    # Loading the cart data
+    # Request data
+    data = cartData(request)
+    # Return the data and store them in the 'cartItems' variable and load on the html
+    cartItems = data['cartItems']
+
+    # Get the name link field and split the items using the comma
+    name_link = Product.name_link.split(',')
+
+    similar_images = Product.objects.filter(
+        Q(name_link__icontains=name_link[0]) |
+        Q(name__icontains=name_link[0])
+    ).exclude(pk=id).distinct()
+
+    similar_products = product.similar_products.split(',')
+
+    similar_products = Product.objects.filter(
+        Q(similar_products__icontains=similar_products[0]) |
+        Q(name__icontains=similar_products[0])
+    ).exclude(pk=id).distinct()
+
+    # Retrieving similar products based on the product codes
+    similar_products_by_code = product.similar_products_code.split(',')
+
+    similar_products_by_code = Product.objects.filter(
+        Q(similar_products_code__icontains=similar_products_by_code[0]) |
+        Q(product_name__icontains=similar_products[0])
+    ).exclude(pk=id).distinct()
+
+    page_name = f"- {product.product_name}"
+
+    context = {
+        'product': product,
+        'cartItems': cartItems,
+        'similar_images': similar_images,
+        'similar_products': similar_products,
+        'page_name': page_name,
+        'similar_products_by_code': similar_products_by_code,
+    }
+
+    return render(request, 'product_details.html', context)
+
+
+
 @login_required(login_url='login')
 def addPhoto(request):
     categories = Category.objects.all()
