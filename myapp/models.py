@@ -311,3 +311,60 @@ class Mix(models.Model):
 
     def __str__(self):
         return self.title
+
+
+# Mon 28th Aug
+
+
+class Kategory(models.Model):
+    name = models.CharField(max_length=100, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
+    product_name = models.CharField(max_length=200, null=True, blank=True)
+    stock = models.IntegerField(default=0)
+    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+    product_code = models.TextField(null=True, blank=True)
+    similar_products_code = models.TextField(null=True, blank=True)
+    similar_products = models.CharField(max_length=300, blank=True)
+    description = models.TextField()
+    type = models.CharField(max_length=200, null=True, blank=True)
+    category = models.ForeignKey(
+        Kategory,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    color = models.CharField(max_length=200, blank=True, null=True)
+    size = models.CharField(max_length=50, blank=True, null=True)
+    rating = models.IntegerField(blank=True, default=1)
+    popular = models.BooleanField(default=False, null=True, blank=False)
+    SHOP = (
+        ('Luku Store.nl', 'Luku Store.nl'),
+        ('Akiba Studios', 'Akiba Studios'),
+    )
+    shop = models.CharField(
+        max_length=50,
+        choices=SHOP,
+        null=True,
+        default='Luku Store.nl'
+    )
+    digital = models.BooleanField(default=False, null=True, blank=False)
+
+    image = models.ImageField(
+        null=False,
+        blank=False,
+        upload_to="products/",
+        default='image.jpg'
+    )
+
+    def __str__(self):
+        try:
+            if self.name:
+                return self.name
+            else:
+                return f"Type: {self.type}"
+        except Exception as e:
+            return f"Error retrieving string representation: {str(e)}"
