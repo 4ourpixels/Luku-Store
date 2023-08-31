@@ -2,36 +2,36 @@ var updateBtns = document.getElementsByClassName("update-cart");
 
 for (var i = 0; i < updateBtns.length; i++) {
   updateBtns[i].addEventListener("click", function () {
-    var photoId = this.dataset.product;
+    var productId = this.dataset.product;
     var action = this.dataset.action;
-    console.log("photoId:", photoId, "action:", action);
+    console.log("productId:", productId, "action:", action);
 
     console.log("USER:", user);
 
     if (user == "AnonymousUser") {
-      addCookieItem(photoId, action);
+      addCookieItem(productId, action);
     } else {
-      updateUserOrder(photoId, action);
+      updateUserOrder(productId, action);
     }
   });
 }
 
-function addCookieItem(photoId, action) {
+function addCookieItem(productId, action) {
   console.log("Not logged in..");
 
   if (action == "add") {
-    if (cart[photoId] == undefined) {
-      cart[photoId] = { quantity: 1 };
+    if (cart[productId] == undefined) {
+      cart[productId] = { quantity: 1 };
     } else {
-      cart[photoId]["quantity"] += 1;
+      cart[productId]["quantity"] += 1;
     }
   }
   if (action == "remove") {
-    cart[photoId]["quantity"] -= 1;
+    cart[productId]["quantity"] -= 1;
 
-    if (cart[photoId]["quantity"] <= 0) {
+    if (cart[productId]["quantity"] <= 0) {
       console.log("Remove Item");
-      delete cart[photoId];
+      delete cart[productId];
     }
   }
   console.log("Cart:", cart);
@@ -39,7 +39,7 @@ function addCookieItem(photoId, action) {
   location.reload();
 }
 
-function updateUserOrder(photoId, action) {
+function updateUserOrder(productId, action) {
   console.log("User is logged in, sending data...");
 
   var url = "/updateItem/";
@@ -50,7 +50,7 @@ function updateUserOrder(photoId, action) {
       "Content-Type": "applicaion/json",
       "X-CSRFToken": csrftoken,
     },
-    body: JSON.stringify({ photoId: photoId, action: action }),
+    body: JSON.stringify({ productId: productId, action: action }),
   })
     .then((response) => {
       return response.json();
