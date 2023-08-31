@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-!qi1#$r9@4+1a7cuxl#z&kn5t&!3ierknj)bn+6*o9(137$_v3"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['4ourpixel.pythonanywhere.com', 'https://lukustore.netlify.app/']
+ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 
 
 # Application definition
@@ -78,7 +78,7 @@ WSGI_APPLICATION = "lukustore.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db2.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -129,4 +129,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# AWS_ACCESS_KEY_ID = 'MAKE-SURE-ITS-A-STRING-VALUE'
+# AWS_SECRET_KEY_ID = 'AN-ENCODED-STRING-IN-CASE-SENSITIVE'
+# AWS_STORAGE_BUCKET_NAME = 'BUCKET-NAME-IN-STRING'
+# AWS_QUERYSTRING_AUTH = False
