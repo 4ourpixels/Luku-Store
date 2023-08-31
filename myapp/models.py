@@ -362,8 +362,9 @@ class Product(models.Model):
 
     def __str__(self):
         try:
-            if self.name:
-                return self.name
+            if self.product_name:
+                details = f"{self.product_name} || {self.stock} In Stock || €{self.price} || Code: {self.product_code}"
+                return details
             else:
                 return f"Type: {self.type}"
         except Exception as e:
