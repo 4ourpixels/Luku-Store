@@ -94,7 +94,6 @@ def help(request):
 # END OF HELP SECTION - DONE
 
 
-
 def index(request):
     page_name = "- Home of African Streetwear | Online Clothing Store"
 
@@ -129,9 +128,9 @@ def index(request):
 
     # Luku Inspo Images
     red_bucket_hat = homepages[14]
-    kintsugi_top_blue = homepages[15]
-    utility_jacket = homepages[16]
-    kintsugi_flare = homepages[17]
+    # kintsugi_top_blue = homepages[15]
+    # utility_jacket = homepages[16]
+    # kintsugi_flare = homepages[17]
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -172,14 +171,58 @@ def index(request):
 
         'lukubookImage': lukubookImage,
         'red_bucket_hat': red_bucket_hat,
-        'kintsugi_top_blue': kintsugi_top_blue,
-        'utility_jacket': utility_jacket,
-        'kintsugi_flare': kintsugi_flare,
+        # 'kintsugi_top_blue': kintsugi_top_blue,
+        # 'utility_jacket': utility_jacket,
+        # 'kintsugi_flare': kintsugi_flare,
 
     }
     return render(request, 'index.html', context)
 
+
 def shop(request):
+    page_name = f"- Shop"
+    products = Product.objects.order_by('-pk')
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    blogs = Blog.objects.order_by('-pk')
+    category = request.GET.get('category')
+    categories = Kategory.objects.all()
+
+    total_products = Product.objects.count()
+
+    unique_product_codes = Product.objects.filter(
+        product_code__isnull=False).values_list('product_code', flat=True).distinct()
+    unique_photos = []
+
+    for product_code in unique_product_codes:
+        latest_photo = Product.objects.filter(
+            product_code=product_code).order_by('id').first()
+        unique_photos.append(latest_photo)
+
+    active_category = request.GET.get('category', None)
+
+    if category == None:
+        products = Product.objects.all()
+    else:
+        products = Product.objects.filter(category__name=category)
+
+    context = {
+        'page_name': page_name,
+        'cartItems': cartItems,
+        'blogs': blogs,
+        'products': products,
+        'categories': categories,
+        'total_products': total_products,
+        'unique_photos': unique_photos,
+        'active_category': active_category,
+    }
+
+    return render(request, 'shop.html', context)
+
+
+def shops(request):
     page_name = f"- Shop"
     photos = Photo.objects.order_by('-pk')
 
@@ -564,10 +607,11 @@ def viewPhoto(request, pk):
     return render(request, 'photo.html', context)
 
 
-def product_details(request, id):
+def product_detail(request, pk):
 
     # Retrieve the 'requested' product using the 'pk' as the 'id' parameter
-    product = Product.objects.get(pk=id)
+    product = Product.objects.get(pk=pk)
+    page_name = f"- {product.product_name}"
 
     # Loading the cart data
     # Request data
@@ -575,42 +619,21 @@ def product_details(request, id):
     # Return the data and store them in the 'cartItems' variable and load on the html
     cartItems = data['cartItems']
 
-    # Get the name link field and split the items using the comma
-    name_link = Product.name_link.split(',')
+    similar_products = product.similar_products_code.split(',')
 
-    similar_images = Product.objects.filter(
-        Q(name_link__icontains=name_link[0]) |
-        Q(name__icontains=name_link[0])
-    ).exclude(pk=id).distinct()
-
-    similar_products = product.similar_products.split(',')
-
-    similar_products = Product.objects.filter(
+    similar_product_images = Product.objects.filter(
         Q(similar_products__icontains=similar_products[0]) |
-        Q(name__icontains=similar_products[0])
-    ).exclude(pk=id).distinct()
-
-    # Retrieving similar products based on the product codes
-    similar_products_by_code = product.similar_products_code.split(',')
-
-    similar_products_by_code = Product.objects.filter(
-        Q(similar_products_code__icontains=similar_products_by_code[0]) |
-        Q(product_name__icontains=similar_products[0])
-    ).exclude(pk=id).distinct()
-
-    page_name = f"- {product.product_name}"
+        Q(product_code__icontains=similar_products[0])
+    ).exclude(pk=pk).distinct()
 
     context = {
         'product': product,
         'cartItems': cartItems,
-        'similar_images': similar_images,
-        'similar_products': similar_products,
         'page_name': page_name,
-        'similar_products_by_code': similar_products_by_code,
+        'similar_product_images': similar_product_images
     }
 
-    return render(request, 'product_details.html', context)
-
+    return render(request, 'product_detail.html', context)
 
 
 @login_required(login_url='login')
