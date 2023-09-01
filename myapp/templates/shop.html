@@ -24,14 +24,14 @@
                   <div class="card-heading active">
                     <a
                       data-toggle="collapse"
-                      class="nav-link {% if active_category == category.name %}active{% endif %} text-black"
+                      class="nav-link"
                       data-target="#collapseOne"
-                      >{{ category.name }}</a
+                      >Select Category</a
                     >
                   </div>
                   <div
                     id="collapseOne"
-                    class="collapse show"
+                    class="collapse"
                     data-parent="#accordionExample"
                   >
                     <div class="card-body">
@@ -41,7 +41,7 @@
                             class="nav-link {% if not active_category %}active{% endif %} text-black"
                             aria-current="page"
                             href="{% url 'shop' %}"
-                            >All</a
+                            >Shop</a
                           >
                         </li>
                         {% for category in categories %}
