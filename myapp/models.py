@@ -4,6 +4,96 @@ from django.utils.dateformat import DateFormat
 from django.utils import timezone
 
 
+# Customer model will inherit the Django's default User model
+class Customer(models.Model):
+    user = models.OneToOneField(
+        User, null=True, blank=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, null=True)
+    email = models.CharField(max_length=200, null=True)
+
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="media/users/",
+        default='user.jpg',
+    )
+
+    def __str__(self):
+        return self.name
+
+
+def create_customer(sender, instance, created, **kwargs):
+    if created:
+        Customer.objects.create(
+            user=instance, name=instance.username, email=instance.email)
+
+
+models.signals.post_save.connect(create_customer, sender=User)
+
+# END OF CUSTOMER MODEL
+
+
+# CATEGORY MODEL
+# Linked to the Product model
+class Category(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+# END OF CATEGORY MODEL
+
+# PRODUCT MODEL
+
+
+class Product(models.Model):
+    product_name = models.CharField(max_length=200, null=True, blank=True)
+    stock = models.IntegerField(default=0)
+    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+    product_code = models.TextField(null=True, blank=True)
+    similar_products_code = models.TextField(null=True, blank=True)
+    similar_products = models.TextField(null=True, blank=True)
+    description = models.TextField()
+    type = models.CharField(max_length=200, null=True, blank=True)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    color = models.CharField(max_length=200, blank=True, null=True)
+    size = models.CharField(max_length=50, blank=True, null=True)
+    rating = models.IntegerField(blank=True, default=1)
+    popular = models.BooleanField(default=False, null=True, blank=False)
+    SHOP = (
+        ('Luku Store.nl', 'Luku Store.nl'),
+        ('Akiba Studios', 'Akiba Studios'),
+    )
+    shop = models.CharField(
+        max_length=50,
+        choices=SHOP,
+        null=True,
+        default='Luku Store.nl'
+    )
+    digital = models.BooleanField(default=False, null=True, blank=False)
+
+    image = models.ImageField(
+        null=False,
+        blank=False,
+        upload_to="products/",
+        default='image.jpg'
+    )
+
+    def __str__(self):
+        try:
+            if self.product_name:
+                details = f"{self.product_name} || {self.stock} In Stock || €{self.price} || Code: {self.product_code}"
+                return details
+            else:
+                return f"Type: {self.type}"
+        except Exception as e:
+            return f"Error retrieving string representation: {str(e)}"
+# END OF PRODUCT MODEL
+
 # BLOG ENTRY
 
 
@@ -67,87 +157,6 @@ class Help(models.Model):
 # END OF HELP
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=100, null=False, blank=False)
-    icon = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Photo(models.Model):
-    name = models.CharField(max_length=200, null=True, blank=True)
-    product_code = models.TextField(null=True, blank=True)
-    name_link = models.CharField(max_length=200, null=True, blank=True)
-    similar_products = models.CharField(max_length=300, blank=True)
-    type = models.CharField(max_length=100, blank=True, null=True)
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.SET_NULL,
-        null=True
-    )
-
-    image = models.ImageField(
-        null=False,
-        blank=False,
-        upload_to="products/",
-        default='image.jpg'
-    )
-    description = models.TextField()
-    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
-    stock = models.IntegerField(default=0)
-    color = models.CharField(max_length=75, blank=True, null=True)
-    size = models.CharField(max_length=50, blank=True, null=True)
-    rating = models.IntegerField(blank=True, default=0)
-    popular = models.BooleanField(default=False, null=True, blank=False)
-    SHOP = (
-        ('Luku Store.nl', 'Luku Store.nl'),
-        ('Akiba Studios', 'Akiba Studios'),
-    )
-    shop = models.CharField(
-        max_length=50,
-        choices=SHOP,
-        null=True,
-        default='Luku Store.nl'
-    )
-    digital = models.BooleanField(default=False, null=True, blank=False)
-
-    def __str__(self):
-        try:
-            if self.name:
-                return self.name
-            else:
-                return f"Type: {self.type}"
-        except Exception as e:
-            return f"Error retrieving string representation: {str(e)}"
-
-
-class Customer(models.Model):
-    user = models.OneToOneField(
-        User, null=True, blank=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, null=True)
-    email = models.CharField(max_length=200)
-
-    image = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to="media/",
-        default='image.jpg',
-    )
-
-    def __str__(self):
-        return self.name
-
-
-def create_customer(sender, instance, created, **kwargs):
-    if created:
-        Customer.objects.create(
-            user=instance, name=instance.username, email=instance.email)
-
-
-models.signals.post_save.connect(create_customer, sender=User)
-# END OF CUSTOMER MODEL
-
 # ORDER
 
 
@@ -157,6 +166,10 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
     transaction_id = models.CharField(max_length=200, null=True, blank=False)
+
+    def __str__(self):
+        order = f"Order: #{self.pk} - Transaction ID: {self.transaction_id} || {self.customer} || At: {self.date_ordered}"
+        return order
 
     def __str__(self):
         date_format = DateFormat(self.date_ordered.astimezone(
@@ -169,7 +182,7 @@ class Order(models.Model):
         shipping = False
         orderitems = self.orderitem_set.all()
         for i in orderitems:
-            if i.photo.digital == False:
+            if i.product.digital == False:
                 shipping = True
         return shipping
 
@@ -190,35 +203,36 @@ class Order(models.Model):
         shipping = False
         orderitems = self.orderitem_set.all()
         for i in orderitems:
-            if i.photo.digital == False:
+            if i.product.digital == False:
                 shipping = True
         return shipping
 # END OF ORDER
 
-# ORDER ITEM
+# ORDER ITEM MODEL
 
 
 class OrderItem(models.Model):
-    photo = models.ForeignKey(
-        Photo, on_delete=models.SET_NULL, blank=True, null=True)
+    product = models.ForeignKey(
+        Product, on_delete=models.SET_NULL, blank=True, null=True)
     order = models.ForeignKey(
         Order, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
+    date_added = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     @property
     def get_total(self):
-        total = self.photo.price * self.quantity
+        total = self.product.price * self.quantity
         return total
 
     def __str__(self):
-        return f'{self.photo}'
+        return f'Order: {self.order.transaction_id} || {self.quantity} piece(s) of {self.product.product_name}'
 
     @property
     def get_cart_items(self):
         orderitems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderitems])
         return total
-# END OF ORDER ITEM
+# END OF ORDER ITEMMODEL
 
 # SHIPPING ADDRESS
 
@@ -241,9 +255,6 @@ class ShippingAddress(models.Model):
     )
     label = models.CharField(
         max_length=15, choices=LABEL, null=True, default='Home')
-
-    def __str__(self):
-        return self.address
 
     def __str__(self):
         return f"{self.customer}'s {self.label} Address"
@@ -311,61 +322,3 @@ class Mix(models.Model):
 
     def __str__(self):
         return self.title
-
-
-# Mon 28th Aug
-
-
-class Kategory(models.Model):
-    name = models.CharField(max_length=100, null=False, blank=False)
-
-    def __str__(self):
-        return self.name
-
-
-class Product(models.Model):
-    product_name = models.CharField(max_length=200, null=True, blank=True)
-    stock = models.IntegerField(default=0)
-    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
-    product_code = models.TextField(null=True, blank=True)
-    similar_products_code = models.TextField(null=True, blank=True)
-    similar_products = models.CharField(max_length=300, blank=True)
-    description = models.TextField()
-    type = models.CharField(max_length=200, null=True, blank=True)
-    category = models.ForeignKey(
-        Kategory,
-        on_delete=models.SET_NULL,
-        null=True
-    )
-    color = models.CharField(max_length=200, blank=True, null=True)
-    size = models.CharField(max_length=50, blank=True, null=True)
-    rating = models.IntegerField(blank=True, default=1)
-    popular = models.BooleanField(default=False, null=True, blank=False)
-    SHOP = (
-        ('Luku Store.nl', 'Luku Store.nl'),
-        ('Akiba Studios', 'Akiba Studios'),
-    )
-    shop = models.CharField(
-        max_length=50,
-        choices=SHOP,
-        null=True,
-        default='Luku Store.nl'
-    )
-    digital = models.BooleanField(default=False, null=True, blank=False)
-
-    image = models.ImageField(
-        null=False,
-        blank=False,
-        upload_to="products/",
-        default='image.jpg'
-    )
-
-    def __str__(self):
-        try:
-            if self.product_name:
-                details = f"{self.product_name} || {self.stock} In Stock || €{self.price} || Code: {self.product_code}"
-                return details
-            else:
-                return f"Type: {self.type}"
-        except Exception as e:
-            return f"Error retrieving string representation: {str(e)}"

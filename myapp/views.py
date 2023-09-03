@@ -97,13 +97,13 @@ def help(request):
 def index(request):
     page_name = "- Home of African Streetwear | Online Clothing Store"
 
-    photos = Photo.objects.all()
+    products = Product.objects.all()
     blogs = Blog.objects.order_by('-pk')
     homepages = HomePage.objects.all()
     categories = Category.objects.all()
     mixes = Mix.objects.all()
 
-    popular_items = Photo.objects.filter(popular=True)[:4]
+    popular_items = Product.objects.filter(popular=True)[:4]
 
     slide1 = homepages[0]
     slide2 = homepages[1]
@@ -124,13 +124,13 @@ def index(request):
     slider_03 = homepages[13]
 
     # Lukubook image
-    lukubookImage = get_object_or_404(Photo, pk=20)
+    # lukubookImage = get_object_or_404(Product, pk=20)
 
     # Luku Inspo Images
     red_bucket_hat = homepages[14]
-    # kintsugi_top_blue = homepages[15]
-    # utility_jacket = homepages[16]
-    # kintsugi_flare = homepages[17]
+    kintsugi_top_blue = homepages[15]
+    utility_jacket = homepages[16]
+    kintsugi_flare = homepages[17]
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -143,7 +143,7 @@ def index(request):
         return redirect('index')
 
     context = {
-        'photos': photos,
+        'products': products,
         'blogs': blogs,
         'cartItems': cartItems,
         'page_name': page_name,
@@ -169,11 +169,11 @@ def index(request):
         'slider_02': slider_02,
         'slider_03': slider_03,
 
-        'lukubookImage': lukubookImage,
+        # 'lukubookImage': lukubookImage,
         'red_bucket_hat': red_bucket_hat,
-        # 'kintsugi_top_blue': kintsugi_top_blue,
-        # 'utility_jacket': utility_jacket,
-        # 'kintsugi_flare': kintsugi_flare,
+        'kintsugi_top_blue': kintsugi_top_blue,
+        'utility_jacket': utility_jacket,
+        'kintsugi_flare': kintsugi_flare,
 
     }
     return render(request, 'index.html', context)
@@ -188,7 +188,51 @@ def shop(request):
 
     blogs = Blog.objects.order_by('-pk')
     category = request.GET.get('category')
-    categories = Kategory.objects.all()
+    categories = Category.objects.all()
+
+    total_products = Product.objects.count()
+
+    unique_product_codes = Product.objects.filter(
+        product_code__isnull=False).values_list('product_code', flat=True).distinct()
+    unique_photos = []
+
+    for product_code in unique_product_codes:
+        latest_photo = Product.objects.filter(
+            product_code=product_code).order_by('pk').first()
+        unique_photos.append(latest_photo)
+
+    active_category = request.GET.get('category', None)
+
+    if category == None:
+        products = Product.objects.all()
+    else:
+        products = Product.objects.filter(category__name=category)
+
+    products = products[:8]
+
+    context = {
+        'page_name': page_name,
+        'cartItems': cartItems,
+        'blogs': blogs,
+        'products': products,
+        'categories': categories,
+        'total_products': total_products,
+        'unique_photos': unique_photos,
+        'active_category': active_category,
+    }
+
+    return render(request, 'shop.html', context)
+
+
+def shops(request):
+    page_name = f"- Shop"
+    products = Product.objects.order_by('-pk')
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+    blogs = Blog.objects.order_by('-pk')
+    category = request.GET.get('category')
+    categories = Category.objects.all()
 
     total_products = Product.objects.count()
 
@@ -221,48 +265,6 @@ def shop(request):
 
     return render(request, 'shop.html', context)
 
-
-def shops(request):
-    page_name = f"- Shop"
-    photos = Photo.objects.order_by('-pk')
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-    blogs = Blog.objects.order_by('-pk')
-    category = request.GET.get('category')
-    categories = Category.objects.all()
-
-    total_products = Photo.objects.count()
-
-    unique_product_codes = Photo.objects.filter(
-        product_code__isnull=False).values_list('product_code', flat=True).distinct()
-    unique_photos = []
-
-    for product_code in unique_product_codes:
-        latest_photo = Photo.objects.filter(
-            product_code=product_code).order_by('id').first()
-        unique_photos.append(latest_photo)
-
-    active_category = request.GET.get('category', None)
-
-    if category == None:
-        photos = Photo.objects.all()
-    else:
-        photos = Photo.objects.filter(category__name=category)
-
-    context = {
-        'page_name': page_name,
-        'cartItems': cartItems,
-        'blogs': blogs,
-        'photos': photos,
-        'categories': categories,
-        'total_products': total_products,
-        'unique_photos': unique_photos,
-        'active_category': active_category,
-    }
-
-    return render(request, 'shop.html', context)
-
 # CART
 
 
@@ -275,14 +277,14 @@ def cart(request):
     discount = 0
     page_name = f"- Cart({cartItems})"
 
-    photos = Photo.objects.all()
+    products = Product.objects.all()
 
     context = {
         'page_name': page_name,
         'items': items,
         'cartItems': cartItems,
         'order': order,
-        'photos': photos,
+        'products': products,
         'discount': discount,
     }
 
@@ -341,7 +343,7 @@ def blog_detail(request, pk):
 
     # Retrieve photos from the category named "SS23"
     category_ss23 = Category.objects.get(name='SS23')
-    photos_in_ss23_category = Photo.objects.filter(category=category_ss23)
+    photos_in_ss23_category = Product.objects.filter(category=category_ss23)
 
     context = {
         'blog': blog,
@@ -383,18 +385,18 @@ def newsletter(request):
 
 def updateItem(request):
     data = json.loads(request.body)
-    photoId = data['photoId']
+    productId = data['productId']
     action = data['action']
 
-    print(f'{action}ed the product {photoId}')
+    print(f'{action}ed the product {productId}')
 
     customer = request.user.customer
-    photo = Photo.objects.get(pk=photoId)
+    product = Product.objects.get(pk=productId)
     order, created = Order.objects.get_or_create(
         customer=customer, complete=False)
 
     orderItem, created = OrderItem.objects.get_or_create(
-        order=order, photo=photo)
+        order=order, product=product)
 
     if action == 'add':
         orderItem.quantity = (orderItem.quantity + 1)
@@ -548,18 +550,18 @@ def gallery(request):
     cartItems = data['cartItems']
 
     if category == None:
-        photos = Photo.objects.all()
+        products = Product.objects.all()
     else:
-        photos = Photo.objects.filter(category__name=category)
+        products = Product.objects.filter(category__name=category)
 
     categories = Category.objects.all()
 
-    unique_product_codes = Photo.objects.filter(
+    unique_product_codes = Product.objects.filter(
         product_code__isnull=False).values_list('product_code', flat=True).distinct()
     unique_photos = []
 
     for product_code in unique_product_codes:
-        latest_photo = Photo.objects.filter(
+        latest_photo = Product.objects.filter(
             product_code=product_code).order_by('-id').first()
         unique_photos.append(latest_photo)
 
@@ -567,7 +569,7 @@ def gallery(request):
 
     context = {
         'categories': categories,
-        'photos': photos,
+        'products': products,
         'cartItems': cartItems,
         'active_category': active_category,
         'unique_photos': unique_photos,
@@ -576,20 +578,20 @@ def gallery(request):
 
 
 def viewPhoto(request, pk):
-    photo = Photo.objects.get(pk=pk)
+    photo = Product.objects.get(pk=pk)
     data = cartData(request)
     cartItems = data['cartItems']
 
     name_link = photo.name_link.split(',')
 
-    similar_images = Photo.objects.filter(
+    similar_images = Product.objects.filter(
         Q(name_link__icontains=name_link[0]) |
         Q(name__icontains=name_link[0])
     ).exclude(pk=pk).distinct()
 
     similar_products = photo.similar_products.split(',')
 
-    similar_products = Photo.objects.filter(
+    similar_products = Product.objects.filter(
         Q(similar_products__icontains=similar_products[0]) |
         Q(name__icontains=similar_products[0])
     ).exclude(pk=pk).distinct()
@@ -630,7 +632,7 @@ def product_detail(request, pk):
         'product': product,
         'cartItems': cartItems,
         'page_name': page_name,
-        'similar_product_images': similar_product_images
+        'similar_product_images': similar_product_images,
     }
 
     return render(request, 'product_detail.html', context)
@@ -654,7 +656,7 @@ def addPhoto(request):
             category = None
 
         for image in images:
-            photo = Photo.objects.create(
+            photo = Product.objects.create(
                 category=category,
                 description=data['description'],
                 image=image,
@@ -672,11 +674,6 @@ def addPhoto(request):
 # ACCOUNT
 @login_required(login_url='login')
 def account(request):
-    photos = Photo.objects.all()
-
-    shippings = ShippingAddress.objects.all()
-    orders = Order.objects.order_by('-pk')
-
     order_item_list = OrderItem.objects.all()
     page_name = f"- Account"
 
@@ -688,11 +685,8 @@ def account(request):
 
     context = {
         'order_item_list': order_item_list,
-        'shippings': shippings,
         'cartItems': cartItems,
         'page_name': page_name,
-        'photos': photos,
-        'orders': orders,
         'order': order,
         'items': items,
     }
@@ -704,8 +698,8 @@ def account(request):
 @login_required(login_url='login')
 def edit(request, id):
     if request.method == "POST":
-        photo = Photo.objects.get(pk=id)
-        form = PhotoForm(request.POST, instance=photo)
+        photo = Product.objects.get(pk=id)
+        form = ProductForm(request.POST, instance=photo)
         if form.is_valid():
             form.save()
             return render(request, 'edit.html', {
@@ -713,8 +707,8 @@ def edit(request, id):
                 'success': True
             })
     else:
-        photo = Photo.objects.get(pk=id)
-        form = PhotoForm(instance=photo)
+        photo = Product.objects.get(pk=id)
+        form = ProductForm(instance=photo)
     return render(request, 'edit.html', {
         'form': form,
     })
@@ -753,7 +747,7 @@ def music_player(request, id):
 @login_required(login_url='login')
 def add(request):
     if request.method == 'POST':
-        form = PhotoForm(request.POST)
+        form = ProductForm(request.POST)
         if form.is_valid():
             new_photo_name = form.cleaned_data['name']
             new_photo_name_link = form.cleaned_data['name_link']
@@ -770,7 +764,7 @@ def add(request):
             new_photo_shop = form.cleaned_data['shop']
             new_photo_digital = form.cleaned_data['digital']
 
-            new_photo = Photo(
+            new_photo = Product(
                 name=new_photo_name,
                 name_link=new_photo_name_link,
                 category=new_photo_category,
@@ -790,14 +784,14 @@ def add(request):
             new_photo.save()
 
             return render(request, 'add.html', {
-                'form': PhotoForm(),
+                'form': ProductForm(),
                 'success': True,
                 'message': "New product was added successfully!",
             })
         else:
-            form = PhotoForm()
+            form = ProductForm()
     return render(request, 'add.html', {
-        'form': PhotoForm()
+        'form': ProductForm()
     })
 
 
