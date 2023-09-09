@@ -33,14 +33,6 @@
                   >
                     <div class="card-body">
                       <ul>
-                        <li class="nav-item">
-                          <a
-                            class="nav-link {% if not active_category %}active{% endif %} text-black"
-                            aria-current="page"
-                            href="{% url 'shop' %}"
-                            >Shop</a
-                          >
-                        </li>
                         {% for category in categories %}
                         <li class="nav-item">
                           <a
@@ -101,12 +93,14 @@
                     ></a>
                   </li>
                   <li>
-                    <a href="{% url 'product_detail' product.pk %}"
+                    <a
+                      data-product="{{ photo.pk }}"
+                      data-action="add"
+                      class="update-cart"
+                      href="{% url 'product_detail' product.pk %}"
                       ><span class="fa-solid fa-shopping-cart"
                         ><button
                           style="background: none; border: none"
-                          data-product="{{ photo.pk }}"
-                          data-action="add"
                         ></button></span
                     ></a>
                   </li>
