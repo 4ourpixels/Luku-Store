@@ -34,7 +34,7 @@ urlpatterns = [
     path('blog/', blog_list, name='blog_list'),
 
     # ----> Single Blog View
-    path('blog/<int:pk>/', blog_detail, name='blog_detail'),
+    path('blog/<str:pk>/', blog_detail, name='blog_detail'),
 
     # Edit blog
     path('edit_blog/<int:id>/', edit_blog, name='edit_blog'),
@@ -96,8 +96,8 @@ urlpatterns = [
     path('photo/<str:pk>/', viewPhoto, name='photo'),
     path('addphoto/', addPhoto, name='addphoto'),
     path('addphoto/', addPhoto, name='addphoto'),
-    
+
     # Product Details
-    path('details/<str:pk>/', product_details, name='product_details'),
+    path('details/<str:pk>/', product_detail, name='product_detail'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
