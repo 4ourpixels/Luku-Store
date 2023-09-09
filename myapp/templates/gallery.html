@@ -11,15 +11,6 @@
 <section id="top" class="container mt-3">
   <div class="row my-3">
     <ul class="nav nav-tabs justify-content-center">
-      <li class="nav-item">
-        <a
-          class="nav-link {% if not active_category %}active{% endif %} text-black"
-          style="text-decoration: none"
-          aria-current="page"
-          href="{% url 'shop' %}"
-          >Shop</a
-        >
-      </li>
       {% for category in categories %}
       <li class="nav-item">
         <a
