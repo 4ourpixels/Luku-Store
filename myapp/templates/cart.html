@@ -91,17 +91,15 @@
 </div>
 {% else %}
 <div class="container">
-  <div class="col align-items-center">
-    <div class="">
-      <img
-        style="margin-top: -7rem"
-        src="{% static 'images/cart/undraw_window_shopping_re_0kbm.svg' %}"
-        class="img-fluid text-center"
-      />
-      <h1 class="display-5 text-center mb-4 fw-bold">
-        Looks like your cart is empty!
-      </h1>
-    </div>
+  <div class="row justify-content-center">
+    <h1 class="display-5 text-center my-4 fw-bold">
+      Looks like your cart is empty...
+    </h1>
+    <img
+      style="height: 35vh"
+      src="{% static 'images/cart/undraw_empty_cart_co35.svg' %}"
+      class="img-fluid"
+    />
   </div>
 </div>
 {% endif %} {% endblock %}
