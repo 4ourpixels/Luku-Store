@@ -52,8 +52,7 @@
 
           <main class="col-lg-6">
             <div class="ps-lg-3">
-              <h4 class="title text-dark">{{ photo.name }}</h4>
-              <h2 class="title text-dark">€{{ photo.price }}</h2>
+              <h2 class="title text-dark">{{ photo.name }}</h2>
               <div class="rating">
                 {% if photo.rating == 1 %}
                 <i class="fa fa-star"></i>
@@ -75,6 +74,41 @@
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
+                {% endif %}
+              </div>
+              <h2 class="title text-dark">€{{ photo.price }}</h2>
+              <div class="col mt-3">
+                <h6>Sizes Available:</h6>
+                {% if photo.size == 'Small' %}
+                <p class="btn btn-dark">S</p>
+                <p class="btn btn-outline-dark">M</p>
+                <p class="btn btn-outline-dark">L</p>
+                <p class="btn btn-outline-dark">XL</p>
+                <p class="btn btn-outline-dark">XXL</p>
+                {% elif photo.size == 'Medium' %}
+                <p class="btn btn-outline-dark">S</p>
+                <p class="btn btn-dark">M</p>
+                <p class="btn btn-outline-dark">L</p>
+                <p class="btn btn-outline-dark">XL</p>
+                <p class="btn btn-outline-dark">XXL</p>
+                {% elif photo.size == 'Large' %}
+                <p class="btn btn-outline-dark">S</p>
+                <p class="btn btn-outline-dark">M</p>
+                <p class="btn btn-dark">L</p>
+                <p class="btn btn-outline-dark">XL</p>
+                <p class="btn btn-outline-dark">XXL</p>
+                {% elif photo.size == 'XL' %}
+                <p class="btn btn-outline-dark">S</p>
+                <p class="btn btn-outline-dark">M</p>
+                <p class="btn btn-outline-dark">L</p>
+                <p class="btn btn-dark">XL</p>
+                <p class="btn btn-dark">XXL</p>
+                {% else %}
+                <p class="btn btn-outline-dark">S</p>
+                <p class="btn btn-outline-dark">M</p>
+                <p class="btn btn-outline-dark">L</p>
+                <p class="btn btn-outline-dark">XL</p>
+                <p class="btn btn-dark">XXL</p>
                 {% endif %}
               </div>
               {% if photo.stock == 0 %}
