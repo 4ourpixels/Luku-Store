@@ -181,60 +181,6 @@ def index(request):
 
 def shop(request):
     page_name = f"- Shop"
-    products = Product.objects.order_by('-pk')
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    blogs = Blog.objects.order_by('-pk')
-    category = request.GET.get('category')
-    categories = Kategory.objects.all()
-
-    total_products = Product.objects.count()
-
-    unique_product_codes = Product.objects.filter(
-        product_code__isnull=False).values_list('product_code', flat=True).distinct()
-    unique_photos = []
-
-    for product_code in unique_product_codes:
-        latest_photo = Product.objects.filter(
-            product_code=product_code).order_by('pk').first()
-        unique_photos.append(latest_photo)
-
-    active_category = request.GET.get('category', None)
-
-    if category == None:
-        products = Product.objects.all()
-    else:
-        products = Product.objects.filter(category__name=category)
-
-    products = products[:8]
-
-    context = {
-        'page_name': page_name,
-        'cartItems': cartItems,
-        'blogs': blogs,
-        'products': products,
-        'categories': categories,
-        'total_products': total_products,
-        'unique_photos': unique_photos,
-        'active_category': active_category,
-    }
-
-    return render(request, 'shop.html', context)
-
-
-def shops(request):
-    page_name = f"- Shop"
-    photos = Photo.objects.order_by('-pk')
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-    blogs = Blog.objects.order_by('-pk')
-    category = request.GET.get('category')
-    categories = Kategory.objects.all()
-
-    total_products = Photo.objects.count()
 
     unique_product_codes = Photo.objects.filter(
         product_code__isnull=False).values_list('product_code', flat=True).distinct()
@@ -242,25 +188,17 @@ def shops(request):
 
     for product_code in unique_product_codes:
         latest_photo = Photo.objects.filter(
-            product_code=product_code).order_by('id').first()
+            product_code=product_code).order_by('pk').first()
         unique_photos.append(latest_photo)
 
-    active_category = request.GET.get('category', None)
-
-    if category == None:
-        photos = Photo.objects.all()
-    else:
-        photos = Photo.objects.filter(category__name=category)
+    data = cartData(request)
+    cartItems = data['cartItems']
 
     context = {
         'page_name': page_name,
         'cartItems': cartItems,
-        'blogs': blogs,
-        'photos': photos,
-        'categories': categories,
-        'total_products': total_products,
+        'latest_photo': latest_photo,
         'unique_photos': unique_photos,
-        'active_category': active_category,
     }
 
     return render(request, 'shop.html', context)
@@ -612,9 +550,6 @@ def confirmed(request):
     return render(request, 'confirmed.html', context)
 
 
-# Trials ===========================
-
-
 def gallery(request):
     category = request.GET.get('category')
 
@@ -622,18 +557,18 @@ def gallery(request):
     cartItems = data['cartItems']
 
     if category == None:
-        products = Product.objects.all()
+        photos = Photo.objects.all()
     else:
-        products = Product.objects.filter(category__name=category)
+        photos = Photo.objects.filter(category__name=category)
 
-    categories = Kategory.objects.all()
+    categories = Category.objects.all()
 
-    unique_product_codes = Product.objects.filter(
+    unique_product_codes = Photo.objects.filter(
         product_code__isnull=False).values_list('product_code', flat=True).distinct()
     unique_photos = []
 
     for product_code in unique_product_codes:
-        latest_photo = Product.objects.filter(
+        latest_photo = Photo.objects.filter(
             product_code=product_code).order_by('-id').first()
         unique_photos.append(latest_photo)
 
@@ -641,7 +576,7 @@ def gallery(request):
 
     context = {
         'categories': categories,
-        'products': products,
+        'photos': photos,
         'cartItems': cartItems,
         'active_category': active_category,
         'unique_photos': unique_photos,
@@ -654,7 +589,7 @@ def viewPhoto(request, pk):
     data = cartData(request)
     cartItems = data['cartItems']
 
-    name_link = photo.name_link.split(',')
+    name_link = photo.similar_products.split(',')
 
     similar_images = Photo.objects.filter(
         Q(name_link__icontains=name_link[0]) |
