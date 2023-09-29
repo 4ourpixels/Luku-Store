@@ -169,14 +169,31 @@
     </div>
     
     <!-- /.col-lg-4 -->
-    <div class="col-lg-4 col-md-12 col-sm-12">
+    <!-- Comin Soon div -->
+    <div class="col-lg-4 col-md-12 col-sm-12 my-4">
+
+      <img
+        class=" img-fluid mb-3"
+        src="{{ trucker_hats.image.url }}"
+      />
+
+      <div style="margin-left: 3rem; margin-top: -10rem;">
+        <h3 class="text-white">New Release</h3>
+        <p class="text-white mb-5">Coming Soon</p>
+        <!-- <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}">{{ trucker_hats.button }} &raquo;</a> -->
+      </div>
+      
+    </div>
+    <!-- End of Comin Soon div -->
+
+    <!-- <div class="col-lg-4 col-md-12 col-sm-12">
       <a class="overlay" href="{% url 'gallery' %}?category=Headwear">
       <img
         style="object-fit: cover"
         class=" img-fluid"
         src="{{ trucker_hats.image.url }}"
       /></a>
-    </div>
+    </div> -->
 
   </div>
 
