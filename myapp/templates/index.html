@@ -1,141 +1,140 @@
- {% extends 'base.html' %} {% load static %} {% block body %}
+{% extends 'base.html' %} {% load static %} {% block body %}
 <!-- HERO SECTION -->
-<div class="container-fluid p-0 m-0">
+<div class="container-fluid p-0">
   <div class="row">
-    <div style="margin-top: -5.5rem;" id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide-to="0"
-            class="active"
-            aria-current="true"
-            aria-label="Slide 1"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide-to="1"
-            aria-label="Slide 2"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide-to="2"
-            aria-label="Slide 3"
-          ></button>
-        </div>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="{{ slider_01.image.url }}" class="img-fluid">
-            <div class="container">
-              <div class="carousel-caption text-start">
-                <img
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{{ slider_01.image.url }}" class="img-fluid" />
+          <div class="container">
+            <div class="carousel-caption text-start">
+              <img
                 class="img-fluid"
                 style="
-                filter: invert(100%); 
-                margin-bottom: 1.5rem;
-                height:5rem;
+                  filter: invert(100%);
+                  margin-bottom: 1.5rem;
+                  height: 5rem;
                 "
                 src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
-                />
-                <p>
-                  <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}">SS23' Lukubook</a>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img
-              class="img-fluid"
-              src="{{ slider_03.image.url }}"
-            />
-            <div class="container">
-              <div class="carousel-caption">
-                <figure class="text-center">
-                  <blockquote class="blockquote">
-                    <h1>
-                      Streetwear is an artistic movement.
-                      It’s a creative process.
-                    </h1>
-                  </blockquote>
-                  <figcaption class="blockquote-footer text-white">Virgil Abloh</figcaption>
-                </figure>
-                <p>
-                  <a class="btn btn-outline-light" href="{% url 'shop' %}"
-                    >Shop &#8599;</a
-                  >
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img
-              class="img-fluid"
-              src="{{ slider_02.image.url }}"
-            />
-
-            <div class="container">
-              <div class="carousel-caption text-start">
-                <img
-                  class="img-fluid"
-                  style="filter: invert(100%); margin-bottom: 1.5rem; height: 5rem;"
-                  src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
-                />
-                <p>
-                  <a class="btn  btn-outline-light" href="{% url 'gallery' %}?category=SS23"
-                    >Akiba Studios</a
-                  >
-                </p>
-              </div>
+              />
+              <p>
+                <a
+                  class="btn btn-outline-light"
+                  href="{% url 'blog_detail' 10 %}"
+                  >SS23' Lukubook</a
+                >
+              </p>
             </div>
           </div>
         </div>
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#myCarousel"
-          data-bs-slide="prev"
-        >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#myCarousel"
-          data-bs-slide="next"
-        >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+        <div class="carousel-item">
+          <img class="img-fluid" src="{{ slider_03.image.url }}" />
+          <div class="container">
+            <div class="carousel-caption">
+              <figure class="text-center">
+                <blockquote class="blockquote">
+                  <h1>
+                    Streetwear is an artistic movement. It’s a creative process.
+                  </h1>
+                </blockquote>
+                <figcaption class="blockquote-footer text-white">
+                  Virgil Abloh
+                </figcaption>
+              </figure>
+              <p>
+                <a class="btn btn-outline-light" href="{% url 'shop' %}"
+                  >Shop &#8599;</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img class="img-fluid" src="{{ slider_02.image.url }}" />
+
+          <div class="container">
+            <div class="carousel-caption text-start">
+              <img
+                class="img-fluid"
+                style="
+                  filter: invert(100%);
+                  margin-bottom: 1.5rem;
+                  height: 5rem;
+                "
+                src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
+              />
+              <p>
+                <a
+                  class="btn btn-outline-light"
+                  href="{% url 'gallery' %}?category=SS23"
+                  >Akiba Studios</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#myCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#myCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
   </div>
 </div>
 <!-- END OF HERO SECTION -->
 
-
 <div class="container mt-5">
-
   <h2 class="text-center">{{ collection.name }}</h2>
   <p class="text-muted text-center">{{ collection.quote }}.</p>
 
   <div class="row d-flex align-items-center justify-content-around">
-
     <!-- New release div -->
     <div class="col-lg-4 col-md-12 col-sm-12 my-4">
+      <img class="img-fluid mb-3" src="{{ new_release.image.url }}" />
 
-      <img
-        class=" img-fluid mb-3"
-        src="{{ new_release.image.url }}"
-      />
-
-      <div style="margin-left: 3rem; margin-top: -10rem;">
+      <div style="margin-left: 3rem; margin-top: -10rem">
         <h3 class="text-white">{{ new_release.name|safe }}</h3>
         <p class="text-white">{{ new_release.quote_author }}</p>
-        <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}">{{ new_release.button }} &raquo;</a>
+        <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}"
+          >{{ new_release.button }} &raquo;</a
+        >
       </div>
-      
     </div>
     <!-- End of New release div -->
 
@@ -143,98 +142,85 @@
     <div class="col-lg-4 col-md-12 col-sm-12 my-4">
       <div class="container">
         <div class="row row-cols-2 justify-content-center">
-
           <div class="col-md-12">
             <a class="overlay" href="{% url 'gallery' %}?category=Jackets">
-            <img
-              style="object-fit: cover"
-              class=" img-fluid"
-              src="{{ jacket.image.url }}"
-            />
+              <img
+                style="object-fit: cover"
+                class="img-fluid"
+                src="{{ jacket.image.url }}"
+              />
             </a>
           </div>
 
           <div class="col-md-12">
             <a class="overlay" href="{% url 'gallery' %}?category=Sweaters">
-            <img
-              style="object-fit: cover"
-              class=" img-fluid"
-              src="{{ sweater.image.url }}"
-            />
+              <img
+                style="object-fit: cover"
+                class="img-fluid"
+                src="{{ sweater.image.url }}"
+              />
             </a>
           </div>
-          
         </div>
       </div>
     </div>
-    
-    <!-- /.col-lg-4 -->
+
     <!-- Comin Soon div -->
     <div class="col-lg-4 col-md-12 col-sm-12 my-4">
+      <img class="img-fluid mb-3" src="{{ trucker_hats.image.url }}" />
 
-      <img
-        class=" img-fluid mb-3"
-        src="{{ trucker_hats.image.url }}"
-      />
-
-      <div style="margin-left: 3rem; margin-top: -10rem;">
+      <div style="margin-left: 3rem; margin-top: -10rem">
         <h3 class="text-white">New Release</h3>
         <p class="text-white mb-5">Coming Soon</p>
         <!-- <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}">{{ trucker_hats.button }} &raquo;</a> -->
       </div>
-      
     </div>
     <!-- End of Comin Soon div -->
-
-    <!-- <div class="col-lg-4 col-md-12 col-sm-12">
-      <a class="overlay" href="{% url 'gallery' %}?category=Headwear">
-      <img
-        style="object-fit: cover"
-        class=" img-fluid"
-        src="{{ trucker_hats.image.url }}"
-      /></a>
-    </div> -->
-
   </div>
 
   <!-- LUKU DEFINITION -->
-  <hr>
+  <hr />
   <div class="text-center my-5">
-    <h1 style="font-size: 7rem;" class="display-1 fw-bold">luku</h1>
-    <h4 class="text-muted ">/ loo-koo /</h4>
+    <h1 style="font-size: 7rem" class="display-1 fw-bold">luku</h1>
+    <h4 class="text-muted">/ loo-koo /</h4>
     <br />
     <p class="display-6">
       <strong>(n.)</strong>
       {{ definition.quote|safe }}
     </p>
   </div>
-  <hr>
+  <hr />
   <!-- END OF LUKU DEFINITION -->
-
 
   <!-- Summer Jam -->
   <div class="container my-5">
     <h2 class="text-center my-3">SS23 Lukubook Inspiration</h2>
     <div class="row d-flex justify-content-between">
-
       <div class="col-md-6 col-sm-12 mb-3">
-        <img class="img-fluid" src="{{ lukubookImage.image.url }}" alt="{{ lukubookImage.name }}">
+        <img
+          class="img-fluid"
+          src="{{ lukubookImage.image.url }}"
+          alt="{{ lukubookImage.name }}"
+        />
       </div>
 
       <div class="col-md-6 col-sm-12">
         <div class="container inspoContainer">
-
           <div class="row tableScroll">
             <!-- product one -->
             <div class="row mb-3">
               <div class="col me-2">
-                <img class="img-fluid" src="{{ red_bucket_hat.image.url }}">
+                <img class="img-fluid" src="{{ red_bucket_hat.image.url }}" />
               </div>
               <div class="col">
                 <p class="fw-bold">Bucket Hat</p>
                 <h6>Crafted for both fashion and functionality.</h6>
                 <h6>€20.00</h6>
-                <a class="btn btn-dark" href="https://www.lukustore.nl/photo/16/">View</a>
+                <a
+                  class="btn btn-dark"
+                  href="https://www.lukustore.nl/photo/16/"
+                  >View</a
+                >
               </div>
             </div>
             <!-- end of product one -->
@@ -242,13 +228,24 @@
             <!-- product one -->
             <div class="row mb-3">
               <div class="col me-2">
-                <img class="img-fluid" src="{{ kintsugi_top_blue.image.url }}" alt="{{ kintsugi_top_blue.name }}">
+                <img
+                  class="img-fluid"
+                  src="{{ kintsugi_top_blue.image.url }}"
+                  alt="{{ kintsugi_top_blue.name }}"
+                />
               </div>
               <div class="col">
                 <p class="fw-bold">Kintsugi Top</p>
-                <h6>With a harmonious blend of traditional and contemporary aesthetics.</h6>
+                <h6>
+                  With a harmonious blend of traditional and contemporary
+                  aesthetics.
+                </h6>
                 <h6>€20.00</h6>
-                <a class="btn btn-dark" href="https://www.lukustore.nl/photo/18/">View</a>
+                <a
+                  class="btn btn-dark"
+                  href="https://www.lukustore.nl/photo/18/"
+                  >View</a
+                >
               </div>
             </div>
             <!-- end of product one -->
@@ -256,13 +253,19 @@
             <!-- product one -->
             <div class="row mb-3">
               <div class="col me-2">
-                <img class="img-fluid" src="{{ utility_jacket.image.url }}" alt="{{ utility_jacket.name }}">
+                <img
+                  class="img-fluid"
+                  src="{{ utility_jacket.image.url }}"
+                  alt="{{ utility_jacket.name }}"
+                />
               </div>
               <div class="col">
                 <p class="fw-bold">Utility Jacket</p>
                 <h6>Crafted from durable and weather-resistant materials.</h6>
                 <h6>€60.00</h6>
-                <a class="btn btn-dark" href="https://www.lukustore.nl/photo/9/">View</a>
+                <a class="btn btn-dark" href="https://www.lukustore.nl/photo/9/"
+                  >View</a
+                >
               </div>
             </div>
             <!-- end of product one -->
@@ -270,46 +273,59 @@
             <!-- product one -->
             <div class="row mb-3">
               <div class="col me-2">
-                <img class="img-fluid" src="{{ kintsugi_flare.image.url }}" alt="{{ kintsugi_flare.name }}">
+                <img
+                  class="img-fluid"
+                  src="{{ kintsugi_flare.image.url }}"
+                  alt="{{ kintsugi_flare.name }}"
+                />
               </div>
               <div class="col">
                 <p class="fw-bold">Kintsugi Flare</p>
-                <h6>Modern style with artistic heritage, featuring a striking flare cut.</h6>
+                <h6>
+                  Modern style with artistic heritage, featuring a striking
+                  flare cut.
+                </h6>
                 <h6>€70.00</h6>
-                <a class="btn btn-dark" href="https://www.lukustore.nl/photo/19/">View</a>
+                <a
+                  class="btn btn-dark"
+                  href="https://www.lukustore.nl/photo/19/"
+                  >View</a
+                >
               </div>
             </div>
             <!-- end of product one -->
-
           </div>
-
-
         </div>
       </div>
-
     </div>
   </div>
   <!-- End of Summer Jam -->
 
-<hr>
-  <br>
-  <br>
-  <br>
+  <hr />
+  <br />
+  <br />
+  <br />
   <div class="container">
     <h2 class="text-center">Music Mix</h2>
     <p class="mb-5 text-center">Latest mixes from DJ G400, Nairobi, Kenya.</p>
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center">
+    <div
+      class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
+    >
       {% for mix in mixes %}
       <div class="col mb-5">
         <img
           height="150"
           class="img-fluid"
-          style="object-fit: cover;"
+          style="object-fit: cover"
           src="{{ mix.image.url }}"
           alt="{{ mix.title }}"
         />
         <div class="text-start">
-          <a href="{% url 'music_player' mix.pk %}" class="text-black  fw-bold underline my-2">{{ mix.title }}</a>
+          <a
+            href="{% url 'music_player' mix.pk %}"
+            class="text-black fw-bold underline my-2"
+            >{{ mix.title }}</a
+          >
           <h6 class="small">{{ mix.description|truncatechars:25 }}</h6>
           <h6 class="text-black my-2">{{ mix.genre }}</h6>
         </div>
@@ -337,14 +353,16 @@
       </div>
     </div>
 
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center">
+    <div
+      class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
+    >
       {% for photo in popular_items %}
       <div class="col mb-5">
         <div class="card-wrapper mb-4">
           <div class="card-img">
             <img
               class="img-fluid"
-              style="object-fit: cover;"
+              style="object-fit: cover"
               src="{{ photo.image.url }}"
               alt="{{ photo.name }}"
             />
@@ -354,7 +372,7 @@
               style="background: none; border: none; height: 4rem"
               data-product="{{ photo.pk }}"
               data-action="add"
-              class="update-cart  rounded-circle px-3 bg-white"
+              class="update-cart rounded-circle px-3 bg-white"
               onmouseover="toggleDim(this, true)"
               onmouseout="toggleDim(this, false)"
             >
@@ -363,60 +381,70 @@
           </div>
         </div>
         <div class="text-start">
-          <a href="{% url 'photo' photo.id %}" class="text-black  fw-bold underline my-2"
+          <a
+            href="{% url 'photo' photo.id %}"
+            class="text-black fw-bold underline my-2"
             >{{ photo.name }}</a
           >
-          <br>
-          <small class="small">{{ photo.description|truncatechars:25 }}</small> <br>
+          <br />
+          <small class="small">{{ photo.description|truncatechars:25 }}</small>
+          <br />
           <h6 class="text-black my-2">€{{ photo.price }}</h6>
         </div>
       </div>
       {% endfor %}
     </div>
   </div>
-  <br>
-  <hr>
+  <br />
+  <hr />
   <!-- END OF POPULAR THIS WEEK -->
 
   <!-- Blog -->
-  <section class="mt-5 mb-4">
-    <div class="container text-dark">
-      <h1 class="text-center mb-5">Blog posts</h1>
-      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-2 row-cols-xl-2 justify-content-start">
-        {% for blog in blogs|slice:":4" %}
-        <div class="col mb-5">
-            <a href="{% url 'blog_detail' pk=blog.pk %}" class="img-fluid underline text-dark">
-              {% if blog.youtube %}
-              <iframe 
-                src="https://www.youtube.com/embed/XppZqa0BtoQ" 
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen
-                class="card-img-top"
-                style="height: 50vh"
-                width="auto"
-                >
-              </iframe>
-              {% else %}
-              <img
-                class="img-fluid"
-                src="{{ blog.image.url }}"
-                style="object-fit: cover;"
-                width="auto"
-              />
-              {% endif %}
-            <div class="mt-2 text-muted small d-block mb-1">
-              <h6 class="text-dark">{{ blog.title|truncatechars:50 }}</h6></a>
-              <p class="small">{{ blog.summary }}</p>
-              <hr>
-              <i class="fa fa-calendar-alt fa-sm"></i>
-              {{ blog.pub_date }}
-            </div>
+
+  <div class="container mt-100 mb-5">
+    <div class="row">
+      <div class="col-12 text-center">
+        <div class="section-title mb-4 pb-2">
+          <h4 class="title mb-4">Latest Blog &amp; News</h4>
         </div>
-        {% endfor %}
       </div>
+      <!--end col-->
     </div>
-  </section>
+    <!--end row-->
+
+    <div class="row">
+      {% for blog in blogs|slice:":4" %}
+      <div class="col-lg-4 col-md-6 mt-4 pt-2">
+        <div class="blog-post rounded border">
+          <div class="blog-img d-block overflow-hidden position-relative">
+            <img
+              src="{{ blog.image.url }}"
+              class="img-fluid rounded-top"
+              alt=""
+            />
+          </div>
+          <div class="content p-3">
+            <small class="text-muted p float-right"> {{ blog.pub_date }}</small>
+            <h4 class="mt-2">
+              <a href="javascript:void(0)" class="text-dark title"
+                >{{ blog.title|truncatechars:50 }}</a
+              >
+            </h4>
+            <p class="text-muted mt-2">{{ blog.summary }}</p>
+            <a
+              href="{% url 'blog_detail' pk=blog.pk %}"
+              class="text-dark mt-2 read-more"
+              >Read More <i class="mdi mdi-chevron-right"></i
+            ></a>
+          </div>
+        </div>
+        <!--end blog post-->
+      </div>
+      <!--end col-->
+      {% endfor %}
+    </div>
+    <!--end row-->
+  </div>
   <!-- Blog -->
 
   <!-- END OF BLOG SECTION -->
@@ -424,66 +452,60 @@
   <!-- -------------------- -->
 
   <!-- HOT SALE -->
-  <div class="row">
-    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img style="height: 300px; " src="{% static 'index/blue_trucker_hat.png' %}" class="d-block w-100 grayscale" alt="Akiba Trucker Hats">
-          <div class="carousel-caption d-md-block">
-            <h4 style="margin-bottom: 6rem;" class="text-start"><a class="underline text-white" href="{% url 'gallery' %}?category=Headwear">Explore our <br>Trucker Hats &#8594;</a></h4>
+  <div class="container mt-5">
+    <div class="row">
+      <div
+        id="carouselExampleFade"
+        class="carousel slide carousel-fade"
+        data-bs-ride="carousel"
+      >
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img
+              style="height: 300px"
+              src="{{ trucker_hat.image.url }}"
+              class="d-block w-100 grayscale"
+              alt="Akiba Trucker Hats"
+            />
+            <div class="carousel-caption d-md-block">
+              <h4 style="margin-bottom: 6rem" class="text-start">
+                <a
+                  class="underline text-white"
+                  href="{% url 'gallery' %}?category=Headwear"
+                  >Explore our <br />Trucker Hats &#8594;</a
+                >
+              </h4>
+            </div>
           </div>
-        </div>
-        <div class="carousel-item">
-          <img style="height: 300px;" src="{% static 'index/pink_trucker_hat.png' %}" class="d-block w-100" alt="Trucker Hat">
-        </div>
-        <div class="carousel-item">
-          <img style="height: 300px;" src="{% static 'index/bucket_hats.png' %}" class="d-block w-100" alt="Bucket Hats">
-          <div class="carousel-caption d-md-block">
-            <a class="btn btn-outline-light" href="{% url 'gallery' %}?category=Headwear">Akiba Bucket Hats</a>
+          <div class="carousel-item">
+            <img
+              style="height: 300px"
+              src="{% static 'index/pink_trucker_hat.png' %}"
+              class="d-block w-100"
+              alt="Trucker Hat"
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              style="height: 300px"
+              src="{% static 'index/bucket_hats.png' %}"
+              class="d-block w-100"
+              alt="Bucket Hats"
+            />
+            <div class="carousel-caption d-md-block">
+              <a
+                class="btn btn-outline-light"
+                href="{% url 'gallery' %}?category=Headwear"
+                >Akiba Bucket Hats</a
+              >
+            </div>
           </div>
         </div>
       </div>
+      <a class="underline text-center my-5 text-dark" href="#myCarousel"
+        >Back to top</a
+      >
     </div>
-    <a class="underline text-center my-5 text-dark" href="#myCarousel">Back to top</a>
   </div>
 </div>
-
-
-
-<script>
-  // Get a reference to the audio element
-  var progress = document.getElementById("mix_progress_bar");
-  var song = document.getElementById("song");
-  var controlIcon = document.getElementById("controlIcon");
-
-  song.onloadedmetadata = function() {
-    progress.max = song.duration;
-    progress.value = song.currentTime;
-  };
-
-  function playPause() {
-    if (song.paused) {
-      song.play();
-      controlIcon.classList.add("fa-pause");
-      controlIcon.classList.remove("fa-play");
-    } else {
-      song.pause();
-      controlIcon.classList.remove("fa-pause");
-      controlIcon.classList.add("fa-play");
-    }
-  }
-
-  if (song.played) {
-    setInterval(() => {
-      progress.value = song.currentTime;
-    }, 500);
-  }
-
-  progress.onchange = function() {
-    song.currentTime = progress.value;
-    controlIcon.classList.add("fa-pause");
-    controlIcon.classList.remove("fa-play");
-  };
-</script>
-
 {% endblock %}
