@@ -132,6 +132,9 @@ def index(request):
     utility_jacket = homepages[16]
     kintsugi_flare = homepages[17]
 
+    # Footer
+    trucker_hat = homepages[18]
+
     data = cartData(request)
     cartItems = data['cartItems']
 
@@ -174,6 +177,7 @@ def index(request):
         'kintsugi_top_blue': kintsugi_top_blue,
         'utility_jacket': utility_jacket,
         'kintsugi_flare': kintsugi_flare,
+        'trucker_hat': trucker_hat,
 
     }
     return render(request, 'index.html', context)
