@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
 <!-- HERO SECTION -->
-<div class="container-fluid p-0">
+<div class="container-fluid mb-5 p-0">
   <div class="row">
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
@@ -27,7 +27,12 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="{{ slider_01.image.url }}" class="img-fluid" />
+          <a
+            class="btn btn-outline-light p-0"
+            href="{% url 'blog_detail' 10 %}"
+          >
+            <img src="{{ slider_01.image.url }}" class="img-fluid"
+          /></a>
           <div class="container">
             <div class="carousel-caption text-start">
               <img
@@ -50,7 +55,9 @@
           </div>
         </div>
         <div class="carousel-item">
-          <img class="img-fluid" src="{{ slider_03.image.url }}" />
+          <a class="btn btn-outline-light p-0" href="{% url 'shop' %}">
+            <img class="img-fluid" src="{{ slider_03.image.url }}"
+          /></a>
           <div class="container">
             <div class="carousel-caption">
               <figure class="text-center">
@@ -72,8 +79,12 @@
           </div>
         </div>
         <div class="carousel-item">
-          <img class="img-fluid" src="{{ slider_02.image.url }}" />
-
+          <a
+            class="btn btn-outline-light p-0"
+            href="{% url 'gallery' %}?category=SS23"
+          >
+            <img class="img-fluid" src="{{ slider_02.image.url }}" />
+          </a>
           <div class="container">
             <div class="carousel-caption text-start">
               <img
@@ -120,14 +131,13 @@
 <!-- END OF HERO SECTION -->
 
 <div class="container mt-5">
-  <h2 class="text-center">{{ collection.name }}</h2>
+  <h1 class="text-center title">{{ collection.name }}</h1>
   <p class="text-muted text-center">{{ collection.quote }}.</p>
 
   <div class="row d-flex align-items-center justify-content-around">
     <!-- New release div -->
-    <div class="col-lg-4 col-md-12 col-sm-12 my-4">
+    <div class="col-lg-4 col-md-12 col-sm-12 my-4 p-0">
       <img class="img-fluid mb-3" src="{{ new_release.image.url }}" />
-
       <div style="margin-left: 3rem; margin-top: -10rem">
         <h3 class="text-white">{{ new_release.name|safe }}</h3>
         <p class="text-white">{{ new_release.quote_author }}</p>
@@ -139,11 +149,11 @@
     <!-- End of New release div -->
 
     <!-- /.col-lg-4 -->
-    <div class="col-lg-4 col-md-12 col-sm-12 my-4">
+    <div class="col-lg-4 col-md-12 col-sm-12 my-4 p-0">
       <div class="container">
         <div class="row row-cols-2 justify-content-center">
           <div class="col-md-12">
-            <a class="overlay" href="{% url 'gallery' %}?category=Jackets">
+            <a class="overlay" href="{% url 'photo' 9 %}">
               <img
                 style="object-fit: cover"
                 class="img-fluid"
@@ -153,7 +163,7 @@
           </div>
 
           <div class="col-md-12">
-            <a class="overlay" href="{% url 'gallery' %}?category=Sweaters">
+            <a class="overlay" href="{% url 'photo' 7 %}">
               <img
                 style="object-fit: cover"
                 class="img-fluid"
@@ -166,21 +176,20 @@
     </div>
 
     <!-- Comin Soon div -->
-    <div class="col-lg-4 col-md-12 col-sm-12 my-4">
+    <div class="col-lg-4 col-md-12 col-sm-12 my-4 p-0">
       <img class="img-fluid mb-3" src="{{ trucker_hats.image.url }}" />
-
       <div style="margin-left: 3rem; margin-top: -10rem">
         <h3 class="text-white">New Release</h3>
         <p class="text-white mb-5">Coming Soon</p>
-        <!-- <a class="btn btn-outline-light" href="{% url 'blog_detail' 10 %}">{{ trucker_hats.button }} &raquo;</a> -->
       </div>
     </div>
     <!-- End of Comin Soon div -->
   </div>
 
+</div>
+
   <!-- LUKU DEFINITION -->
-  <hr />
-  <div class="text-center my-5">
+  <div style="margin: 6rem auto;" class="text-center container">
     <h1 style="font-size: 7rem" class="display-1 fw-bold">luku</h1>
     <h4 class="text-muted">/ loo-koo /</h4>
     <br />
@@ -189,12 +198,11 @@
       {{ definition.quote|safe }}
     </p>
   </div>
-  <hr />
   <!-- END OF LUKU DEFINITION -->
 
   <!-- Summer Jam -->
-  <div class="container my-5">
-    <h2 class="text-center my-3">SS23 Lukubook Inspiration</h2>
+  <div style="margin: 9rem auto;" class="container">
+    <h1 class="text-center title my-5">SS23 Lukubook Inspiration</h1>
     <div class="row d-flex justify-content-between">
       <div class="col-md-6 col-sm-12 mb-3">
         <img
@@ -301,13 +309,9 @@
   </div>
   <!-- End of Summer Jam -->
 
-  <hr />
-  <br />
-  <br />
-  <br />
   <div class="container">
-    <h2 class="text-center">Music Mix</h2>
-    <p class="mb-5 text-center">Latest mixes from DJ G400, Nairobi, Kenya.</p>
+    <h1 class="text-center title">Music Mix</h1>
+    <p class="mb-5 text-center">Latest mixes from DJ G400, Nairobi 🇰🇪</p>
     <div
       class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
     >
@@ -315,7 +319,7 @@
       <div class="col mb-5">
         <img
           height="150"
-          class="img-fluid"
+          class="img-fluid mb-3"
           style="object-fit: cover"
           src="{{ mix.image.url }}"
           alt="{{ mix.title }}"
@@ -336,7 +340,6 @@
   <br />
   <br />
   <br />
-  <hr />
   <br />
   <!-- -------------------- -->
   <!-- -------------------- -->
@@ -345,7 +348,7 @@
   <div class="container">
     <div class="row">
       <div id="popular-this-week" class="index-heading">
-        <h2 class="text-center">Popular This Week</h2>
+        <h1 class="text-center title">Popular This Week</h1>
         <p class="text-muted text-center">
           Akiba is back with unique and colorful outfits that reflect the Kenyan
           culture and lifestyle.
@@ -383,12 +386,22 @@
         <div class="text-start">
           <a
             href="{% url 'photo' photo.id %}"
-            class="text-black fw-bold underline my-2"
+            class="text-black h6 fw-bold underline my-2"
             >{{ photo.name }}</a
           >
-          <br />
-          <small class="small">{{ photo.description|truncatechars:25 }}</small>
-          <br />
+          <div class="col">
+            {% if photo.size == 'Small' %}
+            <p>Size: S</p>
+            {% elif photo.size == 'Medium' %}
+            <p>Size: M</p>
+            {% elif photo.size == 'Large' %}
+            <p>Size: L</p>
+            {% elif photo.size == 'XL' %}
+            <p>Size: XL</p>
+            {% else %}
+            <p>Size: XXL</p>
+            {% endif %}
+          </div>
           <h6 class="text-black my-2">€{{ photo.price }}</h6>
         </div>
       </div>
@@ -396,7 +409,6 @@
     </div>
   </div>
   <br />
-  <hr />
   <!-- END OF POPULAR THIS WEEK -->
 
   <!-- Blog -->
@@ -405,7 +417,7 @@
     <div class="row">
       <div class="col-12 text-center">
         <div class="section-title mb-4 pb-2">
-          <h4 class="title mb-4">Latest Blog &amp; News</h4>
+          <h1 class="title mb-4">Latest Blog &amp; News</h1>
         </div>
       </div>
       <!--end col-->
