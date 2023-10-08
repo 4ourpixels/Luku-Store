@@ -389,19 +389,7 @@
             class="text-black h6 fw-bold underline my-2"
             >{{ photo.name }}</a
           >
-          <div class="col">
-            {% if photo.size == 'Small' %}
-            <p>Size: S</p>
-            {% elif photo.size == 'Medium' %}
-            <p>Size: M</p>
-            {% elif photo.size == 'Large' %}
-            <p>Size: L</p>
-            {% elif photo.size == 'XL' %}
-            <p>Size: XL</p>
-            {% else %}
-            <p>Size: XXL</p>
-            {% endif %}
-          </div>
+          <h6 class="text-black my-2">{{ photo.shop }}</h6>
           <h6 class="text-black my-2">€{{ photo.price }}</h6>
         </div>
       </div>
