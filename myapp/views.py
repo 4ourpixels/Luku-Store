@@ -3,41 +3,15 @@ from django.http import JsonResponse
 import json
 import datetime
 from .models import *
-# Registration form import from the forms.py file
 from .forms import *
-from . utils import cookieCart, cartData, guestOrder, search_items
-import http.client
-from django.contrib.auth.decorators import user_passes_test
+from . utils import cartData, guestOrder
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
-import random
-import http.client
-from django.db.models import F
 
-
-# ERROR - DONE
-
-
-def error(request):
-    print("Error 404")
-
-    retry_link = ""
-    error_message = ""
-
-    context = {
-        'retry_link': retry_link,
-        'error_message': error_message,
-    }
-
-    return render(request, 'error.html', context)
-# END OF ERROR - DONE
 
 # ABOUT US
-
-
 def lukufam(request):
     page_name = f"- About Us"
 
@@ -296,6 +270,48 @@ def blog_detail(request, pk):
     }
     return render(request, 'blog_detail.html', context)
 
+# Brands Start
+
+
+def brand_list(request):
+    blogs = Blog.objects.all()
+    recent_blogs = Blog.objects.order_by('-pk')
+    page_name = f"- Brands"
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    context = {
+        'cartItems': cartItems,
+        'blogs': blogs,
+        'page_name': page_name,
+        'recent_blogs': recent_blogs,
+    }
+    return render(request, 'brand_list.html', context)
+
+
+def brand_detail(request, pk):
+    blog = get_object_or_404(Blog, pk=pk)
+    page_name = f"- {blog.title}"
+    recent_blogs = Blog.objects.order_by('-pk')
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    # Retrieve photos from the category named "SS23"
+    category_ss23 = Category.objects.get(name='SS23')
+    photos_in_ss23_category = Photo.objects.filter(category=category_ss23)
+
+    context = {
+        'blog': blog,
+        'page_name': page_name,
+        'recent_blogs': recent_blogs,
+        'cartItems': cartItems,
+        'photos_in_ss23_category': photos_in_ss23_category,
+    }
+    return render(request, 'brand_detail.html', context)
+# Brand end
+
 
 def newsletter(request):
     page_name = f"- Newsletter"
@@ -333,7 +349,7 @@ def updateItem(request):
     print(f'{action}ed the product {productId}')
 
     customer = request.user.customer
-    product = Product.objects.get(pk=productId)
+    product = Photo.objects.get(pk=productId)
     order, created = Order.objects.get_or_create(
         customer=customer, complete=False)
 
@@ -405,7 +421,7 @@ def updateItem(request):
     print(f'{action}ed the product {productId}')
 
     customer = request.user.customer
-    product = Product.objects.get(pk=productId)
+    product = Photo.objects.get(pk=productId)
     order, created = Order.objects.get_or_create(
         customer=customer, complete=False)
 
@@ -468,7 +484,6 @@ def processOrder(request):
 
 
 def loginPage(request):
-
     page_name = f"- Log In"
 
     data = cartData(request)
@@ -486,7 +501,7 @@ def loginPage(request):
             if user is not None:
                 login(request, user)
                 if user.is_staff:
-                    return redirect('account')
+                    return redirect('index')
                 else:
                     return redirect('register')
             else:
@@ -620,82 +635,16 @@ def viewPhoto(request, pk):
     return render(request, 'photo.html', context)
 
 
-def product_detail(request, pk):
-
-    # Retrieve the 'requested' product using the 'pk' as the 'id' parameter
-    product = Product.objects.get(pk=pk)
-    page_name = f"- {product.product_name}"
-
-    # Loading the cart data
-    # Request data
-    data = cartData(request)
-    # Return the data and store them in the 'cartItems' variable and load on the html
-    cartItems = data['cartItems']
-
-    similar_products = product.similar_products_code.split(',')
-
-    similar_product_images = Product.objects.filter(
-        Q(similar_products__icontains=similar_products[0]) |
-        Q(product_code__icontains=similar_products[0])
-    ).exclude(pk=pk).distinct()
-
-    context = {
-        'product': product,
-        'cartItems': cartItems,
-        'page_name': page_name,
-        'similar_product_images': similar_product_images,
-    }
-
-    return render(request, 'product_detail.html', context)
-
-
-@login_required(login_url='login')
-def addPhoto(request):
-    categories = Category.objects.all()
-
-    if request.method == 'POST':
-        data = request.POST
-        images = request.FILES.getlist('images')
-        name = request.POST.get('name')
-
-        if data['category'] != 'none':
-            category = Category.objects.get(pk=data['category'])
-        elif data['category_new'] != '':
-            category, created = Category.objects.get_or_create(
-                name=data['category_name'])
-        else:
-            category = None
-
-        for image in images:
-            photo = Photo.objects.create(
-                category=category,
-                description=data['description'],
-                image=image,
-                name=name,
-            )
-
-        return redirect('gallery')
-
-    context = {
-        'categories': categories,
-    }
-    return render(request, 'addphoto.html', context)
-
-
 # ACCOUNT
 @login_required(login_url='login')
 def account(request):
     photos = Photo.objects.all()
-
     shippings = ShippingAddress.objects.all()
     orders = Order.objects.order_by('-pk')
-
     order_item_list = OrderItem.objects.all()
     page_name = f"- Account"
-
     data = cartData(request)
     cartItems = data['cartItems']
-
     order = data['order']
     items = data['items']
 
@@ -714,30 +663,9 @@ def account(request):
 # END OF ACCOUNT
 
 
-@login_required(login_url='login')
-def edit(request, id):
-    if request.method == "POST":
-        photo = Photo.objects.get(pk=id)
-        form = PhotoForm(request.POST, instance=photo)
-        if form.is_valid():
-            form.save()
-            return render(request, 'edit.html', {
-                'form': form,
-                'success': True
-            })
-    else:
-        photo = Photo.objects.get(pk=id)
-        form = PhotoForm(instance=photo)
-    return render(request, 'edit.html', {
-        'form': form,
-    })
-
-
 def music(request):
     page_name = "- DJ G400 Mixes"
-
     mixes = Mix.objects.all()
-
     latest_mix = mixes[2]
 
     context = {
@@ -749,10 +677,8 @@ def music(request):
 
 
 def music_player(request, id):
-
     mix = Mix.objects.get(pk=id)
     mixes = Mix.objects.all()
-
     page_name = f"- Playing {mix.title}"
 
     context = {
@@ -761,112 +687,3 @@ def music_player(request, id):
         'mixes': mixes,
     }
     return render(request, 'music_player.html', context)
-
-
-@login_required(login_url='login')
-def add(request):
-    if request.method == 'POST':
-        form = PhotoForm(request.POST)
-        if form.is_valid():
-            new_photo_name = form.cleaned_data['name']
-            new_photo_name_link = form.cleaned_data['name_link']
-            new_photo_category = form.cleaned_data['category']
-            new_photo_image = form.cleaned_data['image']
-            new_photo_description = form.cleaned_data['description']
-            new_photo_similar_products = form.cleaned_data['similar_products']
-            new_photo_price = form.cleaned_data['price']
-            new_photo_stock = form.cleaned_data['stock']
-            new_photo_color = form.cleaned_data['color']
-            new_photo_size = form.cleaned_data['size']
-            new_photo_rating = form.cleaned_data['rating']
-            new_photo_popular = form.cleaned_data['popular']
-            new_photo_shop = form.cleaned_data['shop']
-            new_photo_digital = form.cleaned_data['digital']
-
-            new_photo = Photo(
-                name=new_photo_name,
-                name_link=new_photo_name_link,
-                category=new_photo_category,
-                image=new_photo_image,
-                description=new_photo_description,
-                similar_products=new_photo_similar_products,
-                price=new_photo_price,
-                stock=new_photo_stock,
-                color=new_photo_color,
-                size=new_photo_size,
-                rating=new_photo_rating,
-                popular=new_photo_popular,
-                shop=new_photo_shop,
-                digital=new_photo_digital,
-            )
-
-            new_photo.save()
-
-            return render(request, 'add.html', {
-                'form': PhotoForm(),
-                'success': True,
-                'message': "New product was added successfully!",
-            })
-        else:
-            form = PhotoForm()
-    return render(request, 'add.html', {
-        'form': PhotoForm()
-    })
-
-
-@login_required(login_url='login')
-def add_blog(request):
-    if request.method == 'POST':
-        form = BlogForm(request.POST)
-        if form.is_valid():
-            new_blog_title = form.cleaned_data['title']
-            new_blog_summary = form.cleaned_data['summary']
-            new_blog_content = form.cleaned_data['content']
-            new_blog_author = form.cleaned_data['author']
-            new_blog_keywords = form.cleaned_data['keywords']
-            new_blog_image = form.cleaned_data['image']
-            new_blog_youtube = form.cleaned_data['youtube']
-            new_blog_brand = form.cleaned_data['brand']
-
-            new_blog = Blog(
-                title=new_blog_title,
-                summary=new_blog_summary,
-                content=new_blog_content,
-                author=new_blog_author,
-                keywords=new_blog_keywords,
-                image=new_blog_image,
-                youtube=new_blog_youtube,
-                brand=new_blog_brand,
-            )
-
-            new_blog.save()
-
-            return render(request, 'add_blog.html', {
-                'form': BlogForm(),
-                'success': True,
-                'message': "New blog was added successfully!",
-            })
-        else:
-            form = BlogForm()
-    return render(request, 'add_blog.html', {
-        'form': BlogForm()
-    })
-
-
-@login_required(login_url='login')
-def edit_blog(request, id):
-    if request.method == "POST":
-        blog = Blog.objects.get(pk=id)
-        form = BlogForm(request.POST, instance=blog)
-        if form.is_valid():
-            form.save()
-            return render(request, 'edit.html', {
-                'form': form,
-                'success': True
-            })
-    else:
-        blog = Blog.objects.get(pk=id)
-        form = BlogForm(instance=blog)
-    return render(request, 'edit_blog.html', {
-        'form': form,
-    })

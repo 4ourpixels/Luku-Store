@@ -28,7 +28,7 @@ class Blog(models.Model):
     contentTwo = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.title} | Published On: {self.pub_date.strftime('%A, %B %d, %Y')}"
+        return f"{self.title} - Published On: {self.pub_date.strftime('%A, %B %d, %Y')}"
 # END OF BLOG ENTRY
 
 # ABOUT US
@@ -50,7 +50,7 @@ class AboutUs(models.Model):
     )
 
     def __str__(self):
-        return f"{self.name} || {self.role}"
+        return f"{self.name} | {self.role}"
 
 # END OF ABOUT US
 
@@ -68,7 +68,7 @@ class Help(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, null=False, blank=False)
+    name = models.CharField(max_length=100, null=True, blank=True)
     icon = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
@@ -84,7 +84,7 @@ class Photo(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
-        null=True
+        null=True, blank=True
     )
 
     image = models.ImageField(
@@ -126,7 +126,7 @@ class Customer(models.Model):
     user = models.OneToOneField(
         User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
-    email = models.CharField(max_length=200)
+    email = models.CharField(max_length=200, null=True, blank=True)
 
     image = models.ImageField(
         null=True,
@@ -189,6 +189,7 @@ class Order(models.Model):
     def shipping(self):
         shipping = False
         orderitems = self.orderitem_set.all()
+
         for i in orderitems:
             if i.photo.digital == False:
                 shipping = True
@@ -313,59 +314,15 @@ class Mix(models.Model):
         return self.title
 
 
-# Mon 28th Aug
-
-
-class Kategory(models.Model):
-    name = models.CharField(max_length=100, null=False, blank=False)
+class Brand(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True)
+    keywords = models.TextField(null=True, blank=True)
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="brand/",
+        default='blog.jpg'
+    )
 
     def __str__(self):
         return self.name
-
-
-class Product(models.Model):
-    product_name = models.CharField(max_length=200, null=True, blank=True)
-    stock = models.IntegerField(default=0)
-    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
-    product_code = models.TextField(null=True, blank=True)
-    similar_products_code = models.TextField(null=True, blank=True)
-    similar_products = models.CharField(max_length=300, blank=True)
-    description = models.TextField()
-    type = models.CharField(max_length=200, null=True, blank=True)
-    category = models.ForeignKey(
-        Kategory,
-        on_delete=models.SET_NULL,
-        null=True
-    )
-    color = models.CharField(max_length=200, blank=True, null=True)
-    size = models.CharField(max_length=50, blank=True, null=True)
-    rating = models.IntegerField(blank=True, default=1)
-    popular = models.BooleanField(default=False, null=True, blank=False)
-    SHOP = (
-        ('Luku Store.nl', 'Luku Store.nl'),
-        ('Akiba Studios', 'Akiba Studios'),
-    )
-    shop = models.CharField(
-        max_length=50,
-        choices=SHOP,
-        null=True,
-        default='Luku Store.nl'
-    )
-    digital = models.BooleanField(default=False, null=True, blank=False)
-
-    image = models.ImageField(
-        null=False,
-        blank=False,
-        upload_to="products/",
-        default='image.jpg'
-    )
-
-    def __str__(self):
-        try:
-            if self.product_name:
-                details = f"{self.product_name} || {self.stock} In Stock || €{self.price} || Code: {self.product_code}"
-                return details
-            else:
-                return f"Type: {self.type}"
-        except Exception as e:
-            return f"Error retrieving string representation: {str(e)}"
