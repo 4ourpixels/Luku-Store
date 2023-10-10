@@ -1,49 +1,107 @@
-{% extends 'base.html' %}{% load static %} {% block body %}
-<section id="top" class="container mt-3">
-  <div class="row my-3">
-    <ul class="nav nav-tabs justify-content-center">
-      <li class="nav-item">
-        <a
-          class="nav-link {% if active_category == category.name %}active{% endif %} text-black"
-          style="text-decoration: none"
-          href="{% url 'gallery' %}"
-        >
-          All
-        </a>
-      </li>
-      {% for category in categories %}
-      <li class="nav-item">
-        <a
-          class="nav-link {% if active_category == category.name %}active{% endif %} text-black"
-          style="text-decoration: none"
-          href="{% url 'gallery' %}?category={{ category.name }}"
-          >{{ category.name }}</a
-        >
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
+{% extends 'base.html' %}{% load static %}{% block body %}
 
-  <div class="container my-5">
-    <div
-      class="row row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
-    >
-      {% for photo in photos %}
-      <div class="col-sm-6 col-md-4 col-lg-3">
-        <a href="{% url 'photo' photo.pk %}" class="underline hover">
-          <img
-            src="{{ photo.image.url }}"
-            alt="{{ photo.name }}"
-            class="img-fluid mb-2 bg-light"
-          />
-
-          <h6 class="fw-bold">{{ photo.name }}</h6></a
-        >
-        <p>{{ photo.description|truncatechars:25 }}</p>
-        <p class="fw-bold">€ {{ photo.price }}</p>
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__links">
+          <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+          <span>Shop</span>
+        </div>
       </div>
-      {% endfor %}
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Shop Section Begin -->
+<section class="shop spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-3">
+        <div class="shop__sidebar">
+          <div class="sidebar__categories">
+            <div class="section-title">
+              <h4>Categories</h4>
+            </div>
+            <div class="categories__accordion">
+              <div class="accordion" id="accordionExample">
+                <div class="card">
+                  <div class="card-heading active">
+                    <a data-toggle="collapse" data-target="#collapseOne">All</a>
+                  </div>
+                  <div
+                    id="collapseOne"
+                    class="collapse show"
+                    data-parent="#accordionExample"
+                  >
+                    <div class="card-body">
+                      <ul>
+                        {% for category in categories %}
+                        <li>
+                          <a
+                            href="{% url 'gallery' %}?category={{ category.name }}"
+                            >{{ category.name }}</a
+                          >
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-9">
+        <div class="row">
+          {% for photo in photos %}
+          <div class="col-lg-4 col-md-6">
+            <div class="product__item">
+              <img
+                src="{{ photo.image.url }}"
+                alt="{{ photo.name }} Image"
+                class="img-fluid bg-light"
+              />
+              <div class="product__item__text">
+                <h6>
+                  <a href="{% url 'photo' photo.pk %}">{{ photo.name }}</a>
+                </h6>
+                <div class="rating">
+                  {% if photo.rating == 1 %}
+                  <i class="fa fa-star"></i>
+                  {% elif photo.rating == 2 %}
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  {% elif photo.rating == 3 %}
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  {% elif photo.rating == 4 %}
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  {% else %}
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  {% endif %}
+                </div>
+                <div class="product__price">{{ photo.price }}</div>
+                <div class="product__price">{{ photo.shop }}</div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
   </div>
 </section>
+<!-- Shop Section End -->
 {% endblock %}
