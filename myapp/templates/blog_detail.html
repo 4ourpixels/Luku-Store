@@ -3,7 +3,7 @@
   {% if blog.youtube %}
   <iframe
     style="width: 100%; height: 70vh"
-    class="img-fluid mt-3"
+    class="img-fluid"
     src="{{ blog.youtube }}"
     title="YouTube video player"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -13,7 +13,7 @@
   <img
     src="{{ blog.image.url }}"
     alt="{{ blog.name }}"
-    class="img-fluid w-100 mt-3"
+    class="img-fluid w-100"
   />
   {% endif %}
 </div>
@@ -22,57 +22,121 @@
   <h1>{{ blog.title }}</h1>
   <p class="lead my-5 text-start">{{ blog.content|safe }}</p>
   {% if blog.title != 'SS23 Luku Book' %}
-  <div class="hidden"></div>
-  {% else %}
-  <div
-    class="row gx-3 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
-  >
-    {% for photo in photos_in_ss23_category|slice:":4" %}
-    <div class="col mb-3">
-      <a style="text-decoration: none" href="{% url 'photo' photo.id %}"
-        ><img
-          src="{{ photo.image.url }}"
-          style="height: 100%; object-fit: cover"
-          alt="A {{ photo.type }} from the SS23 Luku Book"
-          class="img-fluid"
-      /></a>
+  <div class="container">
+    <div class="row">
+      <p class="mt-5 lead text-start">{{ blog.contentOne|safe }}</p>
     </div>
-    {% endfor %}
   </div>
+  <div class="container">
+    <div class="row">
+      <p class="mt-5 lead text-start">{{ blog.contentTwo|safe }}</p>
+    </div>
+    <hr class="my-5">
+    <div class="row">
+      <div class="col-12 text-center">
+        <div class="section-title mb-4 pb-2">
+          <h1 class="title mb-4">Latest Blog &amp; News</h1>
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+    <!--end row-->
 
-  <p class="my-5 lead text-start">{{ blog.contentOne|safe }}</p>
+    <div class="row">
+      {% for blog in recent_blogs|slice:":3" %}
+      <div class="col-lg-4 col-md-6 pt-2">
+        <div class="blog-post rounded border">
+          <div class="blog-img d-block overflow-hidden position-relative">
+            <img
+              src="{{ blog.image.url }}"
+              class="img-fluid rounded-top"
+              alt=""
+            />
+          </div>
+          <div class="content p-3">
+            <small class="text-muted p float-right"> {{ blog.pub_date }}</small>
+            <h4 class="mt-2">
+              <a href="javascript:void(0)" class="text-dark title"
+                >{{ blog.title|truncatechars:50 }}</a
+              >
+            </h4>
+            <p class="text-muted mt-2">{{ blog.summary }}</p>
+            <a
+              href="{% url 'blog_detail' pk=blog.pk %}"
+              class="text-dark mt-2 read-more"
+              >Read More <i class="mdi mdi-chevron-right"></i
+            ></a>
+          </div>
+        </div>
+        <!--end blog post-->
+      </div>
+      <!--end col-->
+      {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div
+      class="row gx-3 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
+    >
+      {% for photo in photos_in_ss23_category|slice:":4" %}
+      <div class="col mb-3">
+        <a style="text-decoration: none" href="{% url 'photo' photo.id %}"
+          ><img
+            src="{{ photo.image.url }}"
+            style="height: 100%; object-fit: cover"
+            alt="A {{ photo.type }} from the SS23 Luku Book"
+            class="img-fluid"
+        /></a>
+      </div>
+      {% endfor %}
+    </div>
 
-  <div
-    class="row gx-3 gx-lg-5 row-cols-3 row-cols-md-3 row-cols-xl-3 justify-content-center"
-  >
-    {% for photo in photos_in_ss23_category|slice:"4:10" %}
-    <div class="col mb-3">
-      <a style="text-decoration: none" href="{% url 'photo' photo.id %}"
-        ><img
-          style="height: 100%; object-fit: cover"
-          src="{{ photo.image.url }}"
-          alt="A {{ photo.type }} from the SS23 Luku Book"
-          class="img-fluid"
-      /></a>
+    <p class="my-5 lead text-start">{{ blog.contentOne|safe }}</p>
+
+    <div
+      class="row gx-3 gx-lg-5 row-cols-3 row-cols-md-3 row-cols-xl-3 justify-content-center"
+    >
+      {% for photo in photos_in_ss23_category|slice:"4:10" %}
+      <div class="col mb-3">
+        <a style="text-decoration: none" href="{% url 'photo' photo.id %}"
+          ><img
+            style="height: 100%; object-fit: cover"
+            src="{{ photo.image.url }}"
+            alt="A {{ photo.type }} from the SS23 Luku Book"
+            class="img-fluid"
+        /></a>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
-  <p class="my-5 lead text-start">{{ blog.contentTwo|safe }}</p>
-  <div
-    class="row gx-3 gx-lg-5 row-cols-2 row-cols-md-2 row-cols-xl-2 justify-content-center"
-  >
-    {% for photo in photos_in_ss23_category|slice:"10:16" %}
-    <div class="col mb-3">
-      <a style="text-decoration: none" href="{% url 'photo' photo.id %}"
-        ><img
-          style="height: 100%; object-fit: cover"
-          src="{{ photo.image.url }}"
-          alt="A {{ photo.type }} from the SS23 Luku Book"
-          class="img-fluid"
-      /></a>
+    <p class="my-5 lead text-start">{{ blog.contentTwo|safe }}</p>
+    <div
+      class="row gx-3 gx-lg-5 row-cols-2 row-cols-md-2 row-cols-xl-2 justify-content-center"
+    >
+      {% for photo in photos_in_ss23_category|slice:"10:16" %}
+      <div class="col mb-3">
+        <a style="text-decoration: none" href="{% url 'photo' photo.id %}"
+          ><img
+            style="height: 100%; object-fit: cover"
+            src="{{ photo.image.url }}"
+            alt="A {{ photo.type }} from the SS23 Luku Book"
+            class="img-fluid"
+        /></a>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
+    {% endif %}
   </div>
-  {% endif %}
+  <div class="container">
+    <div class="row">
+      <p>The latest collaborative collection between Nairobi Noize and Luku Store aims to celebrate Kenyan streetwear culture. With a few carefully crafted and handmade upcycled pieces making up the first collection, Kagima (Nairobi Noize) emphasizes the need to tell the world authentic Kenyan stories through fashion, while Francis (Luku Store), having worked with Nairobi powerhouse brands like Akiba Studios, provides an international platform that can be used to export these stories.</p>
+      <p class="fw-bold">First, the usual. Tell us a bit about yourselves.</p>
+      <p><strong>Francis:</strong> I was born & raised here, in Kenya. Went to primary & high school here, then when I graduated, I got the opportunity to study abroad. And I’d say that the first time I realized that I was black or that racism is a thing was actually when I moved to Europe. I think when you grow up in Kenya, it’s never a thing or an issue. You never feel like you’re a minority or from a group that’s looked down upon. So that triggered something in me. I was thinking about it recently, even just reading authors like Chimamanda & other African authors who also describe that journey; it imparted something in me where I felt like there’s a narrative of Africa, which is one of dependency, poverty, all that. And, of course, we do have our issues. There’s a big income inequality problem, for example. But there’s another aspect of Kenya and Africa in general that’s not highlighted at all. So for me, with this project & Luku & the other projects that I’m working on, I want to explore the potential of African youth. My idea with Luku is to represent the streetwear brands from Kenya & give them an international platform, no matter how small, and allow them to become more visible, and try to change the current narrative.</p>
+      <p><strong>Kagima:</strong> I’m an artist & designer based in Nairobi. I studied architecture in uni & my passion lies in designing products more than houses. One of the ventures that I went into was fashion design, & after school, I had the opportunity to meet Vart, who had been in the industry for a minute & was conversant with the Nairobi fashion industry & community. We started Nairobi Noize together, which is basically a collective of two guys just making clothes & experimenting. Then I met Kinyanjui, & I’d seen what he’d done with Akiba & what he’s been trying to do for local fashion brands. And, of course, I bought into the idea of exporting culture to Europe just as much as we import it. That way, they get to see what we’re making here & hear the stories that we have to tell. Nairobi Noize reflects Nairobi culture, so what Luku aims to do aligns with our brand ethos.</p>
+      <p class="fw-bold">How did your fashion journey start?</p>
+      <p></p>
+      
+    </div>
+  </div>
 </div>
+
 {% endblock %}
