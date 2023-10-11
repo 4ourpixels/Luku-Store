@@ -19,6 +19,8 @@ def lukufam(request):
     cartItems = data['cartItems']
 
     object = AboutUs.objects.all()
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
 
     kendy = object[0]
     djg400 = object[1]
@@ -44,6 +46,8 @@ def lukufam(request):
         'tarela': tarela,
         'page_name': page_name,
         'cartItems': cartItems,
+        'blogs': blogs,
+        'brands': brands
     }
 
     return render(request, 'lukufam.html', context)
@@ -57,12 +61,16 @@ def help(request):
 
     data = cartData(request)
     cartItems = data['cartItems']
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
 
     help = Help.objects.first()
     context = {
         'help': help,
         'page_name': page_name,
         'cartItems': cartItems,
+        'blogs': blogs,
+        'brands': brands,
     }
     return render(request, 'help.html', context)
 # END OF HELP SECTION - DONE
@@ -73,6 +81,7 @@ def index(request):
 
     photos = Photo.objects.all()
     blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
     homepages = HomePage.objects.all()
     categories = Category.objects.all()
     mixes = Mix.objects.all()
@@ -122,6 +131,7 @@ def index(request):
     context = {
         'photos': photos,
         'blogs': blogs,
+        'brands': brands,
         'cartItems': cartItems,
         'page_name': page_name,
         'homepages': homepages,
@@ -159,6 +169,8 @@ def index(request):
 
 def shop(request):
     page_name = f"- Shop"
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
 
     unique_product_codes = Photo.objects.filter(
         product_code__isnull=False).values_list('product_code', flat=True).distinct()
@@ -169,6 +181,8 @@ def shop(request):
             product_code=product_code).order_by('pk').first()
         unique_photos.append(latest_photo)
 
+    categories = Category.objects.all()
+
     data = cartData(request)
     cartItems = data['cartItems']
 
@@ -177,6 +191,9 @@ def shop(request):
         'cartItems': cartItems,
         'latest_photo': latest_photo,
         'unique_photos': unique_photos,
+        'categories': categories,
+        'blogs': blogs,
+        'brands': brands,
     }
 
     return render(request, 'shop.html', context)
@@ -194,6 +211,8 @@ def cart(request):
     page_name = f"- Cart({cartItems})"
 
     photos = Photo.objects.all()
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
 
     context = {
         'page_name': page_name,
@@ -202,6 +221,8 @@ def cart(request):
         'order': order,
         'photos': photos,
         'discount': discount,
+        'blogs': blogs,
+        'brands': brands,
     }
 
     return render(request, 'cart.html', context)
@@ -212,9 +233,9 @@ def cart(request):
 
 
 def checkout(request):
-
     page_name = f"- Checkout"
-
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
     data = cartData(request)
     cartItems = data['cartItems']
     order = data['order']
@@ -225,6 +246,8 @@ def checkout(request):
         'items': items,
         'order': order,
         'cartItems': cartItems,
+        'blogs': blogs,
+        'brands': brands,
     }
 
     return render(request, 'checkout.html', context)
@@ -233,9 +256,9 @@ def checkout(request):
 
 
 def blog_list(request):
-    blogs = Blog.objects.all()
-    recent_blogs = Blog.objects.order_by('-pk')
     page_name = f"- Blogs"
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -243,16 +266,22 @@ def blog_list(request):
     context = {
         'cartItems': cartItems,
         'blogs': blogs,
+        'brands': brands,
         'page_name': page_name,
-        'recent_blogs': recent_blogs,
     }
     return render(request, 'blog_list.html', context)
 
 
-def blog_detail(request, pk):
-    blog = get_object_or_404(Blog, pk=pk)
+def blog_detail(request, slug):
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
+    blog = get_object_or_404(Blog, slug=slug)
     page_name = f"- {blog.title}"
-    recent_blogs = Blog.objects.order_by('-pk')
+    keywords = [
+        item.strip()
+        for item in blog.keywords.split(',')
+        if item.strip()
+    ]
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -264,9 +293,11 @@ def blog_detail(request, pk):
     context = {
         'blog': blog,
         'page_name': page_name,
-        'recent_blogs': recent_blogs,
+        'blogs': blogs,
         'cartItems': cartItems,
         'photos_in_ss23_category': photos_in_ss23_category,
+        'keywords': keywords,
+        'brands': brands,
     }
     return render(request, 'blog_detail.html', context)
 
@@ -274,9 +305,9 @@ def blog_detail(request, pk):
 
 
 def brand_list(request):
-    blogs = Blog.objects.all()
-    recent_blogs = Blog.objects.order_by('-pk')
     page_name = f"- Brands"
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -285,37 +316,15 @@ def brand_list(request):
         'cartItems': cartItems,
         'blogs': blogs,
         'page_name': page_name,
-        'recent_blogs': recent_blogs,
+        'brands': brands,
     }
     return render(request, 'brand_list.html', context)
 
 
-def brand_detail(request, pk):
-    blog = get_object_or_404(Blog, pk=pk)
-    page_name = f"- {blog.title}"
-    recent_blogs = Blog.objects.order_by('-pk')
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    # Retrieve photos from the category named "SS23"
-    category_ss23 = Category.objects.get(name='SS23')
-    photos_in_ss23_category = Photo.objects.filter(category=category_ss23)
-
-    context = {
-        'blog': blog,
-        'page_name': page_name,
-        'recent_blogs': recent_blogs,
-        'cartItems': cartItems,
-        'photos_in_ss23_category': photos_in_ss23_category,
-    }
-    return render(request, 'brand_detail.html', context)
-# Brand end
-
-
 def newsletter(request):
     page_name = f"- Newsletter"
-
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
     data = cartData(request)
     cartItems = data['cartItems']
 
@@ -334,6 +343,8 @@ def newsletter(request):
     context = {
         'page_name': page_name,
         'cartItems': cartItems,
+        'blogs': blogs,
+        'brands': brands,
     }
 
     return render(request, 'newsletter.html', context)
@@ -345,8 +356,6 @@ def updateItem(request):
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
-
-    print(f'{action}ed the product {productId}')
 
     customer = request.user.customer
     product = Photo.objects.get(pk=productId)
@@ -485,7 +494,8 @@ def processOrder(request):
 
 def loginPage(request):
     page_name = f"- Log In"
-
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
     data = cartData(request)
     cartItems = data['cartItems']
 
@@ -510,6 +520,8 @@ def loginPage(request):
     context = {
         'page_name': page_name,
         'cartItems': cartItems,
+        'blogs': blogs,
+        'brands': brands,
     }
 
     return render(request, 'login.html', context)
@@ -521,11 +533,10 @@ def logoutUser(request):
 
 
 def registerPage(request):
-
     page_name = f"- Sign Up"
-
     form = RegisterUserForm()
-
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
     data = cartData(request)
     cartItems = data['cartItems']
 
@@ -548,6 +559,8 @@ def registerPage(request):
         'page_name': page_name,
         'cartItems': cartItems,
         'form': form,
+        'blogs': blogs,
+        'brands': brands,
     }
 
     return render(request, 'register.html', context)
@@ -556,14 +569,17 @@ def registerPage(request):
 
 def confirmed(request):
     page_name = f"- Order Complete!"
-
     data = cartData(request)
     cartItems = data['cartItems']
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
 
     context = {
         'page_name': page_name,
         'cartItems': cartItems,
-        'success': True
+        'success': True,
+        'blogs': blogs,
+        'brands': brands,
     }
 
     return render(request, 'confirmed.html', context)
@@ -571,6 +587,8 @@ def confirmed(request):
 
 def gallery(request):
     category = request.GET.get('category')
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -599,6 +617,8 @@ def gallery(request):
         'cartItems': cartItems,
         'active_category': active_category,
         'unique_photos': unique_photos,
+        'blogs': blogs,
+        'brands': brands,
     }
     return render(request, 'gallery.html', context)
 
@@ -607,7 +627,8 @@ def viewPhoto(request, pk):
     photo = Photo.objects.get(pk=pk)
     data = cartData(request)
     cartItems = data['cartItems']
-
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
     name_link = photo.similar_products.split(',')
 
     similar_images = Photo.objects.filter(
@@ -630,6 +651,8 @@ def viewPhoto(request, pk):
         'similar_images': similar_images,
         'similar_products': similar_products,
         'page_name': page_name,
+        'blogs': blogs,
+        'brands': brands,
     }
 
     return render(request, 'photo.html', context)
@@ -639,6 +662,8 @@ def viewPhoto(request, pk):
 @login_required(login_url='login')
 def account(request):
     photos = Photo.objects.all()
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
     shippings = ShippingAddress.objects.all()
     orders = Order.objects.order_by('-pk')
     order_item_list = OrderItem.objects.all()
@@ -657,6 +682,8 @@ def account(request):
         'orders': orders,
         'order': order,
         'items': items,
+        'blogs': blogs,
+        'brands': brands,
     }
 
     return render(request, 'account.html', context)
@@ -667,11 +694,14 @@ def music(request):
     page_name = "- DJ G400 Mixes"
     mixes = Mix.objects.all()
     latest_mix = mixes[2]
-
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
     context = {
         'page_name': page_name,
         'mixes': mixes,
         'latest_mix': latest_mix,
+        'blogs': blogs,
+        'brands': brands,
     }
     return render(request, 'music.html', context)
 
@@ -680,10 +710,13 @@ def music_player(request, id):
     mix = Mix.objects.get(pk=id)
     mixes = Mix.objects.all()
     page_name = f"- Playing {mix.title}"
-
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
     context = {
         'page_name': page_name,
         'mix': mix,
         'mixes': mixes,
+        'blogs': blogs,
+        'brands': brands,
     }
     return render(request, 'music_player.html', context)

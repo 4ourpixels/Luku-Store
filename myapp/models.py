@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.dateformat import DateFormat
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 # BLOG ENTRY
@@ -21,6 +22,10 @@ class Blog(models.Model):
     )
     youtube = models.TextField(blank=True, null=True)
 
+    # Add the slug field
+    # You can make it unique if needed
+    slug = models.SlugField(unique=True, null=True, blank=True)
+
     pub_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -29,6 +34,10 @@ class Blog(models.Model):
 
     def __str__(self):
         return f"{self.title} - Published On: {self.pub_date.strftime('%A, %B %d, %Y')}"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 # END OF BLOG ENTRY
 
 # ABOUT US
