@@ -3,20 +3,20 @@
 <main style="margin-top: 3rem" id="top" class="container">
   <h1 class="display-1 text-bold fw-bolder text-center mb-4">Blogs</h1>
   <div class="row mb-2">
-    {% for blog in recent_blogs %}
+    {% for blog in blogs %}
     <div class="col-md-6">
       <div
         class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
       >
         <div class="col p-4 d-flex flex-column position-static">
           <a
-            href="{% url 'blog_detail' blog.pk %}"
+            href="{% url 'blog_detail' slug=blog.slug %}"
             class="text-black h4 underline mb-3"
             >{{ blog.title }}</a
           >
           <p class="card-text mb-3">{{ blog.summary }}</p>
           <a
-            href="{% url 'blog_detail' pk=blog.pk %}"
+            href="{% url 'blog_detail' slug=blog.slug %}"
             class="underline text-black"
             >Continue reading</a
           >

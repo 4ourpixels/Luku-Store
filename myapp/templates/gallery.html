@@ -56,46 +56,21 @@
         </div>
       </div>
       <div class="col-lg-9 col-md-9">
-        <div class="row">
+        <div class="row row-cols-2 row-cols-md-4 row-cols-xl-4">
           {% for photo in photos %}
-          <div class="col-lg-4 col-md-6">
-            <div class="product__item">
+          <div class="col-sm-6 col-md-4 col-lg-3">
+            <a href="{% url 'photo' photo.pk %}" class="underline hover">
               <img
                 src="{{ photo.image.url }}"
-                alt="{{ photo.name }} Image"
-                class="img-fluid bg-light"
+                alt="{{ photo.name }}"
+                class="img-fluid mb-2 bg-light"
               />
-              <div class="product__item__text">
-                <h6>
-                  <a href="{% url 'photo' photo.pk %}">{{ photo.name }}</a>
-                </h6>
-                <div class="rating">
-                  {% if photo.rating == 1 %}
-                  <i class="fa fa-star"></i>
-                  {% elif photo.rating == 2 %}
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  {% elif photo.rating == 3 %}
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  {% elif photo.rating == 4 %}
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  {% else %}
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  {% endif %}
-                </div>
-                <div class="product__price">{{ photo.price }}</div>
-                <div class="product__price">{{ photo.shop }}</div>
-              </div>
-            </div>
+              <h6 style="margin-bottom: -0.1rem" class="fw-bold mt-1">
+                {{ photo.name }}
+              </h6></a
+            >
+            <small>Brand: {{ photo.shop }}</small>
+            <p class="fw-bold">€ {{ photo.price }}</p>
           </div>
           {% endfor %}
         </div>

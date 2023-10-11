@@ -231,7 +231,7 @@
                     <li class="border-bottom">
                       <a
                         class="small fw-bold"
-                        href="{% url 'blog_detail' blog.pk %}"
+                        href="{% url 'blog_detail' slug=blog.slug %}"
                         >{{ blog.title }}</a
                       >
                     </li>
@@ -239,7 +239,14 @@
                   </ul>
                 </li>
                 <li class="small fw-bold">
-                  <a href="{% url 'contact' %}">Contact</a>
+                  <a href="{% url 'blog_list' %}">Brands</a>
+                  <ul class="dropdown">
+                    {% for brand in brands %}
+                    <li class="border-bottom">
+                      <a class="small fw-bold" href="#">{{ brand.name }}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
                 </li>
                 <li class="small fw-bold">
                   <a href="{% url 'lukufam' %}">About</a>
