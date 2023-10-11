@@ -28,7 +28,7 @@
         <div class="carousel-item active">
           <a
             class="btn btn-outline-light p-0"
-            href="{% url 'blog_detail' 10 %}"
+            href="{% url 'blog_detail' slug='ss23-luku-book' %}"
           >
             <img src="{{ slider_01.image.url }}" class="img-fluid"
           /></a>
@@ -46,7 +46,7 @@
               <p>
                 <a
                   class="btn btn-outline-light"
-                  href="{% url 'blog_detail' 10 %}"
+                  href="{% url 'blog_detail' slug='ss23-luku-book' %}"
                   >SS23' Lukubook</a
                 >
               </p>
@@ -129,6 +129,51 @@
 </div>
 <!-- END OF HERO SECTION -->
 
+<!-- Discount Section Begin -->
+<section class="discount mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 p-0">
+        <div class="discount__pic">
+          <img
+            src="{% static 'images/discount2.jpg' %}"
+            alt="Nairobi Nnoize Poster"
+          />
+        </div>
+      </div>
+      <div class="col-lg-6 p-0">
+        <div class="discount__text">
+          <div class="discount__text__title">
+            <span>BEAUTIFUL and BRUTAL</span>
+            <h2>Nairobi Nnoize</h2>
+            <h5><span>Sale</span></h5>
+          </div>
+          <div class="discount__countdown" id="countdown-time">
+            <div class="countdown__item">
+              <span>0</span>
+              <p>Days</p>
+            </div>
+            <div class="countdown__item">
+              <span>0</span>
+              <p>Hour</p>
+            </div>
+            <div class="countdown__item">
+              <span>0</span>
+              <p>Min</p>
+            </div>
+            <div class="countdown__item">
+              <span>0</span>
+              <p>Sec</p>
+            </div>
+          </div>
+          <a href="#">Shop now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Discount Section End -->
+
 <!-- Categories Section Begin -->
 <section class="categories">
   <div class="container-fluid">
@@ -144,7 +189,9 @@
               Engage in our SS23' Luku-book featuring fits from Akiba Haiozi,
               creative director behind Nairobi based Akiba Studios.
             </p>
-            <a href="{% url 'blog_detail' 10 %}">View Collection</a>
+            <a href="{% url 'blog_detail' slug='ss23-luku-book' %}"
+              >View Collection</a
+            >
           </div>
         </div>
       </div>
@@ -309,51 +356,6 @@
   </div>
 </div>
 <!-- End of Summer Jam -->
-
-<!-- Discount Section Begin -->
-<section class="discount mb-5">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 p-0">
-        <div class="discount__pic">
-          <img
-            src="{% static 'images/discount2.jpg' %}"
-            alt="Nairobi Nnoize Poster"
-          />
-        </div>
-      </div>
-      <div class="col-lg-6 p-0">
-        <div class="discount__text">
-          <div class="discount__text__title">
-            <span>BEAUTIFUL and BRUTAL</span>
-            <h2>Nairobi Nnoize</h2>
-            <h5><span>Sale</span></h5>
-          </div>
-          <div class="discount__countdown" id="countdown-time">
-            <div class="countdown__item">
-              <span>0</span>
-              <p>Days</p>
-            </div>
-            <div class="countdown__item">
-              <span>0</span>
-              <p>Hour</p>
-            </div>
-            <div class="countdown__item">
-              <span>0</span>
-              <p>Min</p>
-            </div>
-            <div class="countdown__item">
-              <span>0</span>
-              <p>Sec</p>
-            </div>
-          </div>
-          <a href="#">Shop now</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Discount Section End -->
 
 <!-- DJ G400 Start -->
 <div class="container">

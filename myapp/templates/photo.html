@@ -100,22 +100,53 @@
               <li>
                 <span>Available size:</span>
                 <div class="size__btn">
-                  <label for="xs-btn" class="active">
+                  {% if photo.size == 'XS' %}
+                  <label>
                     <input type="radio" id="xs-btn" />
-                    xs
+                    XS
+                    <s>S</s>
+                    <s>M</s>
+                    <s>L</s>
+                    <s>XL</s>
                   </label>
-                  <label for="s-btn">
+                  {% elif photo.size == 'Small' %}
+                  <label>
+                    <s>XS</s>
                     <input type="radio" id="s-btn" />
-                    s
+                    Small
+                    <s>M</s>
+                    <s>L</s>
+                    <s>XL</s>
                   </label>
-                  <label for="m-btn">
+                  {% elif photo.size == 'Medium' %}
+                  <label>
+                    <s>XS</s>
+                    <s>S</s>
                     <input type="radio" id="m-btn" />
-                    m
+                    Medium
+                    <s>L</s>
+                    <s>XL</s>
                   </label>
-                  <label for="l-btn">
+                  {% elif photo.size == 'Large' %}
+
+                  <label>
+                    <s>XS</s>
+                    <s>S</s>
+                    <s>M</s>
                     <input type="radio" id="l-btn" />
-                    l
+                    Large
+                    <s>XL</s>
                   </label>
+                  {% else %}
+                  <label>
+                    <s>XS</s>
+                    <s>S</s>
+                    <s>M</s>
+                    <s>L</s>
+                    <input type="radio" id="xl-btn" />
+                    XL
+                  </label>
+                  {% endif %}
                 </div>
               </li>
             </ul>

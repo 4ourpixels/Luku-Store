@@ -41,12 +41,8 @@
   </div>
   <hr>
   <div class="row">
-    <div class="col-12 text-center">
-      <div class="section-title my-4 pb-2">
-        <h1 class="title mb-4">Latest Blog &amp; News</h1>
-      </div>
-    </div>
-      {% for blog in recent_blogs|slice:":3" %}
+      <h1 class="title mb-4 text-center">Latest Blog &amp; News</h1>
+      {% for blog in blogs|slice:":3" %}
       <div class="col-lg-4 col-md-6 pt-2">
         <div class="blog-post rounded border">
           <div class="blog-img d-block overflow-hidden position-relative">
@@ -58,14 +54,14 @@
           </div>
           <div class="content p-3">
             <h6 class="mt-2">
-              <a href="javascript:void(0)" class="text-dark title"
+              <a href="{% url 'blog_detail' slug=blog.slug %}" class="text-dark title"
               >{{ blog.title }}</a
               >
             </h6>
             <p class="text-muted mt-2">{{ blog.summary }}</p>
               <small class="text-muted float-right">{{ blog.pub_date|date:"jS F Y" }}</small>
               <a
-              href="{% url 'blog_detail' pk=blog.pk %}"
+              href="{% url 'blog_detail' slug=blog.slug %}"
               class="small text-dark"
               >Read More...</a>
           </div>

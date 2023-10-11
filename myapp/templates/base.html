@@ -170,7 +170,7 @@
       <ul class="offcanvas__widget">
         <!-- <li><span class="icon_search search-switch"></span></li> -->
         <li>
-          <a href="#"
+          <a href="{% url 'cart' %}"
             ><i class="fa-solid fa-cart-shopping"></i>
             <div class="tip">{{ cartItems }}</div>
           </a>
@@ -218,19 +218,19 @@
           <div class="col-xl-4 col-lg-6">
             <nav class="header__menu">
               <ul>
-                <li class="fw-bold small">
+                <li class="fw-bold">
                   <a href="{% url 'index' %}">Home</a>
                 </li>
-                <li class="small fw-bold">
+                <li class="fw-bold">
                   <a href="{% url 'shop' %}">Shop</a>
                 </li>
-                <li class="small fw-bold">
+                <li class="fw-bold">
                   <a href="{% url 'blog_list' %}">Blogs</a>
                   <ul class="dropdown">
                     {% for blog in blogs %}
                     <li class="border-bottom">
                       <a
-                        class="small fw-bold"
+                        class="fw-bold"
                         href="{% url 'blog_detail' slug=blog.slug %}"
                         >{{ blog.title }}</a
                       >
@@ -238,17 +238,19 @@
                     {% endfor %}
                   </ul>
                 </li>
-                <li class="small fw-bold">
-                  <a href="{% url 'blog_list' %}">Brands</a>
+                <li class="fw-bold">
+                  <a href="{% url 'brand_list' %}">Brands</a>
                   <ul class="dropdown">
                     {% for brand in brands %}
                     <li class="border-bottom">
-                      <a class="small fw-bold" href="#">{{ brand.name }}</a>
+                      <a class="fw-bold" href="{% url 'brand_list' %}"
+                        >{{ brand.name }}</a
+                      >
                     </li>
                     {% endfor %}
                   </ul>
                 </li>
-                <li class="small fw-bold">
+                <li class="fw-bold">
                   <a href="{% url 'lukufam' %}">About</a>
                 </li>
               </ul>
@@ -266,16 +268,14 @@
               </div>
               {% else %}
               <div class="header__right__auth">
-                <a class="small text-black" href="{% url 'login' %}">Login</a>
-                <a class="small text-black" href="{% url 'register' %}"
-                  >Register</a
-                >
+                <a class="text-black" href="{% url 'login' %}">Login</a>
+                <a class="text-black" href="{% url 'register' %}">Register</a>
               </div>
               {% endif %}
               <ul class="header__right__widget">
                 <!-- <li><i class="fa-solid fa-magnifying-glass"></i></li> -->
                 <li>
-                  <a href="#"
+                  <a href="{% url 'cart' %}"
                     ><i class="fa-solid fa-cart-shopping"></i>
                     <div class="tip">{{ cartItems }}</div>
                   </a>
@@ -306,7 +306,7 @@
     {% endfor %} {% endif %} {% block body %} {% endblock %}
     <!-- FOOTER ----------------------------->
     <footer class="container-fluid pt-5 pb-2 px-5 text-white bg-black">
-      <div class="row">
+      <div class="row justify-items-center">
         <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
           <a href="{% url 'lukufam' %}" class="text-white navbar-brand">
             <img
@@ -321,12 +321,12 @@
           </p>
         </div>
 
-        <div class="col-lg-2 col-md-6 col-sm-2 mb-3 align-content-center">
+        <div class="col-lg-2 col-md-6 col-sm-6 mb-3 align-content-center">
           <h5>Quick Links</h5>
           <ul class="flex-column list-unstyled">
             <li class="mb-2">
               <a
-                href="{% url 'blog_detail' 10 %}"
+                href="{% url 'blog_detail' slug='ss23-luku-book' %}"
                 class="nav-link p-0 text-muted"
                 >Luku Book</a
               >
@@ -349,7 +349,7 @@
           </ul>
         </div>
 
-        <div class="col-lg-2 col-md-6 col-sm-2 mb-3">
+        <div class="col-lg-2 col-md-6 col-sm-6 mb-3">
           <h5>Pages</h5>
           <ul class="flex-column list-unstyled">
             <li class="nav-item mb-2">
