@@ -21,8 +21,7 @@
             >Continue reading</a
           >
           <small class="my-1 text-muted footer"
-            ><i class="fa-solid fa-clock"></i> {{ blog.pub_date|timesince }}
-            ago</small
+            ><i class="fa-solid fa-clock"></i> {{ blog.pub_date|date:"jS F Y" }}</small
           >
         </div>
         <div class="col-auto d-none d-lg-block">

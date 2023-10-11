@@ -105,6 +105,11 @@
       href="{% static 'css/style.css' %}"
       type="text/css"
     />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/index.css' %}"
+      type="text/css"
+    />
     <!-- Javascript Cart -->
     <script type="text/javascript">
       var user = "{{ request.user }}";
@@ -198,7 +203,7 @@
       <div class="container-fluid">
         <div class="row d-flex justify-content-center">
           <!-- Left -->
-          <div class="col-xl-4">
+          <div class="col-xl-4 col-lg-4">
             <div class="header__logo">
               <a href="{% url 'index' %}"
                 ><img
@@ -210,27 +215,33 @@
           </div>
 
           <!-- Middle -->
-          <div class="col-xl-4">
+          <div class="col-xl-4 col-lg-6">
             <nav class="header__menu">
               <ul>
-                <li class="active small">
+                <li class="fw-bold small">
                   <a href="{% url 'index' %}">Home</a>
                 </li>
-                <li class="small"><a href="{% url 'shop' %}">Shop</a></li>
-                <li class="small">
+                <li class="small fw-bold">
+                  <a href="{% url 'shop' %}">Shop</a>
+                </li>
+                <li class="small fw-bold">
                   <a href="{% url 'blog_list' %}">Blogs</a>
                   <ul class="dropdown">
                     {% for blog in blogs %}
                     <li class="border-bottom">
-                      <a class="small" href="{% url 'blog_detail' blog.pk %}"
+                      <a
+                        class="small fw-bold"
+                        href="{% url 'blog_detail' blog.pk %}"
                         >{{ blog.title }}</a
                       >
                     </li>
                     {% endfor %}
                   </ul>
                 </li>
-                <li class="small"><a href="{% url 'contact' %}">Contact</a></li>
-                <li class="small">
+                <li class="small fw-bold">
+                  <a href="{% url 'contact' %}">Contact</a>
+                </li>
+                <li class="small fw-bold">
                   <a href="{% url 'lukufam' %}">About</a>
                 </li>
               </ul>
@@ -238,8 +249,8 @@
           </div>
 
           <!-- Right -->
-          <div class="col-xl-4">
-            <div class="header__right">
+          <div class="col-xl-4 col-lg-2">
+            <div style="margin-right: 1rem" class="header__right">
               {% if user.is_authenticated %}
               <div class="header__right__auth">
                 <a class="btn btn-outline-dark" href="{% url 'logout' %}"

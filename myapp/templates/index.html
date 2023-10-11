@@ -61,7 +61,7 @@
             <div class="carousel-caption">
               <figure class="text-center">
                 <blockquote class="blockquote">
-                  <h1>
+                  <h1 class="fw-bold">
                     Streetwear is an artistic movement. It’s a creative process.
                   </h1>
                 </blockquote>
@@ -128,6 +128,7 @@
   </div>
 </div>
 <!-- END OF HERO SECTION -->
+
 <!-- Categories Section Begin -->
 <section class="categories">
   <div class="container-fluid">
@@ -200,305 +201,114 @@
 </section>
 <!-- Categories Section End -->
 
-<!-- Product Section Begin -->
-<section class="product spad">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-4 col-md-4">
-        <div class="section-title">
-          <h4>New Luku</h4>
-        </div>
-      </div>
-    </div>
-    <div class="row property__gallery">
-      {% for photo in popular_items %}
-      <div class="col-lg-3 col-md-4 col-sm-6 mix men">
-        <div class="product__item">
-          <div
-            class="product__item__pic set-bg bg-grey"
-            data-setbg="{{ photo.image.url }}"
-          >
-            <ul class="product__hover">
-              <li>
-                <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
-              </li>
-            </ul>
-          </div>
-          <div class="product__item__text">
-            <h6><a href="{% url 'photo' photo.pk %}">{{ photo.name }}</a></h6>
-            <div class="rating">
-              {% if photo.rating == 1 %}
-              <i class="fa fa-star"></i>
-              {% elif photo.rating == 2 %}
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              {% elif photo.rating == 3 %}
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              {% elif photo.rating == 4 %}
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              {% else %}
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              {% endif %}
-            </div>
-            <div class="product__price">{{ photo.price }}</div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-      <div
-        class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic"
-      >
-        <div class="product__item sale">
-          <div
-            class="product__item__pic set-bg"
-            data-setbg="img/product/product-6.jpg"
-          >
-            <div class="label sale">Sale</div>
-            <ul class="product__hover">
-              <li>
-                <a href="img/product/product-6.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
-            </ul>
-          </div>
-          <div class="product__item__text">
-            <h6><a href="#">Tropical Kimono</a></h6>
-            <div class="rating">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-            <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic"
-      >
-        <div class="product__item">
-          <div
-            class="product__item__pic set-bg"
-            data-setbg="img/product/product-7.jpg"
-          >
-            <ul class="product__hover">
-              <li>
-                <a href="img/product/product-7.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
-            </ul>
-          </div>
-          <div class="product__item__text">
-            <h6><a href="#">Contrasting sunglasses</a></h6>
-            <div class="rating">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-            <div class="product__price">$ 59.0</div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic"
-      >
-        <div class="product__item sale">
-          <div
-            class="product__item__pic set-bg"
-            data-setbg="img/product/product-8.jpg"
-          >
-            <div class="label">Sale</div>
-            <ul class="product__hover">
-              <li>
-                <a href="img/product/product-8.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
-            </ul>
-          </div>
-          <div class="product__item__text">
-            <h6><a href="#">Water resistant backpack</a></h6>
-            <div class="rating">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-            <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Product Section End -->
+<!-- LUKU DEFINITION -->
+<div style="margin: 6rem auto" class="text-center container">
+  <h1 style="font-size: 7rem" class="display-1 fw-bold">luku</h1>
+  <h4 class="text-muted">/ loo-koo /</h4>
+  <br />
+  <p class="display-6">
+    <strong>(n.)</strong>
+    {{ definition.quote|safe }}
+  </p>
+</div>
+<!-- END OF LUKU DEFINITION -->
 
-<!-- Banner Section Begin -->
-<section class="banner set-bg" data-setbg="img/banner/banner-1.jpg">
-  <div class="container">
-    <div class="row">
-      <div class="col-xl-7 col-lg-8 m-auto">
-        <div class="banner__slider owl-carousel">
-          <div class="banner__item">
-            <div class="banner__text">
-              <span>SS23' Collection</span>
-              <h1>Luku Book</h1>
-              <a href="{% url 'blog_detail' 10 %}">Shop now</a>
-            </div>
-          </div>
-          <div class="banner__item">
-            <div class="banner__text">
-              <span>BEAUTIFUL and BRUTAL Collection</span>
-              <h1>Nairobi Noize</h1>
-              <a href="{% url 'blog_detail' 11 %}">Shop now</a>
-            </div>
-          </div>
-          <div class="banner__item">
-            <div class="banner__text">
-              <span>Spring/Summer Collection</span>
-              <h1>Akiba Studios</h1>
-              <a href="{% url 'blog_detail' 11 %}">Shop now</a>
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- Summer Jam -->
+<div style="margin: 9rem auto" class="container">
+  <h1 class="text-center title fw-bold my-5">SS23 Lukubook Inspiration</h1>
+  <div class="row d-flex justify-content-between">
+    <div class="col-md-6 col-sm-12 mb-3">
+      <img
+        class="img-fluid"
+        src="{{ lukubookImage.image.url }}"
+        alt="{{ lukubookImage.name }}"
+      />
     </div>
-  </div>
-</section>
-<!-- Banner Section End -->
 
-<!-- Trend Section Begin -->
-<section class="trend spad">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="trend__content">
-          <div class="section-title">
-            <h4>Hot Trend</h4>
-          </div>
-          <div class="trend__item">
-            <div class="trend__item__pic">
-              <img src="img/trend/ht-1.jpg" alt="" />
+    <div class="col-md-6 col-sm-12">
+      <div class="container inspoContainer">
+        <div class="row tableScroll">
+          <!-- product one -->
+          <div class="row justify-content-center mb-3">
+            <div class="col me-2">
+              <img class="img-fluid" src="{{ red_bucket_hat.image.url }}" />
             </div>
-            <div class="trend__item__text">
-              <h6>Chain bucket bag</h6>
-              <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-              </div>
-              <div class="product__price">$ 59.0</div>
+            <div class="col">
+              <p class="fw-bold">Bucket Hat</p>
+              <h6>Brand: Akiba Studios</h6>
+              <h6 class="small">Crafted for both fashion...</h6>
+              <h6>€20.00</h6>
+              <a class="btn btn-dark" href="{% url 'photo' 16 %}">View</a>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="trend__content">
-          <div class="section-title">
-            <h4>Best seller</h4>
-          </div>
-          <div class="trend__item">
-            <div class="trend__item__pic">
-              <img src="img/trend/bs-1.jpg" alt="" />
-            </div>
-            <div class="trend__item__text">
-              <h6>Cotton T-Shirt</h6>
-              <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-              </div>
-              <div class="product__price">$ 59.0</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="trend__content">
-          <div class="section-title">
-            <h4>Feature</h4>
-          </div>
-          {% for photo in popular_items|slice:"0:3" %}
-          <div class="trend__item">
-            <div class="trend__item__pic">
+          <!-- end of product one -->
+
+          <!-- product one -->
+          <div class="row mb-3">
+            <div class="col me-2">
               <img
-                src="{{ photo.image.url }}"
-                alt="{{ photo.name }} Photo"
                 class="img-fluid"
+                src="{{ kintsugi_top_blue.image.url }}"
+                alt="{{ kintsugi_top_blue.name }}"
               />
             </div>
-            <div class="trend__item__text">
-              <h6>{{ photo.name }}</h6>
-              <div class="rating">
-                {% if photo.rating == 1 %}
-                <i class="fa fa-star"></i>
-                {% elif photo.rating == 2 %}
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                {% elif photo.rating == 3 %}
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                {% elif photo.rating == 4 %}
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                {% else %}
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                {% endif %}
-              </div>
-              <div class="product__price">{{ photo.price }}</div>
+            <div class="col">
+              <p class="fw-bold">Kintsugi Top</p>
+              <h6>Brand: Akiba Studios</h6>
+              <h6 class="small">With a harmonious blend of traditional...</h6>
+              <h6>€20.00</h6>
+              <a class="btn btn-dark" href="{% url 'photo' 18 %}">View</a>
             </div>
           </div>
-          {% endfor %}
+          <!-- end of product one -->
+
+          <!-- product one -->
+          <div class="row mb-3">
+            <div class="col me-2">
+              <img
+                class="img-fluid"
+                src="{{ utility_jacket.image.url }}"
+                alt="{{ utility_jacket.name }}"
+              />
+            </div>
+            <div class="col">
+              <p class="fw-bold">Utility Jacket</p>
+              <h6>Brand: Akiba Studios</h6>
+              <h6 class="small">
+                Crafted from durable and weather-resistant...
+              </h6>
+              <h6>€60.00</h6>
+              <a class="btn btn-dark" href="{% url 'photo' 9 %}">View</a>
+            </div>
+          </div>
+          <!-- end of product one -->
+
+          <!-- product one -->
+          <div class="row mb-3">
+            <div class="col me-2">
+              <img
+                class="img-fluid"
+                src="{{ kintsugi_flare.image.url }}"
+                alt="{{ kintsugi_flare.name }}"
+              />
+            </div>
+            <div class="col">
+              <p class="fw-bold">Kintsugi Flare</p>
+              <h6>Brand: Akiba Studios</h6>
+              <h6 class="small">
+                Modern style with artistic heritage, featuring...
+              </h6>
+              <h6>€70.00</h6>
+              <a class="btn btn-dark" href="{% url 'photo' 19 %}">View</a>
+            </div>
+          </div>
+          <!-- end of product one -->
         </div>
       </div>
     </div>
   </div>
-</section>
-<!-- Trend Section End -->
+</div>
+<!-- End of Summer Jam -->
 
 <!-- Discount Section Begin -->
 <section class="discount mb-5">
@@ -506,7 +316,10 @@
     <div class="row">
       <div class="col-lg-6 p-0">
         <div class="discount__pic">
-          <img src="img/discount.jpg" alt="" />
+          <img
+            src="{% static 'images/discount2.jpg' %}"
+            alt="Nairobi Nnoize Poster"
+          />
         </div>
       </div>
       <div class="col-lg-6 p-0">
@@ -541,4 +354,35 @@
   </div>
 </section>
 <!-- Discount Section End -->
+
+<!-- DJ G400 Start -->
+<div class="container">
+  <h1 class="text-center title">Music Mix</h1>
+  <p class="mb-5 text-center">Latest mixes from DJ G400, Nairobi 🇰🇪</p>
+  <div
+    class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
+  >
+    {% for mix in mixes %}
+    <div class="col mb-5">
+      <img
+        height="150"
+        class="img-fluid mb-3"
+        style="object-fit: cover"
+        src="{{ mix.image.url }}"
+        alt="{{ mix.title }}"
+      />
+      <div class="text-start">
+        <a
+          href="{% url 'music_player' mix.pk %}"
+          class="text-black fw-bold underline my-2"
+          >{{ mix.title }}</a
+        >
+        <h6 class="small">{{ mix.description|truncatechars:25 }}</h6>
+        <h6 class="text-black my-2">Genre: {{ mix.genre }}</h6>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<!-- DJ G400 End -->
 {% endblock %}

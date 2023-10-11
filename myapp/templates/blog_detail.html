@@ -18,31 +18,34 @@
   {% endif %}
 </div>
 <div class="container my-5">
-  <h6 class="text-muted small mb-2">{{ blog.pub_date }}</h6>
-  <h1>{{ blog.title }}</h1>
-  <p class="lead my-5 text-start">{{ blog.content|safe }}</p>
   {% if blog.title != 'SS23 Luku Book' %}
-  <div class="container">
-    <div class="row">
-      <p class="mt-5 lead text-start">{{ blog.contentOne|safe }}</p>
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h6 class="text-black small mb-2">{{ blog.pub_date|date:"jS F Y" }} by {{ blog.author }}</h6>
+      <h1>{{ blog.title }}</h1>
+      <p class="lead my-5 text-start">{{ blog.content|safe }}</p>
     </div>
   </div>
-  <div class="container">
-    <div class="row">
+  <div class="row justify-content-center">
+    <div class="col-lg-8"><p class="lead text-start">{{ blog.contentOne|safe }}</p></div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
       <p class="mt-5 lead text-start">{{ blog.contentTwo|safe }}</p>
-    </div>
-    <hr class="my-5">
-    <div class="row">
-      <div class="col-12 text-center">
-        <div class="section-title mb-4 pb-2">
-          <h1 class="title mb-4">Latest Blog &amp; News</h1>
-        </div>
+      <div class=" my-5">
+        {% for keyword in keywords %}
+        <p class="btn btn-sm btn-outline-dark me-2">{{ keyword }}</p>
+        {% endfor %}
       </div>
-      <!--end col-->
     </div>
-    <!--end row-->
-
-    <div class="row">
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-12 text-center">
+      <div class="section-title my-4 pb-2">
+        <h1 class="title mb-4">Latest Blog &amp; News</h1>
+      </div>
+    </div>
       {% for blog in recent_blogs|slice:":3" %}
       <div class="col-lg-4 col-md-6 pt-2">
         <div class="blog-post rounded border">
@@ -54,18 +57,17 @@
             />
           </div>
           <div class="content p-3">
-            <small class="text-muted p float-right"> {{ blog.pub_date }}</small>
-            <h4 class="mt-2">
+            <h6 class="mt-2">
               <a href="javascript:void(0)" class="text-dark title"
-                >{{ blog.title|truncatechars:50 }}</a
+              >{{ blog.title }}</a
               >
-            </h4>
+            </h6>
             <p class="text-muted mt-2">{{ blog.summary }}</p>
-            <a
+              <small class="text-muted float-right">{{ blog.pub_date|date:"jS F Y" }}</small>
+              <a
               href="{% url 'blog_detail' pk=blog.pk %}"
-              class="text-dark mt-2 read-more"
-              >Read More <i class="mdi mdi-chevron-right"></i
-            ></a>
+              class="small text-dark"
+              >Read More...</a>
           </div>
         </div>
         <!--end blog post-->
@@ -75,6 +77,9 @@
       </div>
     </div>
     {% else %}
+    <h6 class="text-muted small mb-2">{{ blog.pub_date|date:"jS F Y" }} by {{ blog.author }}</h6>
+    <h1>{{ blog.title }}</h1>
+    <p class="lead my-5 text-start">{{ blog.content|safe }}</p>
     <div
       class="row gx-3 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
     >
@@ -125,18 +130,6 @@
       {% endfor %}
     </div>
     {% endif %}
-  </div>
-  <div class="container">
-    <div class="row">
-      <p>The latest collaborative collection between Nairobi Noize and Luku Store aims to celebrate Kenyan streetwear culture. With a few carefully crafted and handmade upcycled pieces making up the first collection, Kagima (Nairobi Noize) emphasizes the need to tell the world authentic Kenyan stories through fashion, while Francis (Luku Store), having worked with Nairobi powerhouse brands like Akiba Studios, provides an international platform that can be used to export these stories.</p>
-      <p class="fw-bold">First, the usual. Tell us a bit about yourselves.</p>
-      <p><strong>Francis:</strong> I was born & raised here, in Kenya. Went to primary & high school here, then when I graduated, I got the opportunity to study abroad. And I’d say that the first time I realized that I was black or that racism is a thing was actually when I moved to Europe. I think when you grow up in Kenya, it’s never a thing or an issue. You never feel like you’re a minority or from a group that’s looked down upon. So that triggered something in me. I was thinking about it recently, even just reading authors like Chimamanda & other African authors who also describe that journey; it imparted something in me where I felt like there’s a narrative of Africa, which is one of dependency, poverty, all that. And, of course, we do have our issues. There’s a big income inequality problem, for example. But there’s another aspect of Kenya and Africa in general that’s not highlighted at all. So for me, with this project & Luku & the other projects that I’m working on, I want to explore the potential of African youth. My idea with Luku is to represent the streetwear brands from Kenya & give them an international platform, no matter how small, and allow them to become more visible, and try to change the current narrative.</p>
-      <p><strong>Kagima:</strong> I’m an artist & designer based in Nairobi. I studied architecture in uni & my passion lies in designing products more than houses. One of the ventures that I went into was fashion design, & after school, I had the opportunity to meet Vart, who had been in the industry for a minute & was conversant with the Nairobi fashion industry & community. We started Nairobi Noize together, which is basically a collective of two guys just making clothes & experimenting. Then I met Kinyanjui, & I’d seen what he’d done with Akiba & what he’s been trying to do for local fashion brands. And, of course, I bought into the idea of exporting culture to Europe just as much as we import it. That way, they get to see what we’re making here & hear the stories that we have to tell. Nairobi Noize reflects Nairobi culture, so what Luku aims to do aligns with our brand ethos.</p>
-      <p class="fw-bold">How did your fashion journey start?</p>
-      <p></p>
-      
-    </div>
-  </div>
 </div>
 
 {% endblock %}
