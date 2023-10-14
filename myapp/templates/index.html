@@ -357,6 +357,56 @@
 </div>
 <!-- End of Summer Jam -->
 
+<!-- Blog -->
+
+<div class="container mt-100 mb-5">
+  <div class="row">
+    <div class="col-12 text-center">
+      <div class="section-title mb-4 pb-2">
+        <h1 class="title mb-4">Latest Blog &amp; News</h1>
+      </div>
+    </div>
+    <!--end col-->
+  </div>
+  <!--end row-->
+
+  <div class="row justify-content-center">
+    {% for blog in blogs|slice:":2" %}
+    <div class="col-lg-6 col-md-6 mt-4 col-sm-12 pt-2">
+      <div class="blog-post rounded border">
+        <div class="blog-img d-block overflow-hidden position-relative">
+          <img
+            src="{{ blog.image.url }}"
+            class="img-fluid rounded-top"
+            alt="{{ blog.name }}'s Image"
+          />
+        </div>
+        <div class="content p-3">
+          <small class="text-muted p float-right"> {{ blog.pub_date }}</small>
+          <h4 class="mt-2">
+            <a
+              href="{% url 'blog_detail' slug=blog.slug %}"
+              class="text-dark title"
+              >{{ blog.title }}</a
+            >
+          </h4>
+          <p class="text-muted mt-2">{{ blog.summary }}</p>
+          <a
+            href="{% url 'blog_detail' slug=blog.slug %}"
+            class="text-dark mt-2 read-more"
+            >Read More <i class="mdi mdi-chevron-right"></i
+          ></a>
+        </div>
+      </div>
+      <!--end blog post-->
+    </div>
+    <!--end col-->
+    {% endfor %}
+  </div>
+  <!--end row-->
+</div>
+<!-- Blog -->
+
 <!-- DJ G400 Start -->
 <div class="container">
   <h1 class="text-center title">Music Mix</h1>
