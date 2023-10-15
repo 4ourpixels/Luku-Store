@@ -335,3 +335,40 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.name
+
+class Product(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True)
+    product_code = models.CharField(max_length=10, null=True, blank=True)
+    similar_products_codes = models.CharField(max_length=300, blank=True)
+    type = models.CharField(max_length=100, blank=True, null=True)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
+
+    image = models.ImageField(
+        null=False,
+        blank=False,
+        upload_to="products/",
+        default='image.jpg'
+    )
+    description = models.TextField()
+    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+    stock = models.IntegerField(default=0)
+    color = models.CharField(max_length=100, blank=True, null=True)
+    size = models.CharField(max_length=20, blank=True, null=True)
+    rating = models.IntegerField(blank=True, default=0)
+    popular = models.BooleanField(default=False, null=True, blank=False)
+    brand = models.ForeignKey(
+        Brand,
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
+    digital = models.BooleanField(default=False, null=True, blank=False)
+    collection = models.CharField(max_length=100, blank=True, null=True)
+    slug = models.SlugField(unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
