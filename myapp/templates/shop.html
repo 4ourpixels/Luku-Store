@@ -19,9 +19,12 @@
   <div
     class="row row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
   >
-    {% for photo in unique_photos %}
+    {% for photo in products %}
     <div class="col-sm-6 col-md-4 col-lg-3">
-      <a href="{% url 'photo' photo.pk %}" class="underline hover">
+      <a
+        href="{% url 'view_product' slug=photo.slug %}"
+        class="underline hover"
+      >
         <img
           src="{{ photo.image.url }}"
           alt="{{ photo.name }}"
@@ -31,7 +34,7 @@
           {{ photo.name }}
         </h6></a
       >
-      <small>Brand: {{ photo.shop }}</small>
+      <small>Brand: {{ photo.brand }}</small>
       <p class="fw-bold">€ {{ photo.price }}</p>
     </div>
     {% endfor %}

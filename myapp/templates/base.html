@@ -3,10 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Luku Store.nl {{ page_name }}</title>
-
     <meta
       property="og:image"
       content="{% static 'images/lukustorenl-banner.jpg' %}"
@@ -64,52 +62,14 @@
     />
     <!-- END OF MAIN FONT -->
 
-    <!-- Css Styles -->
+    <!-- MAIN CSS -->
     <link
       rel="stylesheet"
-      href="{% static 'css/bootstrap.min.css' %}"
       type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'css/font-awesome.min.css' %}"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'css/elegant-icons.css' %}"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'css/jquery-ui.min.css' %}"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'css/magnific-popup.css' %}"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'css/owl.carousel.min.css' %}"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'css/slicknav.min.css' %}"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'css/style.css' %}"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
       href="{% static 'css/index.css' %}"
-      type="text/css"
     />
+    <!-- END OF MAIN CSS -->
+
     <!-- Javascript Cart -->
     <script type="text/javascript">
       var user = "{{ request.user }}";
@@ -161,136 +121,166 @@
     </script>
     <!-- End of Javascript Cart -->
   </head>
-
-  <body>
-    <!-- Offcanvas Menu Begin -->
-    <div class="offcanvas-menu-overlay"></div>
-    <div class="offcanvas-menu-wrapper">
-      <div class="offcanvas__close"><i class="fa-solid fa-x"></i></div>
-      <ul class="offcanvas__widget">
-        <!-- <li><span class="icon_search search-switch"></span></li> -->
-        <li>
-          <a href="{% url 'cart' %}"
-            ><i class="fa-solid fa-cart-shopping"></i>
-            <div class="tip">{{ cartItems }}</div>
-          </a>
-        </li>
-      </ul>
-      <div class="offcanvas__logo">
-        <a href="{% url 'index' %}"
+  <body id="top">
+    <!-- NAVIGATION BAR STARTS HERE ----------------------------->
+    <nav class="navbar sticky-top navbar-expand-sm mb-3 bg-white w-auto">
+      <div class="container-fluid mx-3">
+        <a class="navbar-brand" href="{% url 'index' %}"
           ><img
             src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
-            alt="Luku Store.nl Logo"
-            height="50"
+            height="40"
         /></a>
-      </div>
-      <div id="mobile-menu-wrap"></div>
-      {% if user.is_authenticated %}
-      <div class="offcanvas__auth">
-        <a class="btn btn-outline-dark" href="{% url 'logout' %}">Logout</a>
-      </div>
-      {% else %}
-      <div class="offcanvas__auth">
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
-      </div>
-      {% endif %}
-    </div>
-    <!-- Offcanvas Menu End -->
-
-    <!-- Header Section Begin -->
-    <header class="header">
-      <div class="container-fluid">
-        <div class="row d-flex justify-content-center">
-          <!-- Left -->
-          <div class="col-xl-4 col-lg-4">
-            <div class="header__logo">
-              <a href="{% url 'index' %}"
-                ><img
-                  src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
-                  alt="Luku Store.nl Logo"
-                  height="50"
-              /></a>
-            </div>
-          </div>
-
-          <!-- Middle -->
-          <div class="col-xl-4 col-lg-6">
-            <nav class="header__menu">
-              <ul>
-                <li class="fw-bold">
-                  <a href="{% url 'index' %}">Home</a>
-                </li>
-                <li class="fw-bold">
-                  <a href="{% url 'shop' %}">Shop</a>
-                </li>
-                <li class="fw-bold">
-                  <a href="{% url 'blog_list' %}">Blogs</a>
-                  <ul class="dropdown">
-                    {% for blog in blogs %}
-                    <li class="border-bottom">
-                      <a
-                        class="fw-bold"
-                        href="{% url 'blog_detail' slug=blog.slug %}"
-                        >{{ blog.title }}</a
-                      >
-                    </li>
-                    {% endfor %}
-                  </ul>
-                </li>
-                <li class="fw-bold">
-                  <a href="{% url 'brand_list' %}">Brands</a>
-                  <ul class="dropdown">
-                    {% for brand in brands %}
-                    <li class="border-bottom">
-                      <a class="fw-bold" href="{% url 'brand_list' %}"
-                        >{{ brand.name }}</a
-                      >
-                    </li>
-                    {% endfor %}
-                  </ul>
-                </li>
-                <li class="fw-bold">
-                  <a href="{% url 'lukufam' %}">About</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-
-          <!-- Right -->
-          <div class="col-xl-4 col-lg-2">
-            <div style="margin-right: 1rem" class="header__right">
-              {% if user.is_authenticated %}
-              <div class="header__right__auth">
-                <a class="btn btn-outline-dark" href="{% url 'logout' %}"
-                  >Logout</a
+        <span>
+          <button
+            class="navbar-toggler border-muted"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            id="navButton"
+          >
+            <a style="text-decoration: none" class="text-muted" href="#!">
+              <i class="fa-solid fa-cart-shopping mx-2"></i>{{ cartItems }}
+            </a>
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </span>
+        <div class="collapse navbar-collapse my-3" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                id="nav-home"
+                class="nav-link fw-bold text-dark"
+                href="{% url 'index' %}"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item fw-bold">
+              <a
+                id="nav-shop"
+                class="nav-link fw-bold text-dark"
+                href="{% url 'shop' %}"
+                >Shop</a
+              >
+            </li>
+            <li class="nav-item">
+              <div class="dropdown">
+                <a
+                  class="dropdown-toggle nav-link fw-bold text-dark"
+                  href="{% url 'blog_list' %}"
+                  role="button"
+                  id="dropdownBlogsLink"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
                 >
+                  Blogs
+                </a>
+                <ul
+                  class="dropdown-menu dropdown px-3"
+                  aria-labelledby="dropdownBlogsLink"
+                >
+                  {% for blog in blogs %}
+                  <li class="border-bottom">
+                    <a
+                      class="fw-bold underline"
+                      href="{% url 'blog_detail' slug=blog.slug %}"
+                      >{{ blog.title }}</a
+                    >
+                  </li>
+                  {% endfor %}
+                </ul>
               </div>
-              {% else %}
-              <div class="header__right__auth">
-                <a class="text-black" href="{% url 'login' %}">Login</a>
-                <a class="text-black" href="{% url 'register' %}">Register</a>
+            </li>
+            <li class="nav-item">
+              <div class="dropdown">
+                <a
+                  class="dropdown-toggle nav-link fw-bold text-dark"
+                  href="{% url 'blog_list' %}"
+                  role="button"
+                  id="dropdownBrandsLink"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Brands
+                </a>
+                <ul
+                  class="dropdown-menu dropdown px-3"
+                  aria-labelledby="dropdownBrandsLink"
+                >
+                  {% for brand in brands %}
+                  <li class="border-bottom">
+                    <a class="fw-bold underline" href="{% url 'brand_list' %}"
+                      >{{ brand.name }}</a
+                    >
+                  </li>
+                  {% endfor %}
+                </ul>
               </div>
-              {% endif %}
-              <ul class="header__right__widget">
-                <!-- <li><i class="fa-solid fa-magnifying-glass"></i></li> -->
+            </li>
+            <li class="nav-item">
+              <a
+                id="nav-about"
+                class="nav-link fw-bold text-dark"
+                href="{% url 'lukufam' %}"
+                >About</a
+              >
+            </li>
+          </ul>
+          <div class="d-flex soci">
+            <span>
+              <a href="{% url 'cart' %}">
+                <i class="fa-solid fa-cart-shopping">
+                  <span class="cartItems">{{ cartItems }}</span></i
+                >
+              </a>
+            </span>
+            {% if user.is_authenticated %}
+            <div class="dropdown">
+              <button
+                style="background: none; border: none"
+                class="dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  style="
+                    object-fit: cover;
+                    height: 20px;
+                    width: 20px;
+                    border-radius: 25px;
+                  "
+                  src="{{ user.customer.image.url }}"
+                />
+              </button>
+              <ul class="dropdown-menu">
                 <li>
-                  <a href="{% url 'cart' %}"
-                    ><i class="fa-solid fa-cart-shopping"></i>
-                    <div class="tip">{{ cartItems }}</div>
-                  </a>
+                  <a class="dropdown-item" href="{% url 'account' %}"
+                    >Account</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'cart' %}">Cart</a>
                 </li>
               </ul>
             </div>
+            {% else %}
+            <span>
+              <a href="{% url 'register' %}">
+                <i class="fa-solid fa-user"></i>
+              </a>
+            </span>
+            {% endif %}
           </div>
         </div>
-        <div class="canvas__open">
-          <i class="fa fa-bars"></i>
-        </div>
       </div>
-    </header>
-    <!-- Header Section End -->
-
+    </nav>
+    <!-- End of navigation bar -->
     {% if messages %} {% for message in messages %}
     <div class="container my-5">
       <div class="alert alert-warning alert-dismissable fade show" role="alert">
@@ -304,14 +294,15 @@
       </div>
     </div>
     {% endfor %} {% endif %} {% block body %} {% endblock %}
+
     <!-- FOOTER ----------------------------->
     <footer class="container-fluid pt-5 pb-2 px-5 text-white bg-black">
-      <div class="row justify-items-center">
+      <div class="row">
         <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
           <a href="{% url 'lukufam' %}" class="text-white navbar-brand">
             <img
               style="filter: invert(100%); margin-bottom: 1.5rem"
-              height="70"
+              height="50"
               src="{% static 'images/logo/lukustore.nl-logo.svg' %}" />
             <br
           /></a>
@@ -321,27 +312,27 @@
           </p>
         </div>
 
-        <div class="col-lg-2 col-md-6 col-sm-6 mb-3 align-content-center">
+        <div class="col-lg-2 col-md-6 col-sm-2 mb-3 align-content-center">
           <h5>Quick Links</h5>
-          <ul class="flex-column list-unstyled">
-            <li class="mb-2">
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2">
               <a
-                href="{% url 'blog_detail' slug='ss23-luku-book' %}"
+                href="{% url 'blog_detail' 10 %}"
                 class="nav-link p-0 text-muted"
                 >Luku Book</a
               >
             </li>
-            <li class="mb-2">
+            <li class="nav-item mb-2">
               <a href="{% url 'lukufam' %}" class="nav-link p-0 text-muted"
                 >About Us</a
               >
             </li>
-            <li class="mb-2">
+            <li class="nav-item mb-2">
               <a href="{% url 'music' %}" class="nav-link p-0 text-muted"
                 >Music Mix</a
               >
             </li>
-            <li class="mb-2">
+            <li class="nav-item mb-2">
               <a href="{% url 'help' %}" class="nav-link p-0 text-muted"
                 >Terms of Service</a
               >
@@ -349,9 +340,9 @@
           </ul>
         </div>
 
-        <div class="col-lg-2 col-md-6 col-sm-6 mb-3">
+        <div class="col-lg-2 col-md-6 col-sm-2 mb-3">
           <h5>Pages</h5>
-          <ul class="flex-column list-unstyled">
+          <ul class="nav flex-column">
             <li class="nav-item mb-2">
               <a href="{% url 'index' %}" class="nav-link p-0 text-muted"
                 >Home</a
@@ -411,26 +402,15 @@
           id="footer-year"
           href="{% url 'lukufam' %}"
         ></a>
-        <a class="text-white underline" href="https://4ourpixels.com/"
+        <a class="text-white underline" href="https://www.4ourpixels.com"
           >Powered by Four Pixels</a
         >
       </div>
     </footer>
     <!-- END OF FOOTER ----------------------------->
-
-    <!-- Search Begin -->
-    <div class="search-model">
-      <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-          <input type="text" id="search-input" placeholder="Search here....." />
-        </form>
-      </div>
-    </div>
-    <!-- Search End -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="{% static 'js/cart.js' %}"></script>
 
-    <!-- Footer year -->
     <script>
       const currentYear = new Date().getFullYear();
       const year = (document.getElementById(
@@ -438,36 +418,51 @@
       ).innerHTML = `&#169; Luku Store.nl ${currentYear}`);
     </script>
 
-    <!-- Nav Item Active Selector -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+      integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
     <script>
-      // Get all navigation items
-      const navItems = document.querySelectorAll(".header__menu ul li");
+      function toggleNavigation() {
+        var navMenu = document.getElementById("navbarSupportedContent");
+        var toggleButton = document.querySelector(".navbar-toggler");
 
-      // Add click event listener to each navigation item
-      navItems.forEach((navItem) => {
-        navItem.addEventListener("click", (event) => {
-          // Remove "active" class from all navigation items
-          navItems.forEach((item) => {
-            item.classList.remove("active");
-            console.log(navItem);
-          });
+        function updateNavDisplay() {
+          if (window.innerWidth <= 768) {
+            // Adjust the breakpoint if needed
+            navMenu.style.display = "none";
+          } else {
+            navMenu.style.display = "block";
+          }
+        }
 
-          // Add "active" class to the clicked navigation item
-          navItem.classList.add("active");
+        updateNavDisplay(); // Initial call to set the correct display
+
+        toggleButton.addEventListener("click", function () {
+          if (navMenu.style.display === "none") {
+            navMenu.style.display = "block";
+          } else {
+            navMenu.style.display = "none";
+          }
         });
-      });
-    </script>
 
-    <!-- Js Plugins -->
-    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'js/mixitup.min.js' %}"></script>
-    <script src="{% static 'js/jquery.countdown.min.js' %}"></script>
-    <script src="{% static 'js/jquery.slicknav.js' %}"></script>
-    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'js/jquery.nicescroll.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
+        // Listen for window resize to adjust navigation display
+        window.addEventListener("resize", updateNavDisplay);
+      }
+
+      // Call the function to initialize the toggle
+      toggleNavigation();
+    </script>
   </body>
 </html>
