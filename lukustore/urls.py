@@ -27,5 +27,7 @@ urlpatterns = [
     path('gallery/', gallery, name='gallery'),
     path('photo/<str:pk>/', viewPhoto, name='photo'),
     path('brands/', brand_list, name='brand_list'),
+    path('<slug:slug>/', view_product, name='view_product'),
+    path('404/', error404, name='error404'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
