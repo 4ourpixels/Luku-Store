@@ -171,6 +171,7 @@ def shop(request):
     page_name = f"- Shop"
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
+    products = Product.objects.order_by('-pk')
 
     unique_product_codes = Photo.objects.filter(
         product_code__isnull=False).values_list('product_code', flat=True).distinct()
@@ -194,11 +195,65 @@ def shop(request):
         'categories': categories,
         'blogs': blogs,
         'brands': brands,
+        'products': products,
     }
 
     return render(request, 'shop.html', context)
 
+
+def view_product(request, slug):
+    try:
+        product = get_object_or_404(Product, slug=slug)
+        photos = Photo.objects.filter(product_code=product.product_code)
+
+        similar_products_codes = product.similar_products_codes.split(',')
+        similar_products = Product.objects.filter(
+            Q(product_code__in=similar_products_codes) | Q(
+                name__in=similar_products_codes)
+        )
+
+        data = cartData(request)
+        cartItems = data['cartItems']
+        blogs = Blog.objects.order_by('-pk')
+        brands = Brand.objects.order_by('-pk')
+
+        page_name = f"- {product.name}"
+
+        context = {
+            'product': product,
+            'cartItems': cartItems,
+            'photos': photos,
+            'page_name': page_name,
+            'blogs': blogs,
+            'brands': brands,
+            'similar_products': similar_products,
+        }
+
+        return render(request, 'product.html', context)
+    except Product.DoesNotExist:
+        # Handle the case when the product doesn't exist
+        # You can render a specific template or return an appropriate response
+        return render(request, 'product_not_found.html')
+
+    except Exception as e:
+        # Handle other exceptions
+        page_name = f'- Error {product.name} was not found'
+        print("Error :", str(e))
+        context = {
+            'error': str(e),
+            'page_name': page_name
+        }
+        return render(request, '404.html', context)
 # CART
+
+
+def error404(request):
+    page = "- Error"
+
+    context = {
+        'page': page,
+    }
+    return render(request, '404.html', context)
 
 
 def cart(request):
