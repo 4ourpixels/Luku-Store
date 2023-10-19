@@ -44,7 +44,7 @@
 
           <main class="col-lg-6">
             <div class="ps-lg-3">
-              <h2 class="title text-dark">{{ product.name }}</h2>
+              <h2 class="text-dark">{{ product.name }}</h2>
               <div class="rating">
                 {% if product.rating == 1 %}
                 <i class="fa fa-star"></i>
@@ -68,38 +68,43 @@
                 <i class="fa fa-star"></i>
                 {% endif %}
               </div>
-              <h2 class="title text-dark">€{{ product.price }}</h2>
+              <p class="my-3 text-dark">Brand: {{ product.brand }}</p>
+              <h2 class="text-dark">€{{ product.price }}</h2>
+              <hr />
+              <p class="text-dark">
+                {{ product.description|truncatewords:20 }}
+              </p>
               <div class="col mt-3">
                 <h6>Sizes Available:</h6>
                 {% if product.size == 'Small' %}
                 <p class="btn btn-dark">S</p>
-                <p class="btn btn-outline-dark">M</p>
-                <p class="btn btn-outline-dark">L</p>
-                <p class="btn btn-outline-dark">XL</p>
-                <p class="btn btn-outline-dark">XXL</p>
+                <p class="btn btn-outline-dark"><s>M</s></p>
+                <p class="btn btn-outline-dark"><s>L</s></p>
+                <p class="btn btn-outline-dark"><s>XL</s></p>
+                <p class="btn btn-outline-dark"><s>XXL</s></p>
                 {% elif product.size == 'Medium' %}
                 <p class="btn btn-outline-dark">S</p>
-                <p class="btn btn-dark">M</p>
-                <p class="btn btn-outline-dark">L</p>
-                <p class="btn btn-outline-dark">XL</p>
-                <p class="btn btn-outline-dark">XXL</p>
+                <p class="btn btn-dark"><s>M</s></p>
+                <p class="btn btn-outline-dark"><s>L</s></p>
+                <p class="btn btn-outline-dark"><s>XL</s></p>
+                <p class="btn btn-outline-dark"><s>XXL</s></p>
                 {% elif product.size == 'Large' %}
-                <p class="btn btn-outline-dark">S</p>
-                <p class="btn btn-outline-dark">M</p>
+                <p class="btn btn-outline-dark"><s>S</s></p>
+                <p class="btn btn-outline-dark"><s>M</s></p>
                 <p class="btn btn-dark">L</p>
-                <p class="btn btn-outline-dark">XL</p>
-                <p class="btn btn-outline-dark">XXL</p>
+                <p class="btn btn-outline-dark"><s>XL</s></p>
+                <p class="btn btn-outline-dark"><s>XXL</s></p>
                 {% elif product.size == 'XL' %}
-                <p class="btn btn-outline-dark">S</p>
-                <p class="btn btn-outline-dark">M</p>
-                <p class="btn btn-outline-dark">L</p>
+                <p class="btn btn-outline-dark"><s>S</s></p>
+                <p class="btn btn-outline-dark"><s>M</s></p>
+                <p class="btn btn-outline-dark"><s>L</s></p>
                 <p class="btn btn-dark">XL</p>
-                <p class="btn btn-dark">XXL</p>
+                <p class="btn btn-dark"><s>XXL</s></p>
                 {% else %}
-                <p class="btn btn-outline-dark">S</p>
-                <p class="btn btn-outline-dark">M</p>
-                <p class="btn btn-outline-dark">L</p>
-                <p class="btn btn-outline-dark">XL</p>
+                <p class="btn btn-outline-dark"><s>S</s></p>
+                <p class="btn btn-outline-dark"><s>M</s></p>
+                <p class="btn btn-outline-dark"><s>L</s></p>
+                <p class="btn btn-outline-dark"><s>XL</s></p>
                 <p class="btn btn-dark">XXL</p>
                 {% endif %}
               </div>
@@ -107,7 +112,7 @@
               <h4><span class="badge bg-danger">Sold Out</span></h4>
               {% endif %}
               <button
-                class="btn btn-dark update-cart my-3 w-100"
+                class="btn btn-dark btn-lg update-cart my-3 w-100"
                 data-product="{{ product.pk }}"
                 data-action="add"
               >
@@ -176,7 +181,7 @@
     </section>
   </div>
 
-  {% if photos %}
+  {% if similar_products %}
   <div class="container">
     <h5 class="card-title mb-3">Similar items</h5>
     <div
