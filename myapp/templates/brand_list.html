@@ -5,7 +5,10 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="breadcrumb__links">
-          <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+          <a class="underline" href="{% url 'index' %}"
+            ><i class="fa fa-home"></i> Home</a
+          >
+          /
           <span>Brands</span>
         </div>
       </div>
@@ -18,7 +21,7 @@
   <div class="row justify-content-center">
     <ul class="list-unstyled">
       {% for brand in brands %}
-      <li class="btn btn-outline-dark">{{ brand.name }}</li>
+      <li class="btn mb-2 btn-outline-dark">{{ brand.name }}</li>
       {% endfor %}
     </ul>
   </div>

@@ -1,21 +1,25 @@
 {% extends 'base.html' %}{% load static %}{% block body %}
 <div class="container">
   <div class="row justify-content-center">
-    <h1 class="text-center my-3">Log In</h1>
-    <form class="m-5 col-10" method="POST">
+    <h1 class="text-center">Log In</h1>
+    <form class="col-lg-8 col-sm-10" method="POST">
       {% csrf_token %}
       <div class="form-group mb-3">
-        <label class="form-label" for="username">Your Username</label>
+        <label class="form-label h5 mb-4 fw-bold" for="username"
+          >Your Username</label
+        >
         <input
           type="text"
           id="username"
           name="username"
-          placeholder="Username"
+          placeholder="@username"
           class="form-control"
         />
       </div>
-      <div class="form-group mb-3">
-        <label class="form-label" for="password">Enter Password</label>
+      <div class="form-group my-4">
+        <label class="form-label h5 fw-bold" for="password"
+          >Enter Password</label
+        >
         <input
           type="password"
           name="password"
@@ -27,7 +31,7 @@
       <div class="d-flex justify-content-center mt-3 login_container">
         <input type="submit" value="Login" class="btn btn-dark py-2 w-100" />
       </div>
-      <p class="mt-5 text-center">
+      <p class="my-5 text-center">
         Don't have an account?
         <a href="{% url 'register' %}" class="underline text-dark fw-bold"
           >Register</a
@@ -36,5 +40,4 @@
     </form>
   </div>
 </div>
-
 {% endblock %}

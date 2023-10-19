@@ -240,14 +240,14 @@
           <div class="row justify-content-center mb-3">
             <div class="col me-2">
               <img
-              style="height: 40;" class="img-fluid" src="{{ red_bucket_hat.image.url }}" />
+                style="height: 40;" class="img-fluid" src="{{ red_bucket_hat.image.url }}" />
             </div>
             <div class="col">
               <p class="fw-bold">Bucket Hat</p>
               <h6>Brand: Akiba Studios</h6>
               <h6 class="small">Crafted for both fashion...</h6>
               <h6>€20.00</h6>
-              <a class="btn btn-dark" href="{% url 'photo' 16 %}">View</a>
+              <a class="btn btn-dark" href="{% url 'view_product' slug='bucket-hat' %}">View</a>
             </div>
           </div>
           <!-- end of product one -->
@@ -263,11 +263,11 @@
               />
             </div>
             <div class="col">
-              <p class="fw-bold">Kintsugi Top</p>
+              <p class="fw-bold">Kintsungi Top</p>
               <h6>Brand: Akiba Studios</h6>
               <h6 class="small">With a harmonious blend of traditional...</h6>
               <h6>€20.00</h6>
-              <a class="btn btn-dark" href="{% url 'photo' 18 %}">View</a>
+              <a class="btn btn-dark" href="{% url 'view_product' slug='kintsungi-top' %}">View</a>
             </div>
           </div>
           <!-- end of product one -->
@@ -283,13 +283,13 @@
               />
             </div>
             <div class="col">
-              <p class="fw-bold">Utility Jacket</p>
+              <p class="fw-bold">Utility Vest</p>
               <h6>Brand: Akiba Studios</h6>
               <h6 class="small">
                 Crafted from durable and weather-resistant...
               </h6>
               <h6>€60.00</h6>
-              <a class="btn btn-dark" href="{% url 'photo' 9 %}">View</a>
+              <a class="btn btn-dark" href="{% url 'view_product' slug='utility-vest' %}">View</a>
             </div>
           </div>
           <!-- end of product one -->
@@ -305,13 +305,13 @@
               />
             </div>
             <div class="col">
-              <p class="fw-bold">Kintsugi Flare</p>
+              <p class="fw-bold">Kintsungi Flare</p>
               <h6>Brand: Akiba Studios</h6>
               <h6 class="small">
                 Modern style with artistic heritage, featuring...
               </h6>
               <h6>€70.00</h6>
-              <a class="btn btn-dark" href="{% url 'photo' 19 %}">View</a>
+              <a class="btn btn-dark" href="{% url 'view_product' slug='kintsungi-flare' %}">View</a>
             </div>
           </div>
           <!-- end of product one -->
@@ -351,15 +351,15 @@
           <h4 class="mt-2">
             <a
               href="{% url 'blog_detail' slug=blog.slug %}"
-              class="text-dark title"
+              class="text-dark underline"
               >{{ blog.title }}</a
             >
           </h4>
           <p class="text-muted mt-2">{{ blog.summary }}</p>
           <a
             href="{% url 'blog_detail' slug=blog.slug %}"
-            class="text-dark mt-2 read-more"
-            >Read More <i class="mdi mdi-chevron-right"></i
+            class="text-dark mt-2 underline"
+            >Read More... <i class="mdi mdi-chevron-right"></i
           ></a>
         </div>
       </div>
@@ -457,6 +457,7 @@
     >
   </div>
 </div>
+<!-- Countdown -->
 <script>
   // Set the date we're counting down to
   var countDownDate = new Date("2023-10-22").getTime();

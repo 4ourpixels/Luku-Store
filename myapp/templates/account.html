@@ -1,23 +1,22 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<div class="container mt-3">
+<div class="container">
   <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a class="text-dark underline" href="{% url 'index' %}">Home</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        Account > Welcome back, {{ user.first_name|capfirst }}!
+        Account > 👋 Welcome back, {{ user.first_name|capfirst }}!
       </li>
     </ol>
   </nav>
-
-  <div class="row">
+  <div class="row mb-5">
     <div class="col-md-12 col-lg-12 col-sm-12">
-      <h1>Cart</h1>
+      <h1>Account</h1>
       {% if items %}
-      <div class="mb-5 p-5 border rounded">
+      <div class="p-5 border rounded">
         <h6 class="mb-3">
-          ({{ cartItems }}) Items in cart.
+          Items ordered: ({{ cartItems }})
           <span class="float-end">Total: €{{ order.get_cart_total }}</span>
         </h6>
         <table class="table table-responsive table-striped table-hover">
@@ -36,12 +35,12 @@
                   height="50"
                   width="auto"
                   style="object-fit: cover"
-                  src="{{ item.photo.image.url }}"
-                  alt="{{ item.photo.name }}"
+                  src="{{ item.product.image.url }}"
+                  alt="{{ item.product.name }}"
                 />
               </th>
-              <td>{{ item.photo.name }} <br />X {{ item.quantity }}</td>
-              <td>€{{ item.photo.price }}</td>
+              <td>{{ item.product.name }} <br />X {{ item.quantity }}</td>
+              <td>€{{ item.product.price }}</td>
             </tr>
             {% endfor %}
           </tbody>

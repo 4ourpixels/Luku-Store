@@ -1,8 +1,8 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
 
-<main style="margin-top: 3rem" id="top" class="container">
+<main id="top" class="container">
   <h1 class="display-1 text-bold fw-bolder text-center mb-4">Blogs</h1>
-  <div class="row mb-2">
+  <div class="row mb-5">
     {% for blog in blogs %}
     <div class="col-md-6">
       <div
@@ -25,20 +25,6 @@
           >
         </div>
         <div class="col-auto d-none d-lg-block">
-          {% if blog.youtube %}
-          <iframe
-            class="bd-placeholder-img"
-            width="200"
-            height="250"
-            src="https://www.youtube.com/embed/XppZqa0BtoQ"
-            title="{{ blog.title }}"
-            preserveAspectRatio="xMidYMid slice"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-            focusable="false"
-          ></iframe>
-          {% else %}
           <img
             style="object-fit: cover"
             preserveAspectRatio="xMidYMid slice"
@@ -50,7 +36,6 @@
             width="200"
             height="250"
           />
-          {% endif %}
         </div>
       </div>
     </div>
