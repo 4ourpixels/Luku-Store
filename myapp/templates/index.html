@@ -130,123 +130,84 @@
 <!-- END OF HERO SECTION -->
 
 <!-- Discount Section Begin -->
-<section class="discount mb-5">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 p-0">
-        <div class="discount__pic">
-          <img
-            src="{% static 'images/discount2.jpg' %}"
-            alt="Nairobi Nnoize Poster"
-          />
+<div class="container pt-5 my-5">
+  <div class="row align-items-center justify-content-center">
+    <div class="col-lg-6 col-sm-12">
+      <img
+        class="img-fluid"
+        src="{% static 'images/discount2.jpg' %}"
+        alt="Nairobi Nnoize Poster"
+      />
+    </div>
+
+    <!-- Countdown Timer Start -->
+    <div class="col-lg-6 col-sm-12">
+      <div class="text-center">
+        <span>BEAUTIFUL and BRUTAL</span>
+        <h1>Nairobi Nnoize</h1>
+        <h5><span>Sale</span></h5>
+      </div>
+      <div class="d-flex text-center justify-content-between" id="countdown-time">
+        <div class="col">
+          <h1 class="display-2 fw-bold" id="days">0</h1>
+          <p style="margin-top: -1rem;">Day</p>
+        </div>
+        <div class="col">
+          <h1 class="display-2 fw-bold" id="hours">0</h1>
+          <p style="margin-top: -1rem;">Hours</p>
+        </div>
+        <div class="col">
+          <h1 class="display-2 fw-bold" id="minutes">0</h1>
+          <p style="margin-top: -1rem;">Minutes</p>
+        </div>
+        <div class="col">
+          <h1 class="display-2 fw-bold" id="seconds">0</h2>
+          <p style="margin-top: -1rem;">Seconds</p>
         </div>
       </div>
-      <div class="col-lg-6 p-0">
-        <div class="discount__text">
-          <div class="discount__text__title">
-            <span>BEAUTIFUL and BRUTAL</span>
-            <h2>Nairobi Nnoize</h2>
-            <h5><span>Sale</span></h5>
-          </div>
-          <div class="discount__countdown" id="countdown-time">
-            <div class="countdown__item">
-              <span>0</span>
-              <p>Days</p>
-            </div>
-            <div class="countdown__item">
-              <span>0</span>
-              <p>Hour</p>
-            </div>
-            <div class="countdown__item">
-              <span>0</span>
-              <p>Min</p>
-            </div>
-            <div class="countdown__item">
-              <span>0</span>
-              <p>Sec</p>
-            </div>
-          </div>
-          <a href="#">Shop now</a>
-        </div>
+      <div class="text-center mt-3">
+        <a class="btn btn-dark" id="countdownBtn" href="{% url 'brand_list' %}">Coming Soon</a>
       </div>
     </div>
+    <!-- Countdown Timer End -->
   </div>
-</section>
+</div>
 <!-- Discount Section End -->
 
-<!-- Categories Section Begin -->
-<section class="categories">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-6 p-0">
-        <div
-          class="categories__item categories__large__item set-bg img-fluid"
-          data-setbg="{% static 'images/categories/category-1.jpg' %}"
-        >
-          <div class="categories__text">
-            <h1 class="fw-bold">Spring/Summer Collection</h1>
-            <p class="text-white">
-              Engage in our SS23' Luku-book featuring fits from Akiba Haiozi,
-              creative director behind Nairobi based Akiba Studios.
-            </p>
-            <a href="{% url 'blog_detail' slug='ss23-luku-book' %}"
-              >View Collection</a
-            >
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="row">
-          <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-            <div
-              class="categories__item set-bg"
-              data-setbg="{% static 'images/categories/category-2.jpg' %}"
-            >
-              <div class="categories__text">
-                <h4>Jacket</h4>
-                <a class="small" href="{% url 'photo' 9 %}">Shop now</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-            <div
-              class="categories__item set-bg"
-              data-setbg="{% static 'images/categories/category-3.jpg' %}"
-            >
-              <div class="categories__text">
-                <h4>Sweater</h4>
-                <a class="small" href="{% url 'photo' 7 %}">Shop now</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-            <div
-              class="categories__item set-bg"
-              data-setbg="{% static 'images/categories/category-4.jpg' %}"
-            >
-              <div class="categories__text">
-                <h4>Headwear</h4>
-                <a class="small" href="{% url 'photo' 12 %}">Shop now</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-            <div
-              class="categories__item set-bg"
-              data-setbg="{% static 'images/categories/category-5.jpg' %}"
-            >
-              <div class="categories__text">
-                <h4>Top</h4>
-                <a class="small" href="{% url 'photo' 18 %}">Shop now</a>
-              </div>
-            </div>
-          </div>
-        </div>
+<!-- Masonry Start -->
+<div style="padding-top: 4rem;" class="container my-5">
+  <div class="row justify-content-center align-items-center">
+
+    <div class="col-sm-12 col-lg-4 col-md-12">
+      <img src="{{ new_release.image.url }}" class="img-fluid rounded">
+      <div class="text-center" style="margin-top: -10rem;">
+        <h3 class="text-white">{{ new_release.name|safe }}</h3>
+        <p class="text-white">{{ new_release.quote_author }}</p>
+        <a class="btn btn-outline-light" href="{% url 'blog_detail' slug='ss23-luku-book' %}">{{ new_release.button }} &raquo;</a>
       </div>
     </div>
+
+    <div class="col-sm-12 col-lg-4 col-md-12" style="margin: 5rem 0;">
+      <img src="{{ sweater.image.url }}" class="img-fluid rounded">
+      <div class="text-center" style="margin-top: -10rem;">
+        <h3 class="text-white">{{ sweater.name|safe }}</h3>
+        <p class="text-white">{{ sweater.quote_author }}</p>
+        <a class="btn btn-outline-light" href="{% url 'view_product' slug='knit-sweater' %}">{{ sweater.button }} &raquo;</a>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-lg-4 col-md-12" >
+      <img src="{{ trucker_hats.image.url }}" class="img-fluid rounded">
+      <div class="text-center" style="margin-top: -10rem;">
+        <h3 class="text-white">{{ trucker_hats.name|safe }}</h3>
+        <p class="text-white">{{ trucker_hats.quote_author }}</p>
+        <a class="btn btn-outline-light" href="{% url 'view_product' slug='bucket-hat' %}">{{ trucker_hats.button }} &raquo;</a>
+      </div>
+    </div>
+
   </div>
-</section>
-<!-- Categories Section End -->
+</div>
+<!-- Masonry ENd -->
 
 <!-- LUKU DEFINITION -->
 <div style="margin: 6rem auto" class="text-center container">
@@ -278,7 +239,8 @@
           <!-- product one -->
           <div class="row justify-content-center mb-3">
             <div class="col me-2">
-              <img class="img-fluid" src="{{ red_bucket_hat.image.url }}" />
+              <img
+              style="height: 40;" class="img-fluid" src="{{ red_bucket_hat.image.url }}" />
             </div>
             <div class="col">
               <p class="fw-bold">Bucket Hat</p>
@@ -294,6 +256,7 @@
           <div class="row mb-3">
             <div class="col me-2">
               <img
+              style="height: 40;"
                 class="img-fluid"
                 src="{{ kintsugi_top_blue.image.url }}"
                 alt="{{ kintsugi_top_blue.name }}"
@@ -313,6 +276,7 @@
           <div class="row mb-3">
             <div class="col me-2">
               <img
+              style="height: 40;"
                 class="img-fluid"
                 src="{{ utility_jacket.image.url }}"
                 alt="{{ utility_jacket.name }}"
@@ -334,6 +298,7 @@
           <div class="row mb-3">
             <div class="col me-2">
               <img
+              style="height: 40;"
                 class="img-fluid"
                 src="{{ kintsugi_flare.image.url }}"
                 alt="{{ kintsugi_flare.name }}"
@@ -449,7 +414,7 @@
           <img
             style="height: 300px"
             src="{{ trucker_hat.image.url }}"
-            class="d-block w-100 grayscale"
+            class="d-block w-100 grayscale img-fluid"
             alt="Akiba Trucker Hats"
           />
           <div class="carousel-caption d-md-block">
@@ -466,7 +431,7 @@
           <img
             style="height: 300px"
             src="{% static 'index/pink_trucker_hat.png' %}"
-            class="d-block w-100"
+            class="d-block w-100 img-fluid"
             alt="Trucker Hat"
           />
         </div>
@@ -474,7 +439,7 @@
           <img
             style="height: 300px"
             src="{% static 'index/bucket_hats.png' %}"
-            class="d-block w-100"
+            class="d-block w-100 img-fluid"
             alt="Bucket Hats"
           />
           <div class="carousel-caption d-md-block">
@@ -492,4 +457,38 @@
     >
   </div>
 </div>
+<script>
+  // Set the date we're counting down to
+  var countDownDate = new Date("2023-10-22").getTime();
+
+  // Update the countdown every 1 second
+  var x = setInterval(function () {
+    // Get the current date and time
+    var now = new Date().getTime();
+
+    // Find the distance between now and the count down date
+    var distance = countDownDate - now;
+
+    // Calculate the days, hours, minutes and seconds
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor(
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Display the result in the corresponding elements
+    document.getElementById("days").innerHTML = days;
+    document.getElementById("hours").innerHTML = hours;
+    document.getElementById("minutes").innerHTML = minutes;
+    document.getElementById("seconds").innerHTML = seconds;
+
+    // If the countdown is over, display a message
+    if (distance < 0) {
+      clearInterval(x);
+      document.getElementById("countdown-time").innerHTML = "";
+      document.getElementById("countdownBtn").innerHTML = "Shop Now";
+    }
+  }, 1000);
+</script>
 {% endblock %}
