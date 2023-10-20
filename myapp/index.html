@@ -1,0 +1,495 @@
+{% extends 'base.html' %} {% load static %} {% block body %}
+<div class="container-fluid mb-5 p-0">
+  <div class="row">
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <a
+            class="btn btn-outline-light p-0"
+            href="{% url 'blog_detail' slug='ss23-luku-book' %}"
+          >
+            <img src="{{ slider_01.image.url }}" class="img-fluid"
+          /></a>
+          <div class="container">
+            <div class="carousel-caption text-start">
+              <img
+                class="img-fluid"
+                style="
+                  filter: invert(100%);
+                  margin-bottom: 1.5rem;
+                  height: 5rem;
+                "
+                src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
+              />
+              <p>
+                <a
+                  class="btn btn-outline-light"
+                  href="{% url 'blog_detail' slug='ss23-luku-book' %}"
+                  >SS23' Lukubook</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <a class="btn btn-outline-light p-0" href="{% url 'shop' %}">
+            <img class="img-fluid" src="{{ slider_03.image.url }}"
+          /></a>
+          <div class="container">
+            <div class="carousel-caption">
+              <figure class="text-center">
+                <blockquote class="blockquote">
+                  <h1 class="fw-bold">
+                    Streetwear is an artistic movement. It’s a creative process.
+                  </h1>
+                </blockquote>
+                <figcaption class="blockquote-footer text-white">
+                  Virgil Abloh
+                </figcaption>
+              </figure>
+              <p>
+                <a class="btn btn-outline-light" href="{% url 'shop' %}"
+                  >Shop &#8599;</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <a
+            class="btn btn-outline-light p-0"
+            href="{% url 'gallery' %}?category=SS23"
+          >
+            <img class="img-fluid" src="{{ slider_02.image.url }}" />
+          </a>
+          <div class="container">
+            <div class="carousel-caption text-start">
+              <img
+                class="img-fluid"
+                style="
+                  filter: invert(100%);
+                  margin-bottom: 1.5rem;
+                  height: 5rem;
+                "
+                src="{% static 'images/logo/lukustore.nl-logo.svg' %}"
+              />
+              <p>
+                <a
+                  class="btn btn-outline-light"
+                  href="{% url 'gallery' %}?category=SS23"
+                  >Akiba Studios</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#myCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#myCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+</div>
+<!-- END OF HERO SECTION -->
+
+<!-- Discount Section Begin -->
+<div class="container pt-5 my-5">
+  <div class="row align-items-center justify-content-center">
+    <div class="col-lg-6 col-sm-12 mb-5">
+      <img
+        class="img-fluid"
+        src="{% static 'images/discount2.jpg' %}"
+        alt="Nairobi Nnoize Poster"
+      />
+    </div>
+
+    <!-- Countdown Timer Start -->
+    <div class="col-lg-6 col-sm-12">
+      <div class="text-center">
+        <span>BEAUTIFUL and BRUTAL</span>
+        <h1>Nairobi Nnoize</h1>
+        <h5><span>Sale</span></h5>
+      </div>
+      <div class="d-flex text-center justify-content-between" id="countdown-time">
+        <div class="col">
+          <h1 class="display-2 fw-bold" id="days">0</h1>
+          <p style="margin-top: -1rem;">Day</p>
+        </div>
+        <div class="col">
+          <h1 class="display-2 fw-bold" id="hours">0</h1>
+          <p style="margin-top: -1rem;">Hours</p>
+        </div>
+        <div class="col">
+          <h1 class="display-2 fw-bold" id="minutes">0</h1>
+          <p style="margin-top: -1rem;">Minutes</p>
+        </div>
+        <div class="col">
+          <h1 class="display-2 fw-bold" id="seconds">0</h2>
+          <p style="margin-top: -1rem;">Seconds</p>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <a class="btn btn-dark" id="countdownBtn" href="{% url 'brand_list' %}">Coming Soon</a>
+      </div>
+    </div>
+    <!-- Countdown Timer End -->
+  </div>
+</div>
+<!-- Discount Section End -->
+
+<!-- Masonry Start -->
+<div style="padding-top: 4rem;" class="container my-5">
+  
+  <div class="row justify-content-center align-items-center">
+    <div class="col-sm-12 col-lg-4 col-md-12">
+      <img src="{{ new_release.image.url }}" class="img-fluid rounded">
+      <div class="text-center" style="margin-top: -10rem;">
+        <h3 class="text-white">{{ new_release.name|safe }}</h3>
+        <p class="text-white">{{ new_release.quote_author }}</p>
+        <a class="btn btn-outline-light" href="{% url 'blog_detail' slug='ss23-luku-book' %}">{{ new_release.button }} &raquo;</a>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-lg-4 col-md-12" style="margin: 5rem 0;">
+      <img src="{{ sweater.image.url }}" class="img-fluid rounded">
+      <div class="text-center" style="margin-top: -10rem;">
+        <h3 class="text-white">{{ sweater.name|safe }}</h3>
+        <p class="text-white">{{ sweater.quote_author }}</p>
+        <a class="btn btn-outline-light" href="{% url 'view_product' slug='knit-sweater' %}">{{ sweater.button }} &raquo;</a>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-lg-4 col-md-12" >
+      <img src="{{ trucker_hats.image.url }}" class="img-fluid rounded">
+      <div class="text-center" style="margin-top: -10rem;">
+        <h3 class="text-white">{{ trucker_hats.name|safe }}</h3>
+        <p class="text-white">{{ trucker_hats.quote_author }}</p>
+        <a class="btn btn-outline-light" href="{% url 'view_product' slug='bucket-hat' %}">{{ trucker_hats.button }} &raquo;</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- Masonry ENd -->
+
+<!-- LUKU DEFINITION -->
+<div style="margin: 6rem auto" class="text-center container">
+  <h1 style="font-size: 7rem" class="display-1 fw-bold">luku</h1>
+  <h4 class="text-muted">/ loo-koo /</h4>
+  <br />
+  <p class="display-6">
+    <strong>(n.)</strong>
+    {{ definition.quote|safe }}
+  </p>
+</div>
+<!-- END OF LUKU DEFINITION -->
+
+<!-- Summer Jam -->
+<div style="margin: 9rem auto" class="container">
+  <h1 class="text-center title fw-bold my-5">SS23 Lukubook Inspiration</h1>
+  <div class="row d-flex justify-content-between">
+    <div class="col-md-6 col-sm-12 mb-3">
+      <img
+        class="img-fluid"
+        src="{{ lukubookImage.image.url }}"
+        alt="{{ lukubookImage.name }}"
+      />
+    </div>
+
+    <div class="col-md-6 col-sm-12">
+      <div class="container inspoContainer">
+        <div class="row tableScroll">
+          <!-- product one -->
+          <div class="row justify-content-center mb-3">
+            <div class="col me-2">
+              <img
+                style="height: 40;" class="img-fluid" src="{{ red_bucket_hat.image.url }}" />
+            </div>
+            <div class="col">
+              <p class="fw-bold">Bucket Hat</p>
+              <h6>Brand: Akiba Studios</h6>
+              <h6 class="small">Crafted for both fashion...</h6>
+              <h6>€20.00</h6>
+              <a class="btn btn-dark" href="{% url 'view_product' slug='bucket-hat' %}">View</a>
+            </div>
+          </div>
+          <!-- end of product one -->
+
+          <!-- product one -->
+          <div class="row mb-3">
+            <div class="col me-2">
+              <img
+              style="height: 40;"
+                class="img-fluid"
+                src="{{ kintsugi_top_blue.image.url }}"
+                alt="{{ kintsugi_top_blue.name }}"
+              />
+            </div>
+            <div class="col">
+              <p class="fw-bold">Kintsungi Top</p>
+              <h6>Brand: Akiba Studios</h6>
+              <h6 class="small">With a harmonious blend of traditional...</h6>
+              <h6>€20.00</h6>
+              <a class="btn btn-dark" href="{% url 'view_product' slug='kintsungi-top' %}">View</a>
+            </div>
+          </div>
+          <!-- end of product one -->
+
+          <!-- product one -->
+          <div class="row mb-3">
+            <div class="col me-2">
+              <img
+              style="height: 40;"
+                class="img-fluid"
+                src="{{ utility_jacket.image.url }}"
+                alt="{{ utility_jacket.name }}"
+              />
+            </div>
+            <div class="col">
+              <p class="fw-bold">Utility Vest</p>
+              <h6>Brand: Akiba Studios</h6>
+              <h6 class="small">
+                Crafted from durable and weather-resistant...
+              </h6>
+              <h6>€60.00</h6>
+              <a class="btn btn-dark" href="{% url 'view_product' slug='utility-vest' %}">View</a>
+            </div>
+          </div>
+          <!-- end of product one -->
+
+          <!-- product one -->
+          <div class="row mb-3">
+            <div class="col me-2">
+              <img
+              style="height: 40;"
+                class="img-fluid"
+                src="{{ kintsugi_flare.image.url }}"
+                alt="{{ kintsugi_flare.name }}"
+              />
+            </div>
+            <div class="col">
+              <p class="fw-bold">Kintsungi Flare</p>
+              <h6>Brand: Akiba Studios</h6>
+              <h6 class="small">
+                Modern style with artistic heritage, featuring...
+              </h6>
+              <h6>€70.00</h6>
+              <a class="btn btn-dark" href="{% url 'view_product' slug='kintsungi-flare' %}">View</a>
+            </div>
+          </div>
+          <!-- end of product one -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Summer Jam -->
+
+<!-- Blog -->
+
+<div class="container mt-100 mb-5">
+  <div class="row">
+    <div class="col-12 text-center">
+      <div class="section-title mb-4 pb-2">
+        <h1 class="title mb-4">Latest Blog &amp; News</h1>
+      </div>
+    </div>
+    <!--end col-->
+  </div>
+  <!--end row-->
+
+  <div class="row justify-content-center">
+    {% for blog in blogs|slice:":2" %}
+    <div class="col-lg-6 col-md-6 mt-4 col-sm-12 pt-2">
+      <div class="blog-post rounded border">
+        <div class="blog-img d-block overflow-hidden position-relative">
+          <img
+            src="{{ blog.image.url }}"
+            class="img-fluid rounded-top"
+            alt="{{ blog.name }}'s Image"
+          />
+        </div>
+        <div class="content p-3">
+          <small class="text-muted p float-right"> {{ blog.pub_date }}</small>
+          <h4 class="mt-2">
+            <a
+              href="{% url 'blog_detail' slug=blog.slug %}"
+              class="text-dark underline"
+              >{{ blog.title }}</a
+            >
+          </h4>
+          <p class="text-muted mt-2">{{ blog.summary }}</p>
+          <a
+            href="{% url 'blog_detail' slug=blog.slug %}"
+            class="text-dark mt-2 underline"
+            >Read More... <i class="mdi mdi-chevron-right"></i
+          ></a>
+        </div>
+      </div>
+      <!--end blog post-->
+    </div>
+    <!--end col-->
+    {% endfor %}
+  </div>
+  <!--end row-->
+</div>
+<!-- Blog -->
+
+<!-- DJ G400 Start -->
+<div class="container">
+  <h1 class="text-center title">Music Mix</h1>
+  <p class="mb-5 text-center">Latest mixes from DJ G400, Nairobi 🇰🇪</p>
+  <div
+    class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
+  >
+    {% for mix in mixes %}
+    <div class="col mb-5">
+      <img
+        height="150"
+        class="img-fluid mb-3"
+        style="object-fit: cover"
+        src="{{ mix.image.url }}"
+        alt="{{ mix.title }}"
+      />
+      <div class="text-start">
+        <a
+          href="{% url 'music_player' mix.pk %}"
+          class="text-black fw-bold underline my-2"
+          >{{ mix.title }}</a
+        >
+        <h6 class="small">{{ mix.description|truncatechars:25 }}</h6>
+        <h6 class="text-black my-2">Genre: {{ mix.genre }}</h6>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<!-- DJ G400 End -->
+<div class="container mt-5">
+  <div class="row">
+    <div
+      id="carouselExampleFade"
+      class="carousel slide carousel-fade"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img
+            style="height: 300px"
+            src="{{ trucker_hat.image.url }}"
+            class="d-block w-100 grayscale img-fluid"
+            alt="Akiba Trucker Hats"
+          />
+          <div class="carousel-caption d-md-block">
+            <h4 style="margin-bottom: 6rem" class="text-start">
+              <a
+                class="underline text-white"
+                href="{% url 'gallery' %}?category=Headwear"
+                >Explore our <br />Trucker Hats &#8594;</a
+              >
+            </h4>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img
+            style="height: 300px"
+            src="{% static 'index/pink_trucker_hat.png' %}"
+            class="d-block w-100 img-fluid"
+            alt="Trucker Hat"
+          />
+        </div>
+        <div class="carousel-item">
+          <img
+            style="height: 300px"
+            src="{% static 'index/bucket_hats.png' %}"
+            class="d-block w-100 img-fluid"
+            alt="Bucket Hats"
+          />
+          <div class="carousel-caption d-md-block">
+            <a
+              class="btn btn-outline-light"
+              href="{% url 'gallery' %}?category=Headwear"
+              >Akiba Bucket Hats</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="underline text-center my-5 text-dark" href="#myCarousel"
+      >Back to top</a
+    >
+  </div>
+</div>
+<!-- Countdown -->
+<script>
+  // Set the date we're counting down to
+  var countDownDate = new Date("2023-10-22").getTime();
+
+  // Update the countdown every 1 second
+  var x = setInterval(function () {
+    // Get the current date and time
+    var now = new Date().getTime();
+
+    // Find the distance between now and the count down date
+    var distance = countDownDate - now;
+
+    // Calculate the days, hours, minutes and seconds
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor(
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Display the result in the corresponding elements
+    document.getElementById("days").innerHTML = days;
+    document.getElementById("hours").innerHTML = hours;
+    document.getElementById("minutes").innerHTML = minutes;
+    document.getElementById("seconds").innerHTML = seconds;
+
+    // If the countdown is over, display a message
+    if (distance < 0) {
+      clearInterval(x);
+      document.getElementById("countdown-time").innerHTML = "";
+      document.getElementById("countdownBtn").innerHTML = "Shop Now";
+    }
+  }, 1000);
+</script>
+{% endblock %}
