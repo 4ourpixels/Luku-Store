@@ -231,13 +231,19 @@ def view_product(request, slug):
 
         return render(request, 'product.html', context)
     except Product.DoesNotExist:
+        page_name = f'- Error getitng {product.name}'
+        print("Error: ", str(e))
         # Handle the case when the product doesn't exist
         # You can render a specific template or return an appropriate response
-        return render(request, 'product_not_found.html')
+        context = {
+            'error': str(e),
+            'page_name': page_name
+        }
+        return render(request, '404.html', context)
 
     except Exception as e:
         # Handle other exceptions
-        page_name = f'- Error {product.name} was not found'
+        page_name = '- Error'
         print("Error :", str(e))
         context = {
             'error': str(e),
@@ -265,7 +271,7 @@ def cart(request):
     discount = 0
     page_name = f"- Cart({cartItems})"
 
-    photos = Photo.objects.all()
+    products = Product.objects.all()
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
 
@@ -274,7 +280,7 @@ def cart(request):
         'items': items,
         'cartItems': cartItems,
         'order': order,
-        'photos': photos,
+        'products': products,
         'discount': discount,
         'blogs': blogs,
         'brands': brands,
@@ -413,7 +419,7 @@ def updateItem(request):
     action = data['action']
 
     customer = request.user.customer
-    product = Photo.objects.get(pk=productId)
+    product = Product.objects.get(pk=productId)
     order, created = Order.objects.get_or_create(
         customer=customer, complete=False)
 
@@ -485,7 +491,7 @@ def updateItem(request):
     print(f'{action}ed the product {productId}')
 
     customer = request.user.customer
-    product = Photo.objects.get(pk=productId)
+    product = Product.objects.get(pk=productId)
     order, created = Order.objects.get_or_create(
         customer=customer, complete=False)
 
@@ -649,18 +655,18 @@ def gallery(request):
     cartItems = data['cartItems']
 
     if category == None:
-        photos = Photo.objects.all()
+        products = Product.objects.all()
     else:
-        photos = Photo.objects.filter(category__name=category)
+        products = Product.objects.filter(category__name=category)
 
     categories = Category.objects.all()
 
-    unique_product_codes = Photo.objects.filter(
+    unique_product_codes = Product.objects.filter(
         product_code__isnull=False).values_list('product_code', flat=True).distinct()
     unique_photos = []
 
     for product_code in unique_product_codes:
-        latest_photo = Photo.objects.filter(
+        latest_photo = Product.objects.filter(
             product_code=product_code).order_by('-id').first()
         unique_photos.append(latest_photo)
 
@@ -668,7 +674,7 @@ def gallery(request):
 
     context = {
         'categories': categories,
-        'photos': photos,
+        'products': products,
         'cartItems': cartItems,
         'active_category': active_category,
         'unique_photos': unique_photos,
@@ -717,6 +723,7 @@ def viewPhoto(request, pk):
 @login_required(login_url='login')
 def account(request):
     photos = Photo.objects.all()
+    products = Product.objects.all()
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     shippings = ShippingAddress.objects.all()
@@ -734,6 +741,7 @@ def account(request):
         'cartItems': cartItems,
         'page_name': page_name,
         'photos': photos,
+        'products': products,
         'orders': orders,
         'order': order,
         'items': items,
@@ -775,3 +783,40 @@ def music_player(request, id):
         'brands': brands,
     }
     return render(request, 'music_player.html', context)
+
+
+def dashboard(request):
+    mixes = Mix.objects.order_by('-pk')
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
+    products = Product.objects.order_by('-pk')
+    photos = Photo.objects.order_by('-pk')
+    help = Help.objects.order_by('-pk')
+    categories = Category.objects.order_by('-pk')
+    customers = Customer.objects.order_by('-pk')
+    orders = Order.objects.order_by('-pk')
+    order_items = OrderItem.objects.order_by('-pk')
+    shipping_addresses = ShippingAddress.objects.order_by('-pk')
+    newsletters = Newsletter.objects.order_by('-pk')
+    homepages = HomePage.objects.order_by('-pk')
+
+    page_name = "Dashboard"
+
+    context = {
+        'page_name': page_name,
+        'mixes': mixes,
+        'blogs': blogs,
+        'brands': brands,
+        'products': products,
+        'photos': photos,
+        'help': help,
+        'categories': categories,
+        'customers': customers,
+        'orders': orders,
+        'order_items': order_items,
+        'shipping_addresses': shipping_addresses,
+        'newsletters': newsletters,
+        'homepages': homepages,
+    }
+
+    return render(request, 'dashboard.html', context)
