@@ -83,8 +83,8 @@
                 <p class="btn btn-outline-dark"><s>XL</s></p>
                 <p class="btn btn-outline-dark"><s>XXL</s></p>
                 {% elif product.size == 'Medium' %}
-                <p class="btn btn-outline-dark">S</p>
-                <p class="btn btn-dark"><s>M</s></p>
+                <p class="btn btn-dark"><s>S</s></p>
+                <p class="btn btn-outline-dark">M</p>
                 <p class="btn btn-outline-dark"><s>L</s></p>
                 <p class="btn btn-outline-dark"><s>XL</s></p>
                 <p class="btn btn-outline-dark"><s>XXL</s></p>
@@ -193,7 +193,7 @@
           <a href="{% url 'view_product' slug=product.slug %}">
             <img
               src="{{ product.image.url }}"
-              class="img-fluid"
+              class="img-fluid bg-light"
               style="object-fit: cover"
               alt="{{ product.name }}"
           /></a>
@@ -241,6 +241,9 @@
   };
   smallImg[8].onclick = function () {
     productImg.src = smallImg[8].src;
+  };
+  smallImg[9].onclick = function () {
+    productImg.src = smallImg[9].src;
   };
 </script>
 {% endblock %}
