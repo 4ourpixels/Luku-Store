@@ -118,6 +118,8 @@ def index(request):
     # Footer
     trucker_hat = homepages[18]
 
+    video = Video.objects.first()
+
     data = cartData(request)
     cartItems = data['cartItems']
 
@@ -163,6 +165,7 @@ def index(request):
         'kintsugi_flare': kintsugi_flare,
         'trucker_hat': trucker_hat,
 
+        'video': video,
     }
     return render(request, 'index.html', context)
 
@@ -231,7 +234,7 @@ def view_product(request, slug):
 
         return render(request, 'product.html', context)
     except Product.DoesNotExist:
-        page_name = f'- Error getitng {product.name}'
+        page_name = f'- Error getting {product.name}'
         print("Error: ", str(e))
         # Handle the case when the product doesn't exist
         # You can render a specific template or return an appropriate response

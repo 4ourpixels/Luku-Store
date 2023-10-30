@@ -163,6 +163,60 @@ def create_customer(sender, instance, created, **kwargs):
 models.signals.post_save.connect(create_customer, sender=User)
 # END OF CUSTOMER MODEL
 
+
+class Brand(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True)
+    keywords = models.TextField(null=True, blank=True)
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="brand/",
+        default='blog.jpg'
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True)
+    product_code = models.CharField(max_length=10, null=True, blank=True)
+    similar_products_codes = models.CharField(max_length=300, blank=True)
+    type = models.CharField(max_length=100, blank=True, null=True)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
+
+    image = models.ImageField(
+        null=False,
+        blank=False,
+        upload_to="products/",
+        default='image.jpg'
+    )
+    description = models.TextField()
+    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+    stock = models.IntegerField(default=0)
+    color = models.CharField(max_length=100, blank=True, null=True)
+    size = models.CharField(max_length=20, blank=True, null=True)
+    rating = models.IntegerField(blank=True, default=0)
+    popular = models.BooleanField(default=False, null=True, blank=False)
+    brand = models.ForeignKey(
+        Brand,
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
+    digital = models.BooleanField(default=False, null=True, blank=False)
+    collection = models.CharField(max_length=100, blank=True, null=True)
+    slug = models.SlugField(unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 # ORDER
 
 
@@ -184,7 +238,7 @@ class Order(models.Model):
         shipping = False
         orderitems = self.orderitem_set.all()
         for i in orderitems:
-            if i.photo.digital == False:
+            if i.product.digital == False:
                 shipping = True
         return shipping
 
@@ -206,7 +260,7 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
 
         for i in orderitems:
-            if i.photo.digital == False:
+            if i.product.digital == False:
                 shipping = True
         return shipping
 # END OF ORDER
@@ -215,19 +269,19 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    photo = models.ForeignKey(
-        Photo, on_delete=models.SET_NULL, blank=True, null=True)
+    product = models.ForeignKey(
+        Product, on_delete=models.SET_NULL, blank=True, null=True)
     order = models.ForeignKey(
         Order, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
 
     @property
     def get_total(self):
-        total = self.photo.price * self.quantity
+        total = self.product.price * self.quantity
         return total
 
     def __str__(self):
-        return f'{self.photo}'
+        return f'{self.product}'
 
     @property
     def get_cart_items(self):
@@ -329,56 +383,9 @@ class Mix(models.Model):
         return self.title
 
 
-class Brand(models.Model):
-    name = models.CharField(max_length=200, null=True, blank=True)
-    keywords = models.TextField(null=True, blank=True)
-    image = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to="brand/",
-        default='blog.jpg'
-    )
+class Video(models.Model):
+    title = models.CharField(max_length=100)
+    video_file = models.FileField(upload_to='videos/')
 
     def __str__(self):
-        return self.name
-
-
-class Product(models.Model):
-    name = models.CharField(max_length=200, null=True, blank=True)
-    product_code = models.CharField(max_length=10, null=True, blank=True)
-    similar_products_codes = models.CharField(max_length=300, blank=True)
-    type = models.CharField(max_length=100, blank=True, null=True)
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.SET_NULL,
-        null=True, blank=True
-    )
-
-    image = models.ImageField(
-        null=False,
-        blank=False,
-        upload_to="products/",
-        default='image.jpg'
-    )
-    description = models.TextField()
-    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
-    stock = models.IntegerField(default=0)
-    color = models.CharField(max_length=100, blank=True, null=True)
-    size = models.CharField(max_length=20, blank=True, null=True)
-    rating = models.IntegerField(blank=True, default=0)
-    popular = models.BooleanField(default=False, null=True, blank=False)
-    brand = models.ForeignKey(
-        Brand,
-        on_delete=models.SET_NULL,
-        null=True, blank=True
-    )
-    digital = models.BooleanField(default=False, null=True, blank=False)
-    collection = models.CharField(max_length=100, blank=True, null=True)
-    slug = models.SlugField(unique=True, null=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
+        return self.title
