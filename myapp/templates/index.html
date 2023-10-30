@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
+<!-- Main Carousel Start -->
 <div class="container-fluid mb-5 p-0">
   <div class="row">
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -127,85 +128,85 @@
     </div>
   </div>
 </div>
-<!-- END OF HERO SECTION -->
+<!-- Main Carousel End -->
 
-<!-- Discount Section Begin -->
+<!-- Nairobi Nnoize Drop Begin -->
 <div class="container pt-5 my-5">
   <div class="row align-items-center justify-content-center">
     <div class="col-lg-6 col-sm-12 mb-5">
-      <iframe width="320" height="560" src="https://www.youtube.com/embed/xKk71HgLTHk" title="Girlskate_nairobi representing and empowering female skaters in Kenya." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <iframe
+        width="344"
+        height="612"
+        src="https://www.youtube.com/embed/pZkG0Vzoets"
+        title="Bro Made Them Even Stronger! 😭"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
     </div>
 
-    <!-- Countdown Timer Start -->
     <div class="col-lg-6 col-sm-12">
       <div class="text-center">
         <span>BEAUTIFUL and BRUTAL</span>
         <h1>Nairobi Nnoize</h1>
         <h5><span>Exclusive Drop</span></h5>
       </div>
-      <div class="d-flex text-center justify-content-between" id="countdown-time">
-        <div class="col">
-          <h1 class="display-2 fw-bold" id="days">0</h1>
-          <p style="margin-top: -1rem;">Day</p>
-        </div>
-        <div class="col">
-          <h1 class="display-2 fw-bold" id="hours">0</h1>
-          <p style="margin-top: -1rem;">Hours</p>
-        </div>
-        <div class="col">
-          <h1 class="display-2 fw-bold" id="minutes">0</h1>
-          <p style="margin-top: -1rem;">Minutes</p>
-        </div>
-        <div class="col">
-          <h1 class="display-2 fw-bold" id="seconds">0</h2>
-          <p style="margin-top: -1rem;">Seconds</p>
-        </div>
-      </div>
       <div class="text-center mt-3">
-        <a class="btn btn-dark" id="countdownBtn" href="{% url 'brand_list' %}">Coming Soon</a>
+        <a class="btn btn-dark" id="countdownBtn" href="{% url 'brand_list' %}"
+          >Shop Now</a
+        >
       </div>
     </div>
-    <!-- Countdown Timer End -->
   </div>
 </div>
-<!-- Discount Section End -->
+<!-- Nairobi Nnoize Drop End -->
 
-<!-- Masonry Start -->
-<div style="padding-top: 4rem;" class="container my-5">
-  
+<!-- Category Start -->
+<div style="padding-top: 4rem" class="container my-5">
   <div class="row justify-content-center align-items-center">
     <div class="col-sm-12 col-lg-4 col-md-12">
-      <img src="{{ new_release.image.url }}" class="img-fluid rounded">
-      <div class="text-center" style="margin-top: -10rem;">
+      <img src="{{ new_release.image.url }}" class="img-fluid rounded" />
+      <div class="text-center" style="margin-top: -10rem">
         <h3 class="text-white">{{ new_release.name|safe }}</h3>
         <p class="text-white">{{ new_release.quote_author }}</p>
-        <a class="btn btn-outline-light" href="{% url 'blog_detail' slug='ss23-luku-book' %}">{{ new_release.button }} &raquo;</a>
+        <a
+          class="btn btn-outline-light"
+          href="{% url 'blog_detail' slug='ss23-luku-book' %}"
+          >{{ new_release.button }} &raquo;</a
+        >
       </div>
     </div>
 
-    <div class="col-sm-12 col-lg-4 col-md-12" style="margin: 5rem 0;">
-      <img src="{{ sweater.image.url }}" class="img-fluid rounded">
-      <div class="text-center" style="margin-top: -10rem;">
+    <div class="col-sm-12 col-lg-4 col-md-12" style="margin: 5rem 0">
+      <img src="{{ sweater.image.url }}" class="img-fluid rounded" />
+      <div class="text-center" style="margin-top: -10rem">
         <h3 class="text-white">{{ sweater.name|safe }}</h3>
         <p class="text-white">{{ sweater.quote_author }}</p>
-        <a class="btn btn-outline-light" href="{% url 'view_product' slug='knit-sweater' %}">{{ sweater.button }} &raquo;</a>
+        <a
+          class="btn btn-outline-light"
+          href="{% url 'view_product' slug='knit-sweater' %}"
+          >{{ sweater.button }} &raquo;</a
+        >
       </div>
     </div>
 
-    <div class="col-sm-12 col-lg-4 col-md-12" >
-      <img src="{{ trucker_hats.image.url }}" class="img-fluid rounded">
-      <div class="text-center" style="margin-top: -10rem;">
+    <div class="col-sm-12 col-lg-4 col-md-12">
+      <img src="{{ trucker_hats.image.url }}" class="img-fluid rounded" />
+      <div class="text-center" style="margin-top: -10rem">
         <h3 class="text-white">{{ trucker_hats.name|safe }}</h3>
         <p class="text-white">{{ trucker_hats.quote_author }}</p>
-        <a class="btn btn-outline-light" href="{% url 'view_product' slug='bucket-hat' %}">{{ trucker_hats.button }} &raquo;</a>
+        <a
+          class="btn btn-outline-light"
+          href="{% url 'view_product' slug='bucket-hat' %}"
+          >{{ trucker_hats.button }} &raquo;</a
+        >
       </div>
     </div>
-
   </div>
 </div>
-<!-- Masonry ENd -->
+<!-- Category End -->
 
-<!-- LUKU DEFINITION -->
+<!-- Definition Start -->
 <div style="margin: 6rem auto" class="text-center container">
   <h1 style="font-size: 7rem" class="display-1 fw-bold">luku</h1>
   <h4 class="text-muted">/ loo-koo /</h4>
@@ -215,9 +216,9 @@
     {{ definition.quote|safe }}
   </p>
 </div>
-<!-- END OF LUKU DEFINITION -->
+<!-- Definition End -->
 
-<!-- Summer Jam -->
+<!-- Lukubook Inspiration Start -->
 <div style="margin: 9rem auto" class="container">
   <h1 class="text-center title fw-bold my-5">SS23 Lukubook Inspiration</h1>
   <div class="row d-flex justify-content-between">
@@ -232,27 +233,34 @@
     <div class="col-md-6 col-sm-12">
       <div class="container inspoContainer">
         <div class="row tableScroll">
-          <!-- product one -->
+          <!-- Bucket Hat Start -->
           <div class="row justify-content-center mb-3">
             <div class="col me-2">
               <img
-                style="height: 40;" class="img-fluid" src="{{ red_bucket_hat.image.url }}" />
+                style="height: 40"
+                class="img-fluid"
+                src="{{ red_bucket_hat.image.url }}"
+              />
             </div>
             <div class="col">
               <p class="fw-bold">Bucket Hat</p>
               <h6>Brand: Akiba Studios</h6>
               <h6 class="small">Crafted for both fashion...</h6>
               <h6>€20.00</h6>
-              <a class="btn btn-dark" href="{% url 'view_product' slug='bucket-hat' %}">View</a>
+              <a
+                class="btn btn-dark"
+                href="{% url 'view_product' slug='bucket-hat' %}"
+                >View</a
+              >
             </div>
           </div>
-          <!-- end of product one -->
+          <!-- Bucket Hat End -->
 
-          <!-- product one -->
+          <!-- Kintsungi Top Start -->
           <div class="row mb-3">
             <div class="col me-2">
               <img
-              style="height: 40;"
+                style="height: 40"
                 class="img-fluid"
                 src="{{ kintsugi_top_blue.image.url }}"
                 alt="{{ kintsugi_top_blue.name }}"
@@ -263,16 +271,20 @@
               <h6>Brand: Akiba Studios</h6>
               <h6 class="small">With a harmonious blend of traditional...</h6>
               <h6>€20.00</h6>
-              <a class="btn btn-dark" href="{% url 'view_product' slug='kintsungi-top' %}">View</a>
+              <a
+                class="btn btn-dark"
+                href="{% url 'view_product' slug='kintsungi-top' %}"
+                >View</a
+              >
             </div>
           </div>
-          <!-- end of product one -->
+          <!-- Kintsungi Top End -->
 
-          <!-- product one -->
+          <!-- Utility Vest Start -->
           <div class="row mb-3">
             <div class="col me-2">
               <img
-              style="height: 40;"
+                style="height: 40"
                 class="img-fluid"
                 src="{{ utility_jacket.image.url }}"
                 alt="{{ utility_jacket.name }}"
@@ -285,16 +297,20 @@
                 Crafted from durable and weather-resistant...
               </h6>
               <h6>€60.00</h6>
-              <a class="btn btn-dark" href="{% url 'view_product' slug='utility-vest' %}">View</a>
+              <a
+                class="btn btn-dark"
+                href="{% url 'view_product' slug='utility-vest' %}"
+                >View</a
+              >
             </div>
           </div>
-          <!-- end of product one -->
+          <!-- Utility Vest End -->
 
-          <!-- product one -->
+          <!-- Kintsungi Flare Start -->
           <div class="row mb-3">
             <div class="col me-2">
               <img
-              style="height: 40;"
+                style="height: 40"
                 class="img-fluid"
                 src="{{ kintsugi_flare.image.url }}"
                 alt="{{ kintsugi_flare.name }}"
@@ -307,29 +323,24 @@
                 Modern style with artistic heritage, featuring...
               </h6>
               <h6>€70.00</h6>
-              <a class="btn btn-dark" href="{% url 'view_product' slug='kintsungi-flare' %}">View</a>
+              <a
+                class="btn btn-dark"
+                href="{% url 'view_product' slug='kintsungi-flare' %}"
+                >View</a
+              >
             </div>
           </div>
-          <!-- end of product one -->
+          <!-- Kintsungi Flare End -->
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- End of Summer Jam -->
+<!-- Lukubook Inspiration End -->
 
-<!-- Blog -->
-
+<!-- Blog Start -->
 <div class="container mt-100 mb-5">
-  <div class="row">
-    <div class="col-12 text-center">
-      <div class="section-title mb-4 pb-2">
-        <h1 class="title mb-4">Latest Blog &amp; News</h1>
-      </div>
-    </div>
-    <!--end col-->
-  </div>
-  <!--end row-->
+  <h1 class="title text-center mb-4">Latest Blog &amp; News</h1>
 
   <div class="row justify-content-center">
     {% for blog in blogs|slice:":2" %}
@@ -359,14 +370,11 @@
           ></a>
         </div>
       </div>
-      <!--end blog post-->
     </div>
-    <!--end col-->
     {% endfor %}
   </div>
-  <!--end row-->
 </div>
-<!-- Blog -->
+<!-- Blog End -->
 
 <!-- DJ G400 Start -->
 <div class="container">
@@ -398,6 +406,8 @@
   </div>
 </div>
 <!-- DJ G400 End -->
+
+<!-- Footer Carousel Start -->
 <div class="container mt-5">
   <div class="row">
     <div
@@ -453,39 +463,5 @@
     >
   </div>
 </div>
-<!-- Countdown -->
-<script>
-  // Set the date we're counting down to
-  var countDownDate = new Date("2023-10-22").getTime();
-
-  // Update the countdown every 1 second
-  var x = setInterval(function () {
-    // Get the current date and time
-    var now = new Date().getTime();
-
-    // Find the distance between now and the count down date
-    var distance = countDownDate - now;
-
-    // Calculate the days, hours, minutes and seconds
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Display the result in the corresponding elements
-    document.getElementById("days").innerHTML = days;
-    document.getElementById("hours").innerHTML = hours;
-    document.getElementById("minutes").innerHTML = minutes;
-    document.getElementById("seconds").innerHTML = seconds;
-
-    // If the countdown is over, display a message
-    if (distance < 0) {
-      clearInterval(x);
-      document.getElementById("countdown-time").innerHTML = "";
-      document.getElementById("countdownBtn").innerHTML = "Shop Now";
-    }
-  }, 1000);
-</script>
+<!-- Footer Carousel End -->
 {% endblock %}
