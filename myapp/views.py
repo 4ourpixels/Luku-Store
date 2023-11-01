@@ -77,7 +77,7 @@ def help(request):
 
 
 def index(request):
-    page_name = "- Home of African Streetwear | Online Clothing Store"
+    page_name = "- Home of Afro Streetwear Culture | Online Clothing Store"
 
     photos = Photo.objects.all()
     blogs = Blog.objects.order_by('-pk')
