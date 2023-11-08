@@ -1,10 +1,8 @@
+from django import forms
+from .models import *
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
-from .models import *
-
-from django import forms
 
 
 class OrderForm(ModelForm):
@@ -82,3 +80,16 @@ class BlogForm(forms.ModelForm):
             self.fields['keywords'].widget.attrs['class'] = 'form-control'
             self.fields['image'].widget.attrs['class'] = 'form-control'
             self.fields['youtube'].widget.attrs['class'] = 'form-control'
+
+
+class AmapianoSignUpForm(forms.ModelForm):
+    class Meta:
+        model = AmapianoSignUp
+        fields = ("__all__")
+
+        def __init__(self, *args, **kwagrs):
+            super(AmapianoSignUpForm, self).__init__(*args, **kwagrs)
+
+            self.fields['first_name'].widget.attrs['class'] = 'form-control'
+            self.fields['last_name'].widget.attrs['class'] = 'form-control'
+            self.fields['email'].widget.attrs['class'] = 'form-control'
