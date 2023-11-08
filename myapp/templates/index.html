@@ -134,7 +134,7 @@
 <div class="container pt-5 my-5">
   <div class="row align-items-center justify-content-center">
     <div class="col-lg-6 col-sm-12 mb-5">
-      <video class="img-fluid" autoplay muted controls>
+      <video class="img-fluid" autoplay loop muted>
         <source src="{{ video.video_file.url }}" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
@@ -212,6 +212,66 @@
   </p>
 </div>
 <!-- Definition End -->
+
+<!-- Amapiano Workshop Start -->
+<div class="container">
+  <div class="row gy-5 justify-content-center">
+    <!-- Playlist -->
+    <div class="col-sm-12 col-md-6">
+      <iframe
+        class="shadow"
+        style="border-radius: 8px"
+        src="https://open.spotify.com/embed/playlist/1FGZyjmcqr8hqipSkUdnPX?utm_source=generator&theme=0"
+        width="100%"
+        height="450"
+        frameborder="0"
+        allowfullscreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+      ></iframe>
+    </div>
+
+    <!-- Form -->
+    <div class="shadow border rounded-2 col-sm-12 col-md-6">
+      <form class="px-4">
+        <h2 class="my-5">Amapiano Workshop</h2>
+        <!-- 2 column grid layout with text inputs for the first and last names -->
+        <div class="row">
+          <div class="col">
+            <div class="form-outline">
+              <input type="text" id="form3Example1" class="form-control" />
+              <label class="form-label mt-2" for="form3Example1"
+                >First name</label
+              >
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-outline">
+              <input type="text" id="form3Example2" class="form-control" />
+              <label class="form-label mt-2" for="form3Example2"
+                >Last name</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+          <input type="email" id="form3Example3" class="form-control" />
+          <label class="form-label mt-2" for="form3Example3"
+            >Email address</label
+          >
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-dark w-100 btn-block mb-4">
+          Register
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Amapiano Workshop End -->
 
 <!-- Lukubook Inspiration Start -->
 <div style="margin: 9rem auto" class="container">
