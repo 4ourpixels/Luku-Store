@@ -233,13 +233,23 @@
 
     <!-- Form -->
     <div class="shadow border rounded-2 col-sm-12 col-md-6">
-      <form class="px-4">
+      <form
+        class="px-4"
+        method="POST"
+        action="{% url 'amapiano_workshop_signup' %}"
+      >
+        {% csrf_token %}
         <h2 class="my-5">Amapiano Workshop</h2>
         <!-- 2 column grid layout with text inputs for the first and last names -->
         <div class="row">
           <div class="col">
             <div class="form-outline">
-              <input type="text" id="form3Example1" class="form-control" />
+              <input
+                type="text"
+                id="form3Example1"
+                name="first_name"
+                class="form-control"
+              />
               <label class="form-label mt-2" for="form3Example1"
                 >First name</label
               >
@@ -247,7 +257,12 @@
           </div>
           <div class="col">
             <div class="form-outline">
-              <input type="text" id="form3Example2" class="form-control" />
+              <input
+                type="text"
+                id="form3Example2"
+                name="last_name"
+                class="form-control"
+              />
               <label class="form-label mt-2" for="form3Example2"
                 >Last name</label
               >
@@ -257,7 +272,12 @@
 
         <!-- Email input -->
         <div class="form-outline mb-4">
-          <input type="email" id="form3Example3" class="form-control" />
+          <input
+            type="email"
+            id="form3Example3"
+            name="email"
+            class="form-control"
+          />
           <label class="form-label mt-2" for="form3Example3"
             >Email address</label
           >
