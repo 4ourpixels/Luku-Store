@@ -28,5 +28,7 @@ urlpatterns = [
     path('shop/<slug:slug>/', views.view_product, name='view_product'),
     path('404/', views.error404, name='error404'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('amapiano-workshop-signup/', views.amapiano_workshop_signup,
+         name='amapiano_workshop_signup'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

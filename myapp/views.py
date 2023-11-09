@@ -823,3 +823,28 @@ def dashboard(request):
     }
 
     return render(request, 'dashboard.html', context)
+
+
+def amapiano_workshop_signup(request):
+    page_name = "Amapiano Workshop Signup"
+    form = AmapianoSignUpForm()
+
+    if request.method == 'POST':
+        form = AmapianoSignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+            print(f"{first_name} Registered to the Amapiano Workshop!")
+            messages.success(
+                request, ('Amapiano Workshop Registration Successful'))
+            return redirect('index')
+        else:
+            form = AmapianoSignUpForm()
+
+    context = {
+        'page_name': page_name,
+        'form': form,
+    }
+    return render(request, 'amapiano-workshop-signup.html', context)
