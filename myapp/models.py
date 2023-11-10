@@ -146,7 +146,7 @@ class Customer(models.Model):
     image = models.ImageField(
         null=True,
         blank=True,
-        upload_to="media/",
+        upload_to="customer-images/",
         default='image.jpg',
     )
 
@@ -304,19 +304,8 @@ class ShippingAddress(models.Model):
     zipcode = models.CharField(max_length=200, null=True)
     date_added = models.CharField(max_length=200, null=True)
 
-    LABEL = (
-        ('Home', 'Home'),
-        ('Office', 'Office'),
-        ('Default', 'Default'),
-    )
-    label = models.CharField(
-        max_length=15, choices=LABEL, null=True, default='Home')
-
     def __str__(self):
-        return self.address
-
-    def __str__(self):
-        return f"{self.customer}'s {self.label} Address"
+        return f'{self.address} - Customer: {self.customer}'
 # END OF SHIPPING ADDRESS
 
 

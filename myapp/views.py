@@ -123,13 +123,6 @@ def index(request):
     data = cartData(request)
     cartItems = data['cartItems']
 
-    if request.method == 'POST':
-        email = request.POST.get('email', '')
-        newsletter_subscriber = Newsletter(email=email)
-        newsletter_subscriber.save()
-        print(f"{email} subscribed to our newsletter from the homepage!")
-        return redirect('index')
-
     context = {
         'photos': photos,
         'blogs': blogs,
@@ -266,27 +259,31 @@ def error404(request):
 
 
 def cart(request):
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-    order = data['order']
-    items = data['items']
-    discount = 0
-    page_name = f"- Cart({cartItems})"
-
-    products = Product.objects.all()
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(
+            customer=customer, complete=False)
+        items = order.orderitem_set.all()
+        cartItems = order.get_cart_items
+    else:
+        items = []
+        order = {'get_cart_total': 0, 'get_cart_items': 0}
+        cartItems = order['get_cart_items']
+    # discount = 0
+    # page_name = f"- Cart({cartItems})"
+    # products = Product.objects.all()
+    # blogs = Blog.objects.order_by('-pk')
+    # brands = Brand.objects.order_by('-pk')
 
     context = {
-        'page_name': page_name,
         'items': items,
-        'cartItems': cartItems,
         'order': order,
-        'products': products,
-        'discount': discount,
-        'blogs': blogs,
-        'brands': brands,
+        'cartItems': cartItems,
+        # 'page_name': page_name,
+        # 'products': products,
+        # 'discount': discount,
+        # 'blogs': blogs,
+        # 'brands': brands,
     }
 
     return render(request, 'cart.html', context)
@@ -300,10 +297,20 @@ def checkout(request):
     page_name = f"- Checkout"
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
-    data = cartData(request)
-    cartItems = data['cartItems']
-    order = data['order']
-    items = data['items']
+    # data = cartData(request)
+    # cartItems = data['cartItems']
+    # order = data['order']
+    # items = data['items']
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(
+            customer=customer, complete=False)
+        items = order.orderitem_set.all()
+        cartItems = order.get_cart_items
+    else:
+        items = []
+        order = {'get_cart_total': 0, 'get_cart_items': 0}
+        cartItems = order['get_cart_items']
 
     context = {
         'page_name': page_name,
@@ -386,29 +393,34 @@ def brand_list(request):
 
 
 def newsletter(request):
-    page_name = f"- Newsletter"
+    page_name = "- Newsletter"
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     data = cartData(request)
     cartItems = data['cartItems']
 
     if request.method == 'POST':
-        email = request.POST.get('email', '')
-        newsletter_subscriber = Customer.objects.filter(email=email).first()
-        if newsletter_subscriber:
-            return redirect('/')
-        else:
-            # Subscribe the email to the newsletter
-            print(f"{email} Subscribed to our newsletter!")
-            newsletter_subscriber = Newsletter(email=email)
-            newsletter_subscriber.save()
-        return redirect('/')
+        newsletter_form = NewsletterForm(request.POST)
+        if newsletter_form.is_valid():
+            email = newsletter_form.cleaned_data.get('email')
+            if Newsletter.objects.filter(email=email).exists():
+                messages.info(
+                    request, "Hey superstar, you're already one of our favorites! Keep an eye on your inbox for more amazing content. You're officially ahead of the curve!")
+            else:
+                newsletter_form.save()
+                print(f"{email} subscribed to our newsletter from the homepage!")
+                messages.success(
+                    request, "You just unlocked VIP access to our exclusive updates! Stay tuned for the hottest news and insider tips we've got lined up just for you.")
+            return redirect('index')
+    else:
+        newsletter_form = NewsletterForm()
 
     context = {
         'page_name': page_name,
         'cartItems': cartItems,
         'blogs': blogs,
         'brands': brands,
+        'newsletter_form': newsletter_form,
     }
 
     return render(request, 'newsletter.html', context)
@@ -517,6 +529,7 @@ def updateItem(request):
 
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()
+    print("TRANSACTION ID: ==>> ", transaction_id)
     data = json.loads(request.body)
 
     if request.user.is_authenticated:
@@ -847,4 +860,4 @@ def amapiano_workshop_signup(request):
         'page_name': page_name,
         'form': form,
     }
-    return render(request, 'amapiano-workshop-signup.html', context)
+    return render(request, 'amapiano.html', context)
