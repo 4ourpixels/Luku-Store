@@ -30,7 +30,7 @@
                   style="object-fit: cover"
                   class="thumbnail rounded bg-light"
                   src="{{ item.product.image.url }}"
-                  alt="{{ item.name }}"
+                  alt="{{ item.name }}'s Image"
                 />
               </td>
               <td>
@@ -45,7 +45,7 @@
                 >
                   <button
                     style="background: none; border: none"
-                    data-product="{{ item.product.pk }}"
+                    data-product="{{ item.product.id }}"
                     data-action="remove"
                     class="update-cart"
                   >
@@ -54,7 +54,7 @@
                   <span>{{ item.quantity }}</span>
                   <button
                     style="background: none; border: none"
-                    data-product="{{ item.product.pk }}"
+                    data-product="{{ item.product.id }}"
                     data-action="add"
                     class="update-cart"
                   >

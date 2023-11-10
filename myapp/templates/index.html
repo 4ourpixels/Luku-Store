@@ -131,26 +131,22 @@
 <!-- Main Carousel End -->
 
 <!-- Nairobi Nnoize Drop Begin -->
-<div class="container pt-5 my-5">
-  <div class="row align-items-center justify-content-center">
-    <div class="col-lg-6 col-sm-12 mb-5">
-      <video class="img-fluid" autoplay loop muted>
-        <source src="{{ video.video_file.url }}" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    </div>
-
-    <div class="col-lg-6 col-sm-12">
-      <div class="text-center">
-        <span>BEAUTIFUL and BRUTAL</span>
-        <h1>Nairobi Nnoize</h1>
-        <h5><span>Exclusive Drop</span></h5>
-      </div>
-      <div class="text-center mt-3">
-        <a class="btn btn-dark" id="countdownBtn" href="{% url 'brand_list' %}"
-          >Shop Now</a
-        >
-      </div>
+<div class="container">
+  <div class="row d-flex justify-content-center align-items-center">
+    <video height="700" class="col-lg-6 col-sm-12 mb-5" autoplay loop muted>
+      <source src="{{ video.video_file.url }}" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <div class="col-lg-6 col-sm-12 text-center">
+      <span>BEAUTIFUL and BRUTAL</span>
+      <h1 class="fw-bold display-1">Nairobi Nnoize</h1>
+      <h5><small>Exclusive Drop</small></h5>
+      <a
+        class="btn btn-dark mt-4"
+        id="countdownBtn"
+        href="{% url 'brand_list' %}"
+        >Shop Now</a
+      >
     </div>
   </div>
 </div>

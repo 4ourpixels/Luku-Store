@@ -1,5 +1,4 @@
 {% extends 'base.html' %}{% load static %}{% block body %}
-
 <!-- Breadcrumb Begin -->
 <div class="breadcrumb-option">
   <div class="container">
@@ -18,29 +17,64 @@
 </div>
 <!-- Breadcrumb End -->
 
+<!-- Product List Start -->
 <div class="container my-5">
   <div
     class="row row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
   >
-    {% for photo in products %}
-    <div class="col-sm-6 col-md-4 col-lg-3">
+    {% for product in products %}
+    <!--  -->
+    <div class="col-sm-6 mb-5 col-md-4 col-lg-3">
       <a
-        href="{% url 'view_product' slug=photo.slug %}"
+        href="{% url 'view_product' slug=product.slug %}"
         class="underline hover"
       >
         <img
-          src="{{ photo.image.url }}"
-          alt="{{ photo.name }}"
-          class="img-fluid mb-2 bg-light"
+          src="{{ product.image.url }}"
+          alt="{{ product.name }}"
+          class="img-fluid mb-2 rounded bg-light"
         />
-        <h6 style="margin-bottom: -0.1rem" class="fw-bold mt-1">
-          {{ photo.name }}
-        </h6></a
+        <h5 class="fw-bold mt-1">
+          {{ product.name }}
+          <span class="float-end">€ {{ product.price }}</span>
+        </h5></a
       >
-      <small>Brand: {{ photo.brand }}</small>
-      <p class="fw-bold">€ {{ photo.price }}</p>
+      <small>Brand: {{ product.brand }}</small><br />
+      <!-- Size Start -->
+      <div class="col">
+        {% if product.size == 's' %}
+        <small>Size: S</small>
+        {% elif product.size == 'm' %}
+        <small>Size: M</small>
+        {% elif product.size == 'l' %}
+        <small>Size: L</small>
+        {% elif product.size == 'xl' %}
+        <small>Size: XL</small>
+        {% else %}
+        <small>Size: XXL</small>
+        {% endif %}
+      </div>
+      <!-- Size End -->
+      <hr />
+      <!-- Cart and View Buttons Start -->
+      <div class="mt-3">
+        <button
+          data-product="{{ product.id }}"
+          data-action="add"
+          class="btn btn-dark add-btn update-cart"
+        >
+          Add to Card
+        </button>
+        <a
+          href="{% url 'view_product' slug=product.slug %}"
+          class="btn btn-outline-dark"
+          >View</a
+        >
+      </div>
+      <!-- Cart and View Buttons End -->
     </div>
     {% endfor %}
   </div>
 </div>
+<!-- Product List End -->
 {% endblock %}
