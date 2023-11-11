@@ -140,10 +140,12 @@ class Photo(models.Model):
 class Customer(models.Model):
     user = models.OneToOneField(
         User, null=True, blank=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, null=True)
-    email = models.CharField(max_length=200, null=True, blank=True)
+    first_name = models.CharField(max_length=200, null=True, blank=True)
+    last_name = models.CharField(max_length=200, null=True, blank=True)
+    username = models.CharField(max_length=50, null=True, blank=True)
+    email = models.EmailField(default='', null=True, blank=True)
 
-    image = models.ImageField(
+    profile_pic = models.ImageField(
         null=True,
         blank=True,
         upload_to="customer-images/",
@@ -151,7 +153,7 @@ class Customer(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return self.username
 
 
 def create_customer(sender, instance, created, **kwargs):
@@ -231,7 +233,7 @@ class Order(models.Model):
         date_format = DateFormat(self.date_ordered.astimezone(
             timezone.get_current_timezone()))
         formatted_date = date_format.format('h:iA, l jS F Y')
-        return f'Order #{self.pk} || {self.customer} || At: {formatted_date}'
+        return f'Order #{self.pk} || {self.customer.first_name} || At: {formatted_date}'
 
     @property
     def shipping(self):

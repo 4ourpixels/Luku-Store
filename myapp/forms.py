@@ -93,3 +93,32 @@ class AmapianoSignUpForm(forms.ModelForm):
             self.fields['first_name'].widget.attrs['class'] = 'form-control'
             self.fields['last_name'].widget.attrs['class'] = 'form-control'
             self.fields['email'].widget.attrs['class'] = 'form-control'
+
+
+class NewsletterForm(forms.ModelForm):
+    class Meta:
+        model = Newsletter
+        fields = ("__all__")
+
+        def __init__(self, *args, **kwagrs):
+            super(NewsletterForm, self).__init__(*args, **kwagrs)
+            self.fields['customer'].widget.attrs['class'] = 'form-control'
+            self.fields['email'].widget.attrs['class'] = 'form-control'
+
+
+class CustomerForm(ModelForm):
+    class Meta:
+        model = Customer
+        fields = ("__all__")
+        exclude = ['user']
+
+        def __init__(self, *args, **kwagrs):
+            super(CustomerForm, self).__init__(*args, **kwagrs)
+            self.fields['user'].widget.attrs['class'] = 'form-control'
+            self.fields['first_name'].widget.attrs['class'] = 'form-control'
+            self.fields['last_name'].widget.attrs['class'] = 'form-control'
+            self.fields['username'].widget.attrs['class'] = 'form-control'
+            self.fields['email'].widget.attrs['class'] = 'form-control'
+            self.fields['profile_pic'].widget.attrs['class'] = 'form-control'
+            self.fields['password1'].widget.attrs['class'] = 'form-control'
+            self.fields['password2'].widget.attrs['class'] = 'form-control'

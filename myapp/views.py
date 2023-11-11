@@ -269,8 +269,7 @@ def cart(request):
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0}
         cartItems = order['get_cart_items']
-    # discount = 0
-    # page_name = f"- Cart({cartItems})"
+    page_name = f"- Cart({cartItems})"
     # products = Product.objects.all()
     # blogs = Blog.objects.order_by('-pk')
     # brands = Brand.objects.order_by('-pk')
@@ -279,9 +278,8 @@ def cart(request):
         'items': items,
         'order': order,
         'cartItems': cartItems,
-        # 'page_name': page_name,
+        'page_name': page_name,
         # 'products': products,
-        # 'discount': discount,
         # 'blogs': blogs,
         # 'brands': brands,
     }
@@ -785,8 +783,8 @@ def music(request):
     return render(request, 'music.html', context)
 
 
-def music_player(request, id):
-    mix = Mix.objects.get(pk=id)
+def music_player(request, title):
+    mix = Mix.objects.get(pk=title)
     mixes = Mix.objects.all()
     page_name = f"- Playing {mix.title}"
     blogs = Blog.objects.order_by('-pk')
@@ -849,7 +847,8 @@ def amapiano_workshop_signup(request):
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
-            print(f"{first_name} Registered to the Amapiano Workshop!")
+            print(
+                f"{first_name} {last_name} registered to the Amapiano Workshop! \n Email: {email}")
             messages.success(
                 request, ('Amapiano Workshop Registration Successful'))
             return redirect('index')
@@ -861,3 +860,43 @@ def amapiano_workshop_signup(request):
         'form': form,
     }
     return render(request, 'amapiano.html', context)
+
+
+# ACCOUNT
+@login_required(login_url='login')
+def account_settings(request):
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
+    shippings = ShippingAddress.objects.all()
+    data = cartData(request)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+
+    # Edit account
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+
+    page_name = f"- Account Settings"
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+            first_name = form.cleaned_data.get('first_name')
+            print(f"Succesfully updated {first_name}'s account.")
+            messages.success(
+                request, ('Succesfully updated account settings.'))
+            return redirect('account_settings')
+        else:
+            form = CustomerForm(instance=customer)
+
+    context = {
+        'shippings': shippings,
+        'cartItems': cartItems,
+        'page_name': page_name,
+        'blogs': blogs,
+        'brands': brands,
+        'form': form,
+    }
+
+    return render(request, 'account_settings.html', context)
