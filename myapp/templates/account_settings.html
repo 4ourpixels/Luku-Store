@@ -1,0 +1,62 @@
+{% extends 'base.html' %} {% load static %} {% block body %}
+<div class="container">
+  <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a class="text-dark underline" href="{% url 'index' %}">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a class="text-dark underline" href="{% url 'account' %}">Account</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Settings</li>
+    </ol>
+  </nav>
+  <div class="row mb-5">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+      <h1 class="text-center">Update Your Profile</h1>
+    </div>
+  </div>
+  <div class="row justify-content-center my-5">
+    <div class="col-lg-4 col-sm-12 mb-4">
+      {% if user.customer.profile_pic %}
+      <img
+        src="{{ user.customer.profile_pic.url }}"
+        alt="{{ request.user.username }}' Image"
+        style="max-height: 300px"
+        class="img-fluid rounded"
+      />
+      {% endif %}
+    </div>
+    <div class="col-lg-8 col-sm-12">
+      <form
+        class="px-4"
+        method="POST"
+        enctype="multipart/form-data"
+        action="{% url 'account_settings' %}"
+      >
+        {% csrf_token %}
+        <div class="row">
+          <div class="col">{{ form.as_p }}</div>
+        </div>
+        <div class="col">
+          <input
+            type="submit"
+            name="Update Information"
+            class="btn btn-lg mt-3 btn-success w-100"
+          />
+        </div>
+      </form>
+      <!-- Form End -->
+    </div>
+  </div>
+</div>
+<script>
+  var form_fields = document.getElementsByTagName("input");
+  form_fields[5].placeholder = "Re-enter password";
+  form_fields[5].classList = "form-check-input";
+  console.log("FOrm: ", form_fields[5]);
+  for (var field in form_fields) {
+    form_fields[field].className += "form-control";
+  }
+</script>
+{% endblock %}

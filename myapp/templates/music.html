@@ -1,34 +1,34 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<img
-  style="margin-top: -7rem; height: 100vh; width: 100%; object-fit: cover"
-  src="{% static 'images/djg400-wallpaper-web.jpg' %}"
-/>
+<div class="container-fluid p-0">
+  <img class="img-fluid" src="{% static 'images/djg400-wallpaper-web.jpg' %}" />
+</div>
 <div class="container pt-5">
   <h1 class="display-2 fw-bold">Listen to DJ G400</h1>
   <p class="text-muted fw-bold">Latest Mixes</p>
   {% for mix in mixes %}
   <hr />
-  <div class="my-4 row d-flex justify-content-between p-3">
-    <div class="col">
+  <div class="my-4 d-flex flex-row p-3">
+    <div class="col-4 rounded">
+      <a class="underline text-dark" href="{% url 'music_player' mix.title %}">
+        <img
+          style="max-height: 250px"
+          class="img-fluid rounded shadow"
+          src="{{ mix.image.url }}"
+      /></a>
+    </div>
+    <div class="col-8">
       <a
         class="underline text-dark mb-3"
-        href="{% url 'music_player' mix.id %}"
+        href="{% url 'music_player' mix.title %}"
       >
         <h3>{{ mix.title}}</h3></a
       >
       <p>Genre: {{ mix.genre }}</p>
       <small>
-        Featured Artists: {{ mix.featured_artists }} <br />
+        Featured Artists: {{ mix.featured_artists|safe|truncatewords:10 }}
+        <br />
         Released: {{ mix.release_date }} <br />
-        Album: {{ mix.album }} <br />
       </small>
-    </div>
-    <div class="col">
-      <a class="underline text-dark" href="{% url 'music_player' mix.id %}">
-        <img
-          style="height: 200px; width: 200px; object-fit: cover"
-          src="{{ mix.image.url }}"
-      /></a>
     </div>
   </div>
   {% endfor %}

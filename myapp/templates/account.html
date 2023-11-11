@@ -6,13 +6,19 @@
         <a class="text-dark underline" href="{% url 'index' %}">Home</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        Account > 👋 Welcome back, {{ user.first_name|capfirst }}!
+        Account > 👋 Welcome back, {{ request.user.first_name|capfirst }}!
       </li>
     </ol>
   </nav>
-  <div class="row mb-5">
+  <div class="row my-5">
     <div class="col-md-12 col-lg-12 col-sm-12">
-      <h1>Account</h1>
+      <h1>
+        Account
+        <span class="float-end"
+          ><a href="{% url 'account_settings' %}" class="underline hover"
+            ><i class="fa-solid fa-2xl fa-gear"></i></a
+        ></span>
+      </h1>
       {% if items %}
       <div class="p-5 border rounded">
         <h6 class="mb-3">

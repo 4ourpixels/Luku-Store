@@ -1,13 +1,8 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
 <div class="container">
-  <div class="row d-flex justify-content-between">
+  <div class="row d-flex justify-content-between align-items-center">
     <div class="col-lg-6 col-sm-12 col-md-6">
-      <img
-        width="100%"
-        class="mb-4"
-        style="height: 60vh; object-fit: cover"
-        src="{{ mix.image.url }}"
-      />
+      <img class="mb-4 img-fluid rounded" src="{{ mix.image.url }}" />
     </div>
     <div class="col-lg-6 col-sm-12 col-md-6">
       <h1 class="mb-4">{{ mix.title}}</h1>
@@ -23,13 +18,9 @@
         <br />
         <small
           >Genre: {{ mix.genre }} <br />
-          Featured Artists: {{ mix.featured_artists }} <br />
-          Album: {{ mix.album }} <br />
+          Featured Artists: {{ mix.featured_artists|safe|truncatewords:65 }}
+          <br />
         </small>
-        <hr class="mt-5" />
-        <small class="float-end text-muted">
-          Released: {{ mix.release_date }} <br
-        /></small>
       </div>
     </div>
   </div>

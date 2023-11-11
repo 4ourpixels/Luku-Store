@@ -274,7 +274,7 @@
                 >
               </a>
             </span>
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated %} {% if user.customer %}
             <div class="dropdown">
               <button
                 style="background: none; border: none"
@@ -283,6 +283,17 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
+                {% if user.customer.profile_pic %}
+                <img
+                  style="
+                    object-fit: cover;
+                    height: 20px;
+                    width: 20px;
+                    border-radius: 25px;
+                  "
+                  src="{{ request.user.customer.profile_pic.url }}"
+                />
+                {% else %}
                 <img
                   style="
                     object-fit: cover;
@@ -292,6 +303,7 @@
                   "
                   src="{{ user.customer.image.url }}"
                 />
+                {% endif %}
               </button>
               <ul class="dropdown-menu">
                 <li>
@@ -307,6 +319,8 @@
                 </li>
               </ul>
             </div>
+            {% endif %} {% endif %} {% if user.is_authenticated %}
+            <span class="hidden"></span>
             {% else %}
             <span>
               <a href="{% url 'register' %}">
@@ -320,15 +334,19 @@
     </nav>
     <!-- End of navigation bar -->
     {% if messages %} {% for message in messages %}
-    <div class="container my-5">
-      <div class="alert alert-warning alert-dismissable fade show" role="alert">
-        {{ message }}
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-        ></button>
+    <div style="margin-bottom: -1rem" class="container-fluid p-0">
+      <div class="alert alert-dark alert-dismissable fade show" role="alert">
+        <h6 class="text-center">
+          {{ message }}
+          <span
+            ><button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button
+          ></span>
+        </h6>
       </div>
     </div>
     {% endfor %} {% endif %} {% block body %} {% endblock %}
@@ -405,7 +423,7 @@
         </div>
 
         <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
-          <form method="POST">
+          <form method="POST" action="{% url 'newsletter' %}">
             {% csrf_token %}
             <h5>Subscribe to our newsletter</h5>
             <p class="text-muted">
@@ -413,20 +431,18 @@
               newsletter and more.
             </p>
             <div class="d-flex flex-column flex-sm-row w-100 gap-2">
-              <label for="newsletter1" class="visually-hidden"
-                >Email address</label
-              >
               <input
                 type="email"
                 name="email"
                 id="newsletter1"
                 placeholder="Email"
                 aria-label="Email"
-                type="text"
+                type="email"
                 class="form-control"
                 placeholder="Email address"
+                required
               />
-              <button class="btn btn-outline-light" type="button">
+              <button class="btn btn-outline-light" type="submit">
                 Subscribe
               </button>
             </div>
