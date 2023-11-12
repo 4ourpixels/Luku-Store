@@ -1,45 +1,25 @@
+// Selecting all Update Buttons
 var updateBtns = document.getElementsByClassName("update-cart");
+
+// For loop for itering through each button and grabbing the data-set
 
 for (var i = 0; i < updateBtns.length; i++) {
   updateBtns[i].addEventListener("click", function () {
-    var photoId = this.dataset.product;
+    var productId = this.dataset.product;
     var action = this.dataset.action;
-    console.log("photoId:", photoId, "action:", action);
-
-    console.log("USER:", user);
+    console.log("productId: ", productId, "Action: ", action);
+    console.log("Current user: ", user);
 
     if (user == "AnonymousUser") {
-      addCookieItem(photoId, action);
+      addCookieItem(productId, action);
     } else {
-      updateUserOrder(photoId, action);
+      updateUserOrder(productId, action);
     }
   });
 }
 
-function addCookieItem(photoId, action) {
-  console.log("Not logged in..");
-
-  if (action == "add") {
-    if (cart[photoId] == undefined) {
-      cart[photoId] = { quantity: 1 };
-    } else {
-      cart[photoId]["quantity"] += 1;
-    }
-  }
-  if (action == "remove") {
-    cart[photoId]["quantity"] -= 1;
-
-    if (cart[photoId]["quantity"] <= 0) {
-      console.log("Remove Item");
-      delete cart[photoId];
-    }
-  }
-  console.log("Cart:", cart);
-  document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
-  location.reload();
-}
-
-function updateUserOrder(photoId, action) {
+// Function to update user order
+function updateUserOrder(productId, action) {
   console.log("User is logged in, sending data...");
 
   var url = "/updateItem/";
@@ -47,16 +27,41 @@ function updateUserOrder(photoId, action) {
   fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "applicaion/json",
+      "Content-Type": "application/json",
       "X-CSRFToken": csrftoken,
     },
-    body: JSON.stringify({ photoId: photoId, action: action }),
+    body: JSON.stringify({ productId: productId, action: action }),
   })
     .then((response) => {
       return response.json();
     })
     .then((data) => {
-      console.log("Data:", data);
+      console.log("Data: ", data);
       location.reload();
     });
+}
+
+function addCookieItem(productId, action) {
+  console.log("User is not authenticated");
+
+  if (action == "add") {
+    if (cart[productId] == undefined) {
+      cart[productId] = { quantity: 1 };
+    } else {
+      cart[productId]["quantity"] += 1;
+    }
+  }
+
+  if (action == "remove") {
+    cart[productId]["quantity"] -= 1;
+
+    if (cart[productId]["quantity"] <= 0) {
+      console.log("Item should be deleted");
+      delete cart[productId];
+    }
+  }
+  console.log("CART:", cart);
+  document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
+
+  location.reload();
 }
