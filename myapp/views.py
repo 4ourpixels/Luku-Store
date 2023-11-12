@@ -269,19 +269,23 @@ def cart(request):
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0}
         cartItems = order['get_cart_items']
+
     page_name = f"- Cart({cartItems})"
-    # products = Product.objects.all()
-    # blogs = Blog.objects.order_by('-pk')
-    # brands = Brand.objects.order_by('-pk')
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
 
     context = {
         'items': items,
         'order': order,
         'cartItems': cartItems,
         'page_name': page_name,
-        # 'products': products,
-        # 'blogs': blogs,
-        # 'brands': brands,
+        'blogs': blogs,
+        'brands': brands,
     }
 
     return render(request, 'cart.html', context)
