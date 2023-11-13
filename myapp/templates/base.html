@@ -349,18 +349,26 @@
     </nav>
     <!-- End of navigation bar -->
     {% if messages %} {% for message in messages %}
-    <div style="margin-bottom: -1rem" class="container-fluid p-0">
-      <div class="alert alert-dark alert-dismissable fade show" role="alert">
+    <div class="container my-5 p-0">
+      <div
+        id="alert-dark"
+        class="alert alert-dark alert-dismissable fade show"
+        role="alert"
+      >
         <h6 class="text-center">
           {{ message }}
           <span
             ><button
+              style="color: white"
+              id="alert-close"
               type="button"
               class="btn-close"
               data-bs-dismiss="alert"
               aria-label="Close"
-            ></button
-          ></span>
+            >
+              X
+            </button></span
+          >
         </h6>
       </div>
     </div>

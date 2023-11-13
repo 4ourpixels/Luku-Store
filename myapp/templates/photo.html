@@ -1,220 +1,218 @@
-{% extends 'base.html' %}{% load static %}{% block body %}
-<!-- Breadcrumb Begin -->
-<div class="breadcrumb-option">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="breadcrumb__links">
-          <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
-          <a href="{% url 'gallery' %}?category={{ photo.category }}"
-            >{{ photo.category }}
-          </a>
-          <span>{{ photo.type }}</span>
+{% extends 'base.html' %} {% load static %} {% block body %}
+<div id="top" class="container">
+  <div class="row">
+    <section class="py-4">
+      <a class="text-dark underline" href="{% url 'shop' %}">Shop</a> /
+      <a
+        class="text-muted underline"
+        href="{% url 'gallery' %}?category={{ photo.category.name }}"
+        >{{ photo.category }}</a
+      >
+
+      <div class="container mt-1">
+        <div class="row gx-5">
+          <aside class="col-lg-6">
+            <div class="mb-3 d-flex justify-content-center">
+              <img
+                style="object-fit: cover"
+                class="img-fluid"
+                src="{{ product.image.url }}"
+                id="productImg"
+              />
+            </div>
+            {% if photos %}
+            <div class="d-flex justify-content-center mb-3">
+              <img
+                style="object-fit: cover"
+                width="60"
+                height="60"
+                class="small-img mx-1"
+                src="{{ product.image.url }}"
+              />
+              {% for photo in photos %}
+              <img
+                style="object-fit: cover"
+                width="60"
+                height="60"
+                class="small-img mx-1"
+                src="{{ photo.image.url }}"
+              />
+              {% endfor %}
+            </div>
+            {% endif %}
+          </aside>
+
+          <main class="col-lg-6">
+            <div class="ps-lg-3">
+              <h2 class="text-dark">{{ photo.name }}</h2>
+              <div class="rating">
+                {% if photo.rating == 1 %}
+                <i class="fa fa-star"></i>
+                {% elif photo.rating == 2 %}
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                {% elif photo.rating == 3 %}
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                {% elif photo.rating == 4 %}
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                {% else %}
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                {% endif %}
+              </div>
+              <p class="my-3 text-dark">Brand: {{ photo.brand }}</p>
+              <h2 class="text-dark">€{{ photo.price }}</h2>
+              <hr />
+              <p class="text-dark">{{ photo.description|truncatewords:20 }}</p>
+              <div class="col mt-3">
+                <h6>Sizes Available:</h6>
+                {% if photo.size == 'Small' %}
+                <p class="btn btn-dark">S</p>
+                <p class="btn btn-outline-dark"><s>M</s></p>
+                <p class="btn btn-outline-dark"><s>L</s></p>
+                <p class="btn btn-outline-dark"><s>XL</s></p>
+                <p class="btn btn-outline-dark"><s>XXL</s></p>
+                {% elif photo.size == 'Medium' %}
+                <p class="btn btn-dark"><s>S</s></p>
+                <p class="btn btn-outline-dark">M</p>
+                <p class="btn btn-outline-dark"><s>L</s></p>
+                <p class="btn btn-outline-dark"><s>XL</s></p>
+                <p class="btn btn-outline-dark"><s>XXL</s></p>
+                {% elif photo.size == 'Large' %}
+                <p class="btn btn-outline-dark"><s>S</s></p>
+                <p class="btn btn-outline-dark"><s>M</s></p>
+                <p class="btn btn-dark">L</p>
+                <p class="btn btn-outline-dark"><s>XL</s></p>
+                <p class="btn btn-outline-dark"><s>XXL</s></p>
+                {% elif photo.size == 'XL' %}
+                <p class="btn btn-outline-dark"><s>S</s></p>
+                <p class="btn btn-outline-dark"><s>M</s></p>
+                <p class="btn btn-outline-dark"><s>L</s></p>
+                <p class="btn btn-dark">XL</p>
+                <p class="btn btn-dark"><s>XXL</s></p>
+                {% else %}
+                <p class="btn btn-outline-dark"><s>S</s></p>
+                <p class="btn btn-outline-dark"><s>M</s></p>
+                <p class="btn btn-outline-dark"><s>L</s></p>
+                <p class="btn btn-outline-dark"><s>XL</s></p>
+                <p class="btn btn-dark">XXL</p>
+                {% endif %}
+              </div>
+              {% if photo.stock == 0 %}
+              <h4><span class="badge bg-danger">Sold Out</span></h4>
+              {% endif %}
+              <button
+                class="btn btn-dark btn-lg update-cart my-3 w-100"
+                data-product="{{ photo.product_code }}"
+                data-action="add"
+              >
+                Add to cart <i class="ms-1 fa-solid fa-cart-shopping"></i>
+              </button>
+            </div>
+          </main>
         </div>
       </div>
-    </div>
+
+      <div class="border-top py-4">
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item w-auto">
+            <h2 class="accordion-header" id="headingOne">
+              <button
+                class="accordion-button text-dark"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOne"
+                aria-expanded="false"
+                aria-controls="collapseOne"
+              >
+                Read more about the product
+              </button>
+            </h2>
+            <div
+              id="collapseOne"
+              class="accordion-collapse collapse show"
+              aria-labelledby="headingOne"
+              data-bs-parent="#accordionExample"
+            >
+              <div class="accordion-body">{{ photo.description }}</div>
+            </div>
+          </div>
+          {% if user.is_authenticated %}
+          <div class="hidden"></div>
+          {% else %}
+          <div class="accordion-item w-auto">
+            <h2 class="accordion-header" id="headingTwo">
+              <button
+                class="accordion-button text-dark"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo"
+                aria-expanded="false"
+                aria-controls="collapseTwo"
+              >
+                Shipping Info
+              </button>
+            </h2>
+            <div
+              id="collapseTwo"
+              class="accordion-collapse collapse show"
+              aria-labelledby="headingTwo"
+              data-bs-parent="#accordionExample"
+            >
+              <div class="accordion-body">
+                Create an account with us by clicking
+                <a class="text-dark" href="{% url 'register' %}">here.</a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
   </div>
 </div>
-<!-- Breadcrumb End -->
 
-<!-- Product Details Section Begin -->
-<section class="product-details spad">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="product__details__pic">
-          <div class="product__details__pic__left product__thumb nice-scroll">
-            <a class="pt active" href="{% url 'photo' photo.pk %}">
-              <img src="{{ photo.image.url }}" alt="" />
-            </a>
-            {% if similar_images %} {% for photo in similar_images %}
-            <a class="pt" href="{% url 'photo' photo.pk %}">
-              <img src="{{ photo.image.url }}" alt="" />
-            </a>
-            {% endfor %} {% endif %}
-          </div>
-          <div class="product__details__slider__content">
-            <div class="product__details__pic__slider owl-carousel">
-              <img
-                data-hash="{% url 'photo' photo.pk %}"
-                class="product__big__img img-fluid"
-                src="{{ photo.image.url }}"
-                alt="{{ photo.name }}"
-              />
-              {% if similar_images %} {% for photo in similar_images %}
-              <img
-                data-hash="{% url 'photo' photo.pk %}"
-                class="product__big__img img-fluid h-100"
-                src="{{ photo.image.url }}"
-                alt="{{ photo.name }}"
-              />
-              {% endfor %} {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="product__details__text">
-          <h3>{{ photo.name }}</h3>
-          <h6 class="fw-bold">Brand: {{ photo.shop }}</h6>
-          <div class="rating">
-            {% if photo.rating == 1 %}
-            <i class="fa fa-star"></i>
-            {% elif photo.rating == 2 %}
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            {% elif photo.rating == 3 %}
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            {% elif photo.rating == 4 %}
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            {% else %}
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            {% endif %}
-          </div>
-          <div class="product__details__price">€{{ photo.price }}</div>
-          <p>{{ photo.description }}</p>
-          <div class="product__details__button">
-            <a href="#" class="cart-btn"
-              >Add to cart <i class="fa-solid fa-cart-shopping"></i
-            ></a>
-          </div>
-          <div class="product__details__widget">
-            <ul>
-              <li>
-                <span>Availability:</span>
-                {% if photo.stock == 0 %}
-                <p>Sold Out</p>
-                {% else %}
-                <p>In Stock</p>
-                {% endif %}
-              </li>
-              <li>
-                <span>Available size:</span>
-                <div class="size__btn">
-                  {% if photo.size == 'XS' %}
-                  <label>
-                    <input type="radio" id="xs-btn" />
-                    XS
-                    <s>S</s>
-                    <s>M</s>
-                    <s>L</s>
-                    <s>XL</s>
-                  </label>
-                  {% elif photo.size == 'Small' %}
-                  <label>
-                    <s>XS</s>
-                    <input type="radio" id="s-btn" />
-                    Small
-                    <s>M</s>
-                    <s>L</s>
-                    <s>XL</s>
-                  </label>
-                  {% elif photo.size == 'Medium' %}
-                  <label>
-                    <s>XS</s>
-                    <s>S</s>
-                    <input type="radio" id="m-btn" />
-                    Medium
-                    <s>L</s>
-                    <s>XL</s>
-                  </label>
-                  {% elif photo.size == 'Large' %}
+<script>
+  var productImg = document.getElementById("productImg");
+  var smallImg = document.getElementsByClassName("small-img");
 
-                  <label>
-                    <s>XS</s>
-                    <s>S</s>
-                    <s>M</s>
-                    <input type="radio" id="l-btn" />
-                    Large
-                    <s>XL</s>
-                  </label>
-                  {% else %}
-                  <label>
-                    <s>XS</s>
-                    <s>S</s>
-                    <s>M</s>
-                    <s>L</s>
-                    <input type="radio" id="xl-btn" />
-                    XL
-                  </label>
-                  {% endif %}
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-12">
-        <div class="product__details__tab">
-          <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                data-toggle="tab"
-                href="#tabs-1"
-                role="tab"
-                >Description</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
-                >Specification</a
-              >
-            </li>
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-              <h6>Description</h6>
-              <p>{{ photo.description }}</p>
-            </div>
-            <div class="tab-pane" id="tabs-2" role="tabpanel">
-              <h6>Specification</h6>
-              <p>Color: {{ photo.color }}</p>
-              <p>Size: {{ photo.size }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% if similar_products %}
-    <div class="container">
-      <h5 class="card-title mb-3">Similar items</h5>
-      <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-start"
-      >
-        {% for photo in similar_products %}
-        <div class="col mb-4">
-          <div style="border: none" class="card w-100 my-2 shadow-2-strong">
-            <a href="{% url 'photo' photo.pk %}">
-              <img
-                src="{{ photo.image.url }}"
-                class="img-fluid"
-                style="object-fit: cover"
-                alt="{{ photo.name }}"
-            /></a>
-            <div class="row d-flex flex-column mt-2">
-              <h5 class="text-bold">{{ photo.name }}</h5>
-              <small>Brand: {{ photo.shop }}</small>
-              <p>€{{ photo.price }}</p>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    {% else %}
-    <div></div>
-    {% endif %}
-  </div>
-</section>
-<!-- Product Details Section End -->
+  smallImg[0].onclick = function () {
+    productImg.src = smallImg[0].src;
+  };
+  smallImg[1].onclick = function () {
+    productImg.src = smallImg[1].src;
+  };
+  smallImg[2].onclick = function () {
+    productImg.src = smallImg[2].src;
+  };
+  smallImg[3].onclick = function () {
+    productImg.src = smallImg[3].src;
+  };
+  smallImg[4].onclick = function () {
+    productImg.src = smallImg[4].src;
+  };
+  smallImg[5].onclick = function () {
+    productImg.src = smallImg[5].src;
+  };
+  smallImg[6].onclick = function () {
+    productImg.src = smallImg[6].src;
+  };
+  smallImg[7].onclick = function () {
+    productImg.src = smallImg[7].src;
+  };
+  smallImg[8].onclick = function () {
+    productImg.src = smallImg[8].src;
+  };
+  smallImg[9].onclick = function () {
+    productImg.src = smallImg[9].src;
+  };
+</script>
 {% endblock %}
