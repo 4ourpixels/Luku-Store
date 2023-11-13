@@ -159,6 +159,7 @@ def index(request):
         'trucker_hat': trucker_hat,
 
         'video': video,
+
     }
     return render(request, 'index.html', context)
 
@@ -227,19 +228,13 @@ def view_product(request, slug):
 
         return render(request, 'product.html', context)
     except Product.DoesNotExist:
-        page_name = f'- Error getting {product.name}'
-        print("Error: ", str(e))
         # Handle the case when the product doesn't exist
         # You can render a specific template or return an appropriate response
-        context = {
-            'error': str(e),
-            'page_name': page_name
-        }
-        return render(request, '404.html', context)
+        return render(request, 'product_not_found.html')
 
     except Exception as e:
         # Handle other exceptions
-        page_name = '- Error'
+        page_name = f'- Error {product.name} was not found'
         print("Error :", str(e))
         context = {
             'error': str(e),
@@ -394,6 +389,27 @@ def brand_list(request):
     return render(request, 'brand_list.html', context)
 
 
+def brand_detail(request, slug):
+    brand = get_object_or_404(Brand, slug=slug)
+    products = Product.objects.order_by('-pk')
+    blogs = Blog.objects.order_by('-pk')
+    brands = Brand.objects.order_by('-pk')
+    page_name = f"- {brand.name}"
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    context = {
+        'cartItems': cartItems,
+        'blogs': blogs,
+        'page_name': page_name,
+        'brands': brands,
+        'brand': brand,
+        'products': products,
+    }
+    return render(request, 'brand_detail.html', context)
+
+
 def newsletter(request):
     page_name = "- Newsletter"
     blogs = Blog.objects.order_by('-pk')
@@ -413,7 +429,9 @@ def newsletter(request):
                 print(f"{email} subscribed to our newsletter from the homepage!")
                 messages.success(
                     request, "You just unlocked VIP access to our exclusive updates! Stay tuned for the hottest news and insider tips we've got lined up just for you.")
-            return redirect('index')
+            # Get the referring page's URL
+            referer = request.META.get('HTTP_REFERER')
+            return redirect(referer or 'index')
     else:
         newsletter_form = NewsletterForm()
 
@@ -788,7 +806,7 @@ def music(request):
 
 
 def music_player(request, title):
-    mix = Mix.objects.get(pk=title)
+    mix = Mix.objects.get(title=title)
     mixes = Mix.objects.all()
     page_name = f"- Playing {mix.title}"
     blogs = Blog.objects.order_by('-pk')

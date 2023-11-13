@@ -27,6 +27,7 @@ urlpatterns = [
     path('gallery/', views.gallery, name='gallery'),
     path('photo/<str:pk>/', views.viewPhoto, name='photo'),
     path('brands/', views.brand_list, name='brand_list'),
+    path('brand/<slug:slug>/', views.brand_detail, name='brand_detail'),
     path('shop/<slug:slug>/', views.view_product, name='view_product'),
     path('404/', views.error404, name='error404'),
     path('dashboard/', views.dashboard, name='dashboard'),

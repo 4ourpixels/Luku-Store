@@ -175,6 +175,11 @@ class Brand(models.Model):
         upload_to="brand/",
         default='blog.jpg'
     )
+    slug = models.SlugField(unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
