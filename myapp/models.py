@@ -88,7 +88,7 @@ class Photo(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
     product_code = models.TextField(null=True, blank=True)
     name_link = models.CharField(max_length=200, null=True, blank=True)
-    similar_products = models.CharField(max_length=300, blank=True)
+    similar_products_codes = models.CharField(max_length=300, blank=True)
     type = models.CharField(max_length=100, blank=True, null=True)
     category = models.ForeignKey(
         Category,

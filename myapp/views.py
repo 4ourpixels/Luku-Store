@@ -526,7 +526,7 @@ def updateItem(request):
     print(f'{action}ed the product {productId}')
 
     customer = request.user.customer
-    product = Product.objects.get(pk=productId)
+    product = Product.objects.get(product_code=productId)
     order, created = Order.objects.get_or_create(
         customer=customer, complete=False)
 
@@ -608,8 +608,11 @@ def loginPage(request):
             if user is not None:
                 login(request, user)
                 if user.is_staff:
+                    messages.info(request, f'Welcome back {user.first_name}')
                     return redirect('index')
                 else:
+                    messages.info(
+                        request, 'Register an account with us today.')
                     return redirect('register')
             else:
                 messages.info(request, 'Username Or Password is incorrect')
@@ -721,38 +724,48 @@ def gallery(request):
 
 
 def viewPhoto(request, pk):
-    photo = Photo.objects.get(pk=pk)
-    data = cartData(request)
-    cartItems = data['cartItems']
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-    name_link = photo.similar_products.split(',')
+    try:
+        photo = get_object_or_404(Photo, pk=pk)
+        product = get_object_or_404(Product, product_code=photo.product_code)
+        data = cartData(request)
+        cartItems = data['cartItems']
+        blogs = Blog.objects.order_by('-pk')
+        brands = Brand.objects.order_by('-pk')
+        photos = Photo.objects.filter(product_code=product.product_code)
 
-    similar_images = Photo.objects.filter(
-        Q(name_link__icontains=name_link[0]) |
-        Q(name__icontains=name_link[0])
-    ).exclude(pk=pk).distinct()
+        similar_products = Product.objects.filter(
+            product_code=photo.product_code)
 
-    similar_products = photo.similar_products.split(',')
+        similar_products_codes = photo.similar_products_codes.split(',')
+        similar_products = Product.objects.filter(
+            Q(product_code__in=similar_products_codes) | Q(
+                name__in=similar_products_codes)
+        )
 
-    similar_products = Photo.objects.filter(
-        Q(similar_products__icontains=similar_products[0]) |
-        Q(name__icontains=similar_products[0])
-    ).exclude(pk=pk).distinct()
+        page_name = f"- {photo.name}"
 
-    page_name = f"- {photo.name}"
+        context = {
+            'photo': photo,
+            'cartItems': cartItems,
+            'similar_products': similar_products,
+            'page_name': page_name,
+            'blogs': blogs,
+            'brands': brands,
+            'product': product,
+            'photos': photos,
+        }
 
-    context = {
-        'photo': photo,
-        'cartItems': cartItems,
-        'similar_images': similar_images,
-        'similar_products': similar_products,
-        'page_name': page_name,
-        'blogs': blogs,
-        'brands': brands,
-    }
+        return render(request, 'photo.html', context)
 
-    return render(request, 'photo.html', context)
+    except Exception as e:
+        # Handle other exceptions
+        page_name = f'- Error {photo.name} was not found'
+        print("Error :", str(e))
+        context = {
+            'error': str(e),
+            'page_name': page_name
+        }
+        return render(request, '404.html', context)
 
 
 # ACCOUNT

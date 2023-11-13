@@ -21,15 +21,15 @@ def cookieCart(request):
             if (cart[i]['quantity'] > 0):  # items with negative quantity = lot of freebies
                 cartItems += cart[i]['quantity']
 
-                product = Product.objects.get(id=i)
+                product = Product.objects.get(product_code=i)
                 total = (product.price * cart[i]['quantity'])
 
                 order['get_cart_total'] += total
                 order['get_cart_items'] += cart[i]['quantity']
 
                 item = {
-                    'id': product.pk,
-                    'product': {'id': product.pk, 'name': product.name, 'price': product.price,
+                    'id': product.product_code,
+                    'product': {'id': product.product_code, 'name': product.name, 'price': product.price,
                                 'image': product.image}, 'quantity': cart[i]['quantity'],
                     'digital': product.digital, 'get_total': total,
                 }
@@ -78,7 +78,7 @@ def guestOrder(request, data):
     )
 
     for item in items:
-        product = Product.objects.get(id=item['id'])
+        product = Product.objects.get(product_code=item['id'])
         orderItem = OrderItem.objects.create(
             product=product,
             order=order,
