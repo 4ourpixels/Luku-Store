@@ -1,0 +1,81 @@
+{% extends 'base.html' %} {% load static %} {% block body %}
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__links">
+          <a class="underline hover" href="{% url 'index' %}"
+            ><i class="fa fa-home"></i> Home</a
+          >
+          /
+          <a class="underline hover" href="{% url 'brand_list' %}">Brands</a>
+          /
+          <span class="text-dark">{{ brand.name }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+
+<div class="container my-5">
+  <div
+    class="row row-cols-2 row-cols-md-4 row-cols-xl-4 justify-content-center"
+  >
+    {% if brand.keywords == 'Coming Soon...' %}
+    <h1 class="display-1 text-center fw-bold">Coming Soon</h1>
+    {% else %}{% for product in products %}
+    <div class="col-sm-6 mb-5 col-md-4 col-lg-3">
+      <a
+        href="{% url 'view_product' slug=product.slug %}"
+        class="underline hover"
+      >
+        <img
+          src="{{ product.image.url }}"
+          alt="{{ product.name }}"
+          class="img-fluid mb-2 rounded bg-light"
+        />
+        <h5 class="fw-bold mt-1">
+          {{ product.name }}
+          <span class="float-end">€ {{ product.price }}</span>
+        </h5></a
+      >
+      <small>Brand: {{ product.brand }}</small><br />
+      <!-- Size Start -->
+      <div class="col">
+        {% if product.size == 's' %}
+        <small>Size: S</small>
+        {% elif product.size == 'm' %}
+        <small>Size: M</small>
+        {% elif product.size == 'l' %}
+        <small>Size: L</small>
+        {% elif product.size == 'xl' %}
+        <small>Size: XL</small>
+        {% else %}
+        <small>Size: XXL</small>
+        {% endif %}
+      </div>
+      <!-- Size End -->
+      <hr />
+      <!-- Cart and View Buttons Start -->
+      <div class="mt-3">
+        <button
+          data-product="{{ product.id }}"
+          data-action="add"
+          class="btn btn-dark add-btn update-cart"
+        >
+          Add to Card
+        </button>
+        <a
+          href="{% url 'view_product' slug=product.slug %}"
+          class="btn btn-outline-dark"
+          >View</a
+        >
+      </div>
+      <!-- Cart and View Buttons End -->
+    </div>
+    {% endfor %} {% endif %}
+  </div>
+</div>
+{% endblock %}

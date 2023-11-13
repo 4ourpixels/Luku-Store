@@ -23,6 +23,14 @@
       property="og:image"
       content="{% static 'images/lukustorenl-banner.jpg' %}"
     />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "url": "https://www.lukustore.nl",
+        "logo": "{% static 'images/logo/lukustorenl.nl-logo.svg' %}"
+      }
+    </script>
     <title>Luku Store.nl {{ page_name }}</title>
 
     <meta
@@ -247,9 +255,16 @@
                   class="dropdown-menu dropdown px-3"
                   aria-labelledby="dropdownBrandsLink"
                 >
+                  <li class="border-bottom">
+                    <a class="fw-bold underline" href="{% url 'brand_list'  %}"
+                      >All Brands</a
+                    >
+                  </li>
                   {% for brand in brands %}
                   <li class="border-bottom">
-                    <a class="fw-bold underline" href="{% url 'brand_list' %}"
+                    <a
+                      class="fw-bold underline"
+                      href="{% url 'brand_detail' slug=brand.slug %}"
                       >{{ brand.name }}</a
                     >
                   </li>

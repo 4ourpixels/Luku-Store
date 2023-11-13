@@ -1,44 +1,40 @@
-{% extends 'base.html' %} {% block body %}
-<section class="d-flex align-items-center justify-content-center h-100">
-  <div style="height: 45vh; margin-top: 5rem" class="cover-container w-50 p-3">
-    <main class="px-3">
-      <form method="POST">
+{% extends 'base.html' %} {% load static %} {% block body %}
+<div class="container my-5">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-sm-12 col-md-5">
+      <h1 class="display-4 fw-bold">Newsletter</h1>
+      <p>
+        Subscribe today and level up your inbox! Updates, exclusive deals, and a
+        newsletter that's basically a backstage pass. 🚀
+      </p>
+      <form method="POST" action="{% url 'newsletter' %}">
         {% csrf_token %}
-        <div class="mb-3 text-center">
-          <h1>Lukustore Newsletter</h1>
-          <p>
-            Subscribe to receive updates, access to exclusive deals, our
-            newsletter, and more.
-          </p>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label"
+            >Email address</label
+          >
           <input
-            style="padding: 1rem"
             type="email"
-            class="form-control"
-            id="email"
             name="email"
-            placeholder="Enter your email"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
             required
           />
+          <div id="emailHelp" class="form-text">
+            We'll never share your email with anyone else.
+          </div>
         </div>
-        <div class="d-grid">
-          <button
-            style="padding: 1rem; font-size: 1rem"
-            class="btn btn-dark"
-            type="submit"
-          >
-            Subscribe
-          </button>
-        </div>
+        <button type="submit" class="btn btn-dark">Submit</button>
       </form>
-    </main>
-
-    <footer class="mt-3 text-center">
-      <p style="font-size: 0.8rem">
-        By subscribing to our newsletter, you agree to the
-        <a class="underline" href="/help/#termsOfService">Terms of Service</a>
-        and <a class="underline" href="/help/#privacyPolicy">Privacy Policy</a>.
-      </p>
-    </footer>
+    </div>
+    <div class="d-sm-none d-md-block col-md-7">
+      <img
+        loading="lazy"
+        src="https://images.unsplash.com/photo-1603539279542-e7cf76a92801?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        class="img-fluid"
+      />
+    </div>
   </div>
-</section>
+</div>
 {% endblock %}
