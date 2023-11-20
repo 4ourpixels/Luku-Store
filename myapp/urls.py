@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from .import views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -22,7 +22,7 @@ urlpatterns = [
     path('updateItem/', views.updateItem, name='updateItem'),
     path('processOrder/', views.processOrder, name='processOrder'),
     path('music/', views.music, name='music'),
-    path('music/mix/DJ-G400/<str:title>/',
+    path('music/mix/DJ-G400/<slug:slug>/',
          views.music_player, name='music_player'),
     path('gallery/', views.gallery, name='gallery'),
     path('photo/<str:pk>/', views.viewPhoto, name='photo'),
@@ -33,5 +33,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('amapiano/', views.amapiano_workshop_signup,
          name='amapiano_workshop_signup'),
+    # Watermark Utility
+    path('watermark/', views.watermark, name='watermark'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
