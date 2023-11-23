@@ -4,7 +4,9 @@ from django.utils.dateformat import DateFormat
 from django.utils import timezone
 from django.utils.text import slugify
 
-
+# Stock Calculation Utility Start
+from django.db.models import Sum
+# Stock Calculation Utility End
 # BLOG ENTRY
 
 
@@ -77,6 +79,14 @@ class Help(models.Model):
 
 
 class Category(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+    icon = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Type(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     icon = models.CharField(max_length=50, null=True, blank=True)
 
@@ -224,6 +234,63 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Stock(models.Model):
+    brand = models.ForeignKey(
+        Brand,
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
+    type = models.ForeignKey(
+        Type,
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
+    TARGET_CHOICES = [
+        ("U", "U"),  # U for Unknown or Unspecified
+        ("M", "M"),   # M for Male
+        ("F", "F"),  # F for Female
+    ]
+
+    target = models.CharField(
+        max_length=1, choices=TARGET_CHOICES, default="U", null=False, blank=False
+    )
+    item = models.CharField(max_length=200, null=True, blank=True)
+    amount_f = models.IntegerField(default=0, blank=True, null=True)
+    amount_t = models.IntegerField(default=0, blank=True, null=True)
+    buying_price = models.IntegerField(default=0, blank=True, null=True)
+    selling_price = models.IntegerField(default=0, blank=True, null=True)
+    total_cost = models.IntegerField(default=0, blank=True, null=True)
+
+    POSSIBLE_BEST_SELLER_CHOICES = [
+        (True, 'Best-Seller'),
+        (False, 'Less-Seller'),
+    ]
+
+    possible_best_seller = models.BooleanField(
+        default=True, choices=POSSIBLE_BEST_SELLER_CHOICES, null=True, blank=False)
+
+    product_code = models.CharField(max_length=10, null=True, blank=True)
+    similar_products_codes = models.CharField(max_length=300, blank=True)
+
+    slug = models.SlugField(unique=True, null=True, blank=True)
+
+    def total_pieces(self):
+        return Stock.objects.aggregate(total_pieces=models.Sum('amount_f'))['total_pieces'] or 0
+
+    def total_consigment(self):
+        return Stock.objects.aggregate(total_consigment=models.Sum('buying_price'))['total_consigment'] or 0
+
+    def grand_total_cost(self):
+        return Stock.objects.aggregate(grand_total_cost=models.Sum('total_cost'))['grand_total_cost'] or 0
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.item)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Product Code: #ls0{self.pk} | {self.item}"
 # ORDER
 
 
@@ -375,6 +442,12 @@ class Mix(models.Model):
     download_count = models.PositiveIntegerField(default=0)
     stream_link = models.TextField(blank=True, null=True)
 
+    slug = models.SlugField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
 
@@ -391,6 +464,10 @@ class AmapianoSignUp(models.Model):
     first_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField()
+    consent = models.BooleanField(default=True, null=True, blank=False)
+    # New field for the ticket number
+    ticket_number = models.CharField(
+        max_length=36, unique=True, blank=True, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

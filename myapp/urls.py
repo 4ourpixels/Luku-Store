@@ -35,5 +35,10 @@ urlpatterns = [
          name='amapiano_workshop_signup'),
     # Watermark Utility
     path('watermark/', views.watermark, name='watermark'),
+
+    path('<slug:slug>', views.view_stock, name='view_stock'),
+    path('edit_stock/<slug:slug>/', views.edit_stock, name='edit_stock'),
+    path('delete_stock/<slug:slug>/', views.delete_stock, name='delete_stock'),
+    path('add_stock/', views.add_stock, name='add_stock'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

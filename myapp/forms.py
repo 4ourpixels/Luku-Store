@@ -93,6 +93,7 @@ class AmapianoSignUpForm(forms.ModelForm):
             self.fields['first_name'].widget.attrs['class'] = 'form-control'
             self.fields['last_name'].widget.attrs['class'] = 'form-control'
             self.fields['email'].widget.attrs['class'] = 'form-control'
+            self.fields['consent'].widget.attrs['class'] = 'form-check-input'
 
 
 class NewsletterForm(forms.ModelForm):
@@ -122,3 +123,32 @@ class CustomerForm(ModelForm):
             self.fields['profile_pic'].widget.attrs['class'] = 'form-control'
             self.fields['password1'].widget.attrs['class'] = 'form-control'
             self.fields['password2'].widget.attrs['class'] = 'form-control'
+
+
+class WatermarkColorForm(forms.Form):
+    watermark_color = forms.ChoiceField(
+        choices=[('white', 'White'), ('black', 'Black')],
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+        initial='white',
+    )
+
+
+# Stocks Form Start
+
+class StockForm(forms.ModelForm):
+    class Meta:
+        model = Stock
+        fields = ('__all__')
+
+        def __init__(self, *args, **kwagrs):
+            super(CustomerForm, self).__init__(*args, **kwagrs)
+            self.fields['brand'].widget.attrs['class'] = 'form-control'
+            self.fields['type'].widget.attrs['class'] = 'form-control'
+            self.fields['target'].widget.attrs['class'] = 'form-control'
+            self.fields['item'].widget.attrs['class'] = 'form-control'
+            self.fields['amount_f'].widget.attrs['class'] = 'form-control'
+            self.fields['amount_t'].widget.attrs['class'] = 'form-control'
+            self.fields['selling_price'].widget.attrs['class'] = 'form-control'
+            self.fields['total_cost'].widget.attrs['class'] = 'form-control'
+            self.fields['possible_best_seller'].widget.attrs['class'] = 'form-control'
+# Stocks Form End
