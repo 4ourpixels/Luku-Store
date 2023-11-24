@@ -270,6 +270,9 @@ class Stock(models.Model):
 
     possible_best_seller = models.BooleanField(
         default=True, choices=POSSIBLE_BEST_SELLER_CHOICES, null=True, blank=False)
+    size = models.CharField(max_length=20, null=True, blank=True)
+    color = models.CharField(max_length=150, null=True, blank=True)
+    online = models.BooleanField(default=False, null=True, blank=False)
 
     product_code = models.CharField(max_length=10, null=True, blank=True)
     similar_products_codes = models.CharField(max_length=300, blank=True)
@@ -278,6 +281,9 @@ class Stock(models.Model):
 
     def total_pieces(self):
         return Stock.objects.aggregate(total_pieces=models.Sum('amount_f'))['total_pieces'] or 0
+
+    def total_amount_T(self):
+        return Stock.objects.aggregate(total_amount_T=models.Sum('amount_t'))['total_amount_T'] or 0
 
     def total_consigment(self):
         return Stock.objects.aggregate(total_consigment=models.Sum('buying_price'))['total_consigment'] or 0

@@ -33,9 +33,6 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('amapiano/', views.amapiano_workshop_signup,
          name='amapiano_workshop_signup'),
-    # Watermark Utility
-    path('watermark/', views.watermark, name='watermark'),
-
     path('<slug:slug>', views.view_stock, name='view_stock'),
     path('edit_stock/<slug:slug>/', views.edit_stock, name='edit_stock'),
     path('delete_stock/<slug:slug>/', views.delete_stock, name='delete_stock'),
