@@ -5,13 +5,23 @@
     LukuStore Estimate Stock September 2023
     <i class="fas fa-table me-1"></i>
   </h1>
-  <div class="table-responsive" style="overflow-y: auto; overflow-x: auto">
+  <div
+    class="table-responsive table"
+    style="max-height: 500px; overflow-y: auto; overflow-x: auto"
+  >
     <div class="row justify-content-center align-items-center">
       <div class="col">
         <table
           class="table table-responsive overflow-scroll border shadow table-hover table-striped-columns"
         >
-          <thead style="background-color: black; color: #fff">
+          <thead
+            style="
+              top: 0;
+              position: sticky;
+              background-color: black;
+              color: #fff;
+            "
+          >
             <tr>
               <th>Code</th>
               <th class="text-white">Brand</th>
@@ -23,26 +33,37 @@
               <th class="text-white">Buying Price</th>
               <th>Selling Price</th>
               <th class="text-white">Total Cost (ksh)</th>
+              <th>Status</th>
+              <th class="text-white">View</th>
+              <th>Update</th>
+              <th class="text-white">Delete</th>
+              <th>Size</th>
+            </tr>
+          </thead>
+          <tfoot
+            style="
+              bottom: 0;
+              position: sticky;
+              background-color: black;
+              color: #fff;
+            "
+          >
+            <tr>
+              <th>Code</th>
+              <th class="text-white">Brand</th>
+              <th>Type</th>
+              <th class="text-white">Target</th>
+              <th>Item</th>
+              <th class="text-white">{{ total_pieces }}</th>
+              <th>{{ total_amount_T }}</th>
+              <th class="text-white">€{{ total_consigment }}</th>
+              <th>Price 0</th>
+              <th class="text-white">{{ grand_total_cost }}</th>
+              <th class="text-white">Status</th>
               <th class="text-white">View</th>
               <th class="text-white">Update</th>
               <th class="text-white">Delete</th>
-            </tr>
-          </thead>
-          <tfoot style="background-color: black; color: #fff">
-            <tr>
-              <th>Code</th>
-              <th class="text-white">Brand</th>
-              <th>Type</th>
-              <th class="text-white">Target</th>
-              <th>Item</th>
-              <th class="text-white">Amount (F)</th>
-              <th>Amount (T)</th>
-              <th class="text-white">Buying Price</th>
-              <th>Selling Price</th>
-              <th class="text-white">Total Cost (ksh)</th>
-              <th>View</th>
-              <th class="text-white">Update</th>
-              <th class="text-white">Delete</th>
+              <th class="text-white">Size</th>
             </tr>
           </tfoot>
           <tbody>
@@ -64,6 +85,11 @@
               <th>€{{ stock.buying_price }}</th>
               <th>{{ stock.selling_price }}</th>
               <th>Ksh {{ stock.total_cost|intcomma }}</th>
+              {% if stock.online %}
+              <th class="badge bg-success rounded-pill">Online</th>
+              {% else %}
+              <th class="badge bg-danger rounded-pill">Offline</th>
+              {% endif %}
               <!-- View Stock Start -->
               <th>
                 <button
@@ -224,6 +250,7 @@
                 <!-- Modal - Delete Stock Modal End -->
               </th>
               <!-- Delete Stock End -->
+              <th>{{ stock.size }}</th>
             </tr>
             {% endfor %}
           </tbody>
@@ -273,7 +300,7 @@
       </div>
     </div>
   </div>
-  <div class="row my-5">
+  <div class="row gy-5 justify-content-center my-5">
     <div class="col-sm-12 col-md-12 col-lg-6">
       <div class="card mb-4">
         <div class="card-header text-success">
@@ -300,7 +327,7 @@
         </div>
       </div>
     </div>
-    <div class="col-12">
+    <div class="col-8">
       <div class="card mb-4">
         <div class="card-header text-danger">
           <i class="fas fa-chart-bar me-1"></i>
@@ -314,6 +341,36 @@
           ></canvas>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row justify-items-center">
+    <div class="col-md-8 col-sm-12">
+      <table
+        class="table table-responsive overflow-scroll border shadow table-hover table-striped-columns"
+      >
+        <thead class="bg-black">
+          <tr>
+            <th class="text-white">Action Id</th>
+            <th class="text-white">Notification</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for action in admin_actions %}
+          <tr>
+            <th class="col">{{ action.pk }}</th>
+            <th class="col">
+              Action: {{ action }} <br />
+              <span class="float-right small"
+                >Time: {{ action.action_time }}</span
+              >
+            </th>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

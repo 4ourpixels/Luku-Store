@@ -19,35 +19,28 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      property="og:image"
-      content="{% static 'images/lukustorenl-banner.jpg' %}"
-    />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
         "url": "https://www.lukustore.nl",
-        "logo": "{% static 'images/logo/lukustorenl.nl-logo.svg' %}"
+        "logo": "{% static 'images/lukustore-thumbnail.jpg' %}"
       }
     </script>
-    <title>Luku Store.nl {{ page_name }}</title>
-
+    <!-- Seo Tags Start -->
+    <title>Luku Store.nl {{ title_tag }}</title>
+    <meta property="og:title" content="{{ tag_title }}" />
+    <meta name="keywords" content="{{ meta_keywords }}" />
+    <meta property="og:description" content="{{ meta_description }}" />
     <meta
-      property="og:title"
-      content="Luku Store.nl - Home of Afro Streetwear Culture | Online Clothing Store"
+      property="og:image"
+      content="{% static 'images/lukustore-thumbnail.jpg' %}"
     />
-    <meta
-      property="og:description"
-      content="Online clothing store, Netherlands, affordable clothes, young men, young women, 18-35 years old, stylish clothes, streetwear, local designers, Kenya, Africa, Kenyan culture, unique outfits, colorful outfits, fashion, independent clothing designers, reasonable price, blog posts, stories behind designers, collections, community, socially-conscious shoppers, different cultures, handmade clothes, high quality, authenticity, free shipping, african streetwear"
-    />
-    <meta
-      name="keywords"
-      content="Lukustore.nl, online clothing store, Netherlands, affordable clothes, young men, young women, 18-35 years old, stylish clothes, streetwear, local designers, Kenya, Africa, Kenyan culture, unique outfits, colorful outfits, fashion, independent clothing designers, reasonable price, blog posts, stories behind designers, collections, community, socially-conscious shoppers, different cultures, handmade clothes, high quality, authenticity, free shipping"
-    />
-    <meta name="author" content="Luku Store.nl" />
+    <meta property="og:url" content="lukustore.nl" />
+    <meta property="og:type" content="website" />
     <meta name="robots" content="index, follow" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="author" content="Luku Store.nl" />
+    <!-- Seo Tags End -->
 
     <!-- Favicon -->
     <link
@@ -320,6 +313,21 @@
                 />
                 {% endif %}
               </button>
+              {% if user.is_authenticated %}
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/admin/">Admin</a></li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'dashboard' %}"
+                    >Dashboard</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'account_settings' %}"
+                    >Account Settings</a
+                  >
+                </li>
+              </ul>
+              {% endif %}
               <ul class="dropdown-menu">
                 <li>
                   <a class="dropdown-item" href="{% url 'account' %}"
@@ -349,7 +357,7 @@
     </nav>
     <!-- End of navigation bar -->
     {% if messages %} {% for message in messages %}
-    <div class="container my-5 p-0">
+    <div class="container p-0">
       <div
         id="alert-dark"
         class="alert alert-dark alert-dismissable fade show"

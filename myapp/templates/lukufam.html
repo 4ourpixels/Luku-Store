@@ -1,249 +1,215 @@
 {% extends 'base.html' %}{% load static %}{% block body %}
 <div style="margin-top: 3rem" id="top" class="container">
-  <div class="row">
+  <div id="main" class="row">
     <h1 class="text-black display-1 text-center fw-bold">Luku Fam</h1>
-  </div>
-
-  <div class="row">
-    <main id="main">
-      <!-- ======= About Us Section ======= -->
-      <div class="container px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-          <div class="col-sm-12 col-lg-6">
-            <img
-              src="{{ kendy.image.url }}"
-              class="img-fluid col-sm"
-              style="object-fit: cover"
-              alt="{{ kendy.name }}"
-              loading="lazy"
-            />
-          </div>
-          <div class="col-lg-6">
-            <h3 class="fw-bold text-body-emphasis lh-1 mb-3">
-              {{ kendy.name }} || {{ kendy.role }}
-            </h3>
-            <hr />
-            <p class="lead mt-3">{{ kendy.bio }}</p>
-            <br />
-            <div class="d-flex justify-content-md-start">
-              <a class="underline text-black" href="{{ kendy.instagram }}"
-                ><i class="fa-brands fa-2xl fa-instagram"></i
-              ></a>
-              <a class="underline ms-3 text-black" href="{{ kendy.twitter }}"
-                ><i class="fa-brands fa-2xl fa-twitter"></i
-              ></a>
-            </div>
+    <h3 class="text-center fw-light mt-2">
+      Platforming Afro Streetwear Culture
+    </h3>
+    <!-- ======= About Us Section ======= -->
+    <div class="container px-4 py-5">
+      <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-sm-12 col-lg-6">
+          <img
+            src="{{ fkinyash.image.url }}"
+            class="img-fluid col-sm"
+            style="object-fit: cover"
+            alt="{{ fkinyash.name }}"
+            loading="lazy"
+          />
+        </div>
+        <div class="col-lg-6">
+          <h3 class="fw-bold text-body-emphasis lh-1 mb-3">
+            {{ fkinyash.name }} || {{ fkinyash.role }}
+          </h3>
+          <hr />
+          <p class="lead mt-3">{{ fkinyash.bio }}</p>
+          <br />
+          <div class="d-flex justify-content-md-start">
+            <a class="underline text-black" href="{{ fkinyash.instagram }}"
+              ><i class="fa-brands fa-2xl fa-instagram"></i
+            ></a>
+            <a class="underline ms-3 text-black" href="{{ fkinyash.twitter }}"
+              ><i class="fa-brands fa-2xl fa-twitter"></i
+            ></a>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="container px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center">
-          <div class="col-sm-12 col-lg-6">
-            <img
-              src="{{ fkinyash.image.url }}"
-              class="img-fluid mb-3"
-              style="object-fit: cover; filter: grayscale()"
-              alt="{{ fkinyash.name }}"
-              loading="lazy"
-            />
-          </div>
-          <div class="col-lg-6">
-            <h3 class="fw-bold text-body-emphasis lh-1 mb-3">
-              {{ fkinyash.name }} || {{ fkinyash.role }}
-            </h3>
-            <hr />
-            <p class="lead mt-3">{{ fkinyash.bio }}</p>
-            <br />
-            <div class="d-flex justify-content-md-start">
-              <a class="underline text-black" href="{{ fkinyash.instagram }}"
-                ><i class="fa-brands fa-2xl fa-instagram"></i
-              ></a>
-              <a class="underline ms-3 text-black" href="{{ fkinyash.twitter }}"
-                ><i class="fa-brands fa-2xl fa-twitter"></i
-              ></a>
-            </div>
-          </div>
+    <div class="row px-4 py-5 flex-lg-row-reverse align-items-center">
+      <div class="col-sm-12 col-lg-6">
+        <img
+          src="{{ kendy.image.url }}"
+          class="img-fluid mb-3"
+          style="object-fit: cover; filter: grayscale()"
+          alt="{{ kendy.name }}"
+          loading="lazy"
+        />
+      </div>
+      <div class="col-lg-6">
+        <h3 class="fw-bold text-body-emphasis lh-1 mb-3">
+          {{ kendy.name }} || {{ kendy.role }}
+        </h3>
+        <hr />
+        <p class="lead mt-3">{{ kendy.bio }}</p>
+        <br />
+        <div class="d-flex justify-content-md-start">
+          <a class="underline text-black" href="{{ kendy.instagram }}"
+            ><i class="fa-brands fa-2xl fa-instagram"></i
+          ></a>
+          <a class="underline ms-3 text-black" href="{{ kendy.twitter }}"
+            ><i class="fa-brands fa-2xl fa-twitter"></i
+          ></a>
         </div>
       </div>
+    </div>
 
-      <div class="container px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center">
-          <div class="col-sm-12 col-lg-6">
-            <img
-              src="{{ tarela.image.url }}"
-              class="img-fluid mb-3"
-              style="object-fit: cover"
-              alt="{{ tarela.name }}"
-              loading="lazy"
-            />
-          </div>
-          <div class="col-lg-6">
-            <h3 class="fw-bold text-body-emphasis lh-1 mb-3">
-              {{ tarela.name }} || {{ tarela.role }}
-            </h3>
-            <hr />
-            <p class="lead mt-3">{{ tarela.bio }}</p>
-            <br />
-            <div class="d-flex justify-content-md-start">
-              <a class="underline text-black" href="{{ tarela.instagram }}"
-                ><i class="fa-brands fa-2xl fa-instagram"></i
-              ></a>
-            </div>
-          </div>
+    <div class="row px-4 py-5 flex-lg-row-reverse align-items-center">
+      <div class="col-sm-12 col-lg-6">
+        <img
+          src="{{ tarela.image.url }}"
+          class="img-fluid mb-3"
+          style="object-fit: cover"
+          alt="{{ tarela.name }}"
+          loading="lazy"
+        />
+      </div>
+      <div class="col-lg-6">
+        <h3 class="fw-bold text-body-emphasis lh-1 mb-3">
+          {{ tarela.name }} || {{ tarela.role }}
+        </h3>
+        <hr />
+        <p class="lead mt-3">{{ tarela.bio }}</p>
+        <br />
+        <div class="d-flex justify-content-md-start">
+          <a class="underline text-black" href="{{ tarela.instagram }}"
+            ><i class="fa-brands fa-2xl fa-instagram"></i
+          ></a>
         </div>
       </div>
+    </div>
 
-      <div class="container px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center">
-          <div class="col-sm-12 col-lg-6">
-            <img
-              src="{{ djg400.image.url }}"
-              class="img-fluid mb-3"
-              style="object-fit: cover; filter: grayscale()"
-              alt="{{ djg400.name }}"
-              loading="lazy"
-            />
-          </div>
-          <div class="col-lg-6">
-            <h3 class="fw-bold text-body-emphasis lh-1 mb-3">
-              {{ djg400.name }} || {{ djg400.role }}
-            </h3>
-            <hr />
-            <p class="lead mt-3">{{ djg400.bio }}</p>
-            <br />
-            <div class="d-flex justify-content-md-start">
-              <a class="underline text-black" href="{{ djg400.instagram }}"
-                ><i class="fa-brands fa-2xl fa-instagram"></i
-              ></a>
-              <a class="underline ms-3 text-black" href="{% url 'music' %}"
-                ><i class="fa-solid fa-2xl fa-music"></i
-              ></a>
-            </div>
-          </div>
+    <div class="row px-4 py-5 flex-lg-row-reverse align-items-center">
+      <div class="col-sm-12 col-lg-6">
+        <img
+          src="{{ djg400.image.url }}"
+          class="img-fluid mb-3"
+          style="object-fit: cover; filter: grayscale()"
+          alt="{{ djg400.name }}"
+          loading="lazy"
+        />
+      </div>
+      <div class="col-lg-6">
+        <h3 class="fw-bold text-body-emphasis lh-1 mb-3">
+          {{ djg400.name }} || {{ djg400.role }}
+        </h3>
+        <hr />
+        <p class="lead mt-3">{{ djg400.bio }}</p>
+        <br />
+        <div class="d-flex justify-content-md-start">
+          <a class="underline text-black" href="{{ djg400.instagram }}"
+            ><i class="fa-brands fa-2xl fa-instagram"></i
+          ></a>
+          <a class="underline ms-3 text-black" href="{% url 'music' %}"
+            ><i class="fa-solid fa-2xl fa-music"></i
+          ></a>
         </div>
       </div>
-      <br />
+    </div>
 
-      <!-- End About Us Section -->
-      <hr />
-      <section id="contact" class="contact mt-3">
-        <div class="container">
-          <div class="section-title text-center">
-            <h1 class="h1">Contact</h1>
-            <p>Chat to us. Our friendly team is here to help.</p>
-          </div>
-        </div>
+    <!-- End About Us Section -->
+    <hr />
+    <section id="contact" class="contact mt-3">
+      <div class="section-title text-center">
+        <h1 class="h1">Contact</h1>
+        <p>Chat to us. Our friendly team is here to help.</p>
+      </div>
 
-        <div class="container">
-          <div class="row mt-5">
-            <div class="col-lg-8 col-md-12 col-sm-12 mb-5">
-              <form name="submit-to-google-sheet">
-                <div class="row">
-                  <div class="form-group">
-                    <label class="form-label" for="name">Name</label>
-                    <input
-                      type="text"
-                      name="Name"
-                      class="form-control"
-                      id="name"
-                      placeholder="Your Name"
-                      required
-                    />
-                  </div>
-                </div>
-                <div class="form-group mt-3">
-                  <label class="form-label" for="email">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    name="Email"
-                    id="email"
-                    placeholder="Email"
-                    required
-                  />
-                </div>
-                <div class="form-group mt-3">
-                  <label class="form-label" for="message">Message</label>
-                  <textarea
-                    class="form-control"
-                    id="message"
-                    name="Message"
-                    rows="5"
-                    placeholder="Send us a message"
-                    required
-                  ></textarea>
-                </div>
-                <div style="margin-top: 1rem" class="text-center">
-                  <button class="btn btn-dark btn-lg" type="submit">
-                    Send Message
-                  </button>
-                </div>
-              </form>
-              <div id="alertMessage" class="alert mt-4 alert-success d-none">
-                We have received your message!
+      <div class="row mt-5">
+        <div class="col-lg-8 col-md-12 col-sm-12 mb-5">
+          <form name="submit-to-google-sheet">
+            <div class="row">
+              <div class="form-group">
+                <label class="form-label" for="name">Name</label>
+                <input
+                  type="text"
+                  name="Name"
+                  class="form-control"
+                  id="name"
+                  placeholder="Your Name"
+                  required
+                />
               </div>
             </div>
-
-            <div class="col-lg-4 col-md-12 col-sm-12">
-              <div class="info">
-                <div class="email">
-                  <i class="ri-mail-line"></i>
-                  <h4>Email:</h4>
-                  <p>info@lukustore.nl</p>
-                </div>
-
-                <div class="phone">
-                  <i class="ri-phone-line"></i>
-                  <h4>Call:</h4>
-                  <p>+31 5589 55488 55</p>
-                </div>
-
-                <div class="address">
-                  <i class="ri-map-pin-line"></i>
-                  <h4>Location:</h4>
-                  <p>A108 Adam Street, Amsterdam, NL 535022</p>
-                </div>
-              </div>
+            <div class="form-group mt-3">
+              <label class="form-label" for="email">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                name="Email"
+                id="email"
+                placeholder="Email"
+                required
+              />
             </div>
-            <div class="col">
-              <iframe
-                class="mt-5"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d155959.60697224745!2d4.753582280043844!3d52.354663727548534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c63fb5949a7755%3A0x6600fd4cb7c0af8d!2sAmsterdam%2C%20Netherlands!5e0!3m2!1sen!2ske!4v1684177757213!5m2!1sen!2ske"
-                height="450"
-                style="border: 0; width: 100%"
-                allowfullscreen=""
-                loading="lazy"
-                frameborder="0"
-                referrerpolicy="no-referrer-when-downgrade"
-              ></iframe>
+            <div class="form-group mt-3">
+              <label class="form-label" for="message">Message</label>
+              <textarea
+                class="form-control"
+                id="message"
+                name="Message"
+                rows="5"
+                placeholder="Send us a message"
+                required
+              ></textarea>
+            </div>
+            <div style="margin-top: 1rem" class="text-center">
+              <button class="btn btn-dark btn-lg" type="submit">
+                Send Message
+              </button>
+            </div>
+          </form>
+          <div id="alertMessage" class="alert mt-4 alert-success d-none">
+            We have received your message!
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-12 col-sm-12">
+          <div class="info">
+            <div class="email">
+              <i class="ri-mail-line"></i>
+              <h4>Email:</h4>
+              <p>info@lukustore.nl</p>
+            </div>
+
+            <div class="phone">
+              <i class="ri-phone-line"></i>
+              <h4>Call:</h4>
+              <p>+31 5589 55488 55</p>
+            </div>
+
+            <div class="address">
+              <i class="ri-map-pin-line"></i>
+              <h4>Location:</h4>
+              <p>A108 Adam Street, Amsterdam, NL 535022</p>
             </div>
           </div>
         </div>
-      </section>
-      <!-- End Contact Section -->
-    </main>
-    <!-- End #main -->
-    <a class="text-center my-3 underline text-dark" href="#top"
-      >Scroll to top</a
-    >
+        <div class="col">
+          <iframe
+            class="mt-5"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d155959.60697224745!2d4.753582280043844!3d52.354663727548534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c63fb5949a7755%3A0x6600fd4cb7c0af8d!2sAmsterdam%2C%20Netherlands!5e0!3m2!1sen!2ske!4v1684177757213!5m2!1sen!2ske"
+            height="450"
+            style="border: 0; width: 100%"
+            allowfullscreen=""
+            loading="lazy"
+            frameborder="0"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+    <!-- End Contact Section -->
   </div>
 </div>
-<script>
-  const scriptURL =
-    "https://script.google.com/macros/s/AKfycbypysVWuLardTDBWaenWvdI8FxW6FJk317k0-jqrsnGSq-3RI4eM97k3TEKO2M3HAOxdg/exec";
-  const form = document.forms["submit-to-google-sheet"];
-  const alertMessage = document.getElementById("alertMessage");
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    fetch(scriptURL, { method: "POST", body: new FormData(form) })
-      .then((response) => {
-        form.reset();
-        alertMessage.classList.remove("d-none");
-      })
-      .catch((error) => console.error("Error!", error.message));
-  });
-</script>
-
 {% endblock %}

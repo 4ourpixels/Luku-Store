@@ -12,30 +12,11 @@
   </nav>
   <div class="row my-5">
     <div class="col-md-12 col-lg-12 col-sm-12">
-      {% if user.is_authenticated %}
-      <h1>
-        Account
-        <span class="float-end"
-          ><a href="{% url 'dashboard' %}" class="underline hover"
-            ><i class="fa-solid fa-2xl fa-image"></i></a
-        ></span>
-        <span class="float-end"
-          ><a href="{% url 'account_settings' %}" class="underline hover"
-            ><i class="fa-solid fa-2xl fa-gear"></i></a
-        ></span>
-      </h1>
-      {% else %}
-      <h1>
-        Account
-        <span class="float-end"
-          ><a href="{% url 'account_settings' %}" class="underline hover"
-            ><i class="fa-solid fa-2xl fa-gear"></i></a
-        ></span>
-      </h1>
-      {% endif %} {% if items %}
+      <h1 class="mb-5 ms-5">My Luku</h1>
+      {% if items %}
       <div class="p-5 border rounded">
         <h6 class="mb-3">
-          Items ordered: ({{ cartItems }})
+          Luku ordered: {{ cartItems }}
           <span class="float-end">Total: €{{ order.get_cart_total }}</span>
         </h6>
         <table class="table table-responsive table-striped table-hover">
