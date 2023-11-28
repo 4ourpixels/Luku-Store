@@ -16,6 +16,8 @@ class Blog(models.Model):
     content = models.TextField()
     author = models.CharField(max_length=200)
     keywords = models.TextField(null=True, blank=True)
+    meta_keywords = models.TextField(null=True, blank=True)
+    meta_description = models.TextField(null=True, blank=True)
     image = models.ImageField(
         null=True,
         blank=True,
@@ -130,6 +132,7 @@ class Photo(models.Model):
         default='Luku Store.nl'
     )
     digital = models.BooleanField(default=False, null=True, blank=False)
+    stock = models.IntegerField(default=0)
 
     slug = models.SlugField(null=True, blank=True)
 
@@ -254,7 +257,7 @@ class Stock(models.Model):
     ]
 
     target = models.CharField(
-        max_length=1, choices=TARGET_CHOICES, default="U", null=False, blank=False
+        max_length=1, choices=TARGET_CHOICES, default="U", null=False, blank=True
     )
     item = models.CharField(max_length=200, null=True, blank=True)
     amount_f = models.IntegerField(default=0, blank=True, null=True)
@@ -269,13 +272,38 @@ class Stock(models.Model):
     ]
 
     possible_best_seller = models.BooleanField(
-        default=True, choices=POSSIBLE_BEST_SELLER_CHOICES, null=True, blank=False)
+        default=True, choices=POSSIBLE_BEST_SELLER_CHOICES, null=True, blank=True)
     size = models.CharField(max_length=20, null=True, blank=True)
     color = models.CharField(max_length=150, null=True, blank=True)
-    online = models.BooleanField(default=False, null=True, blank=False)
+    online = models.BooleanField(default=False, null=True, blank=True)
 
     product_code = models.CharField(max_length=10, null=True, blank=True)
     similar_products_codes = models.CharField(max_length=300, blank=True)
+
+    image_original_size = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="stock/",
+        default='placeholder.png',
+    )
+    image_large_size = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="stock/",
+        default='placeholder.png',
+    )
+    image_medium_size = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="stock/",
+        default='placeholder.png',
+    )
+    image_thumbnail_size = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="stock/",
+        default='placeholder.png',
+    )
 
     slug = models.SlugField(unique=True, null=True, blank=True)
 

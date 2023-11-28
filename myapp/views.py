@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 import json
 import datetime
 from .models import *
@@ -10,10 +12,24 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+# Email Logic
+from django.core.mail import send_mail, EmailMessage
+from django.conf import settings
 
+# Amapiano Slots Logic
+from django.db.models import Count
+from django.http import JsonResponse
+import uuid
+import os
+
+# History Logic Start
+from django.contrib.admin.models import LogEntry
+# History Logic End
 # ABOUT US
+
+
 def lukufam(request):
-    page_name = f"- About Us"
+    title_tag = f"- About Us"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -44,7 +60,7 @@ def lukufam(request):
         'djg400': djg400,
         'fkinyash': fkinyash,
         'tarela': tarela,
-        'page_name': page_name,
+        'title_tag': title_tag,
         'cartItems': cartItems,
         'blogs': blogs,
         'brands': brands
@@ -57,7 +73,7 @@ def lukufam(request):
 
 
 def help(request):
-    page_name = f"- Help"
+    title_tag = f"- Help"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -67,7 +83,7 @@ def help(request):
     help = Help.objects.first()
     context = {
         'help': help,
-        'page_name': page_name,
+        'title_tag': title_tag,
         'cartItems': cartItems,
         'blogs': blogs,
         'brands': brands,
@@ -77,8 +93,9 @@ def help(request):
 
 
 def index(request):
-    page_name = "- Home of Afro Streetwear Culture | Online Clothing Store"
-
+    title_tag = "- Home of Afro Streetwear Culture | Online Clothing Store"
+    meta_description = "Immerse yourself in the rich tapestry of Kenyan culture with Luku Store.nl. Explore our latest blogs, diverse brands, new collections, and visually stunning images. Shop unique, handmade fashion that tells a story. Join our community of socially-conscious shoppers and experience the vibrancy of Kenyan style here in Amsterdam."
+    meta_keywords = "Kenyan Culture, Fashion Blog, Unique Brands, New Collections, Vibrant Images, Streetwear, Handmade Clothing, Socially-conscious Shopping, Afro, Luku Store.nl, Cultural Fashion, Fashion Community, Online Clothing Store, Netherlands, Amsterdam, Young Men, Young Women, Local Designers, Unique Outfits, Colorful, Independent Clothing Designers, Reasonable Price, Stories Behind Designers."
     photos = Photo.objects.all()
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
@@ -119,16 +136,24 @@ def index(request):
     trucker_hat = homepages[18]
 
     video = Video.objects.first()
+    videos = Video.objects.all()
+    home_video_2 = videos[1]
+    home_video_3 = videos[2]
 
     data = cartData(request)
     cartItems = data['cartItems']
+
+    # Calculate remaining slots
+    remaining_slots = 20 - AmapianoSignUp.objects.count()
 
     context = {
         'photos': photos,
         'blogs': blogs,
         'brands': brands,
         'cartItems': cartItems,
-        'page_name': page_name,
+        'title_tag': title_tag,
+        'meta_description': meta_description,
+        'meta_keywords': meta_keywords,
         'homepages': homepages,
         'slide1': slide1,
         'slide2': slide2,
@@ -159,13 +184,18 @@ def index(request):
         'trucker_hat': trucker_hat,
 
         'video': video,
+        'home_video_2': home_video_2,
+        'home_video_3': home_video_3,
+        'remaining_slots': remaining_slots,
 
     }
     return render(request, 'index.html', context)
 
 
 def shop(request):
-    page_name = f"- Shop"
+    title_tag = f"- Shop Unique Kenyan Fashion at Luku Store.nl | Accessible and Stylish Clothing"
+    meta_description = "Explore our collection of vibrant and accessible Kenyan fashion at Luku Store.nl. From handcrafted pieces to curated designs, discover the latest trends for unisex, men and women. Make a statement with our socially-conscious clothing. Shipping within Netherlands."
+    meta_keywords = "Kenyan Fashion, Accessible Clothing, Stylish Outfits, Online Fashion Store, Handmade Clothes, Curated Designs, Socially-conscious Shopping, Men's Fashion, Women's Fashion, Unisex, Luku Store.nl, Netherlands Fashion, Shipping."
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     products = Product.objects.order_by('-pk')
@@ -185,7 +215,7 @@ def shop(request):
     cartItems = data['cartItems']
 
     context = {
-        'page_name': page_name,
+        'title_tag': title_tag,
         'cartItems': cartItems,
         'latest_photo': latest_photo,
         'unique_photos': unique_photos,
@@ -193,6 +223,8 @@ def shop(request):
         'blogs': blogs,
         'brands': brands,
         'products': products,
+        "meta_description": meta_description,
+        'meta_keywords': meta_keywords,
     }
 
     return render(request, 'shop.html', context)
@@ -214,13 +246,13 @@ def view_product(request, slug):
         blogs = Blog.objects.order_by('-pk')
         brands = Brand.objects.order_by('-pk')
 
-        page_name = f"- {product.name}"
+        title_tag = f"- {product.name}"
 
         context = {
             'product': product,
             'cartItems': cartItems,
             'photos': photos,
-            'page_name': page_name,
+            'title_tag': title_tag,
             'blogs': blogs,
             'brands': brands,
             'similar_products': similar_products,
@@ -234,11 +266,11 @@ def view_product(request, slug):
 
     except Exception as e:
         # Handle other exceptions
-        page_name = f'- Error {product.name} was not found'
+        title_tag = f'- Error {product.name} was not found'
         print("Error :", str(e))
         context = {
             'error': str(e),
-            'page_name': page_name
+            'title_tag': title_tag
         }
         return render(request, '404.html', context)
 # CART
@@ -265,7 +297,7 @@ def cart(request):
         order = {'get_cart_total': 0, 'get_cart_items': 0}
         cartItems = order['get_cart_items']
 
-    page_name = f"- Cart({cartItems})"
+    title_tag = f"- Cart({cartItems})"
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
 
@@ -278,7 +310,7 @@ def cart(request):
         'items': items,
         'order': order,
         'cartItems': cartItems,
-        'page_name': page_name,
+        'title_tag': title_tag,
         'blogs': blogs,
         'brands': brands,
     }
@@ -291,7 +323,7 @@ def cart(request):
 
 
 def checkout(request):
-    page_name = f"- Checkout"
+    title_tag = f"- Checkout"
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     # data = cartData(request)
@@ -310,7 +342,7 @@ def checkout(request):
         cartItems = order['get_cart_items']
 
     context = {
-        'page_name': page_name,
+        'title_tag': title_tag,
         'items': items,
         'order': order,
         'cartItems': cartItems,
@@ -324,7 +356,7 @@ def checkout(request):
 
 
 def blog_list(request):
-    page_name = f"- Blogs"
+    title_tag = f"- Blogs"
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
 
@@ -335,7 +367,7 @@ def blog_list(request):
         'cartItems': cartItems,
         'blogs': blogs,
         'brands': brands,
-        'page_name': page_name,
+        'title_tag': title_tag,
     }
     return render(request, 'blog_list.html', context)
 
@@ -344,7 +376,9 @@ def blog_detail(request, slug):
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     blog = get_object_or_404(Blog, slug=slug)
-    page_name = f"- {blog.title}"
+    title_tag = f"- {blog.title}"
+    meta_description = f"- {blog.title}"
+    meta_keywords = f"- {blog.keywords}"
     keywords = [
         item.strip()
         for item in blog.keywords.split(',')
@@ -360,11 +394,13 @@ def blog_detail(request, slug):
 
     context = {
         'blog': blog,
-        'page_name': page_name,
+        'title_tag': title_tag,
         'blogs': blogs,
         'cartItems': cartItems,
         'photos_in_ss23_category': photos_in_ss23_category,
         'keywords': keywords,
+        'meta_description': meta_description,
+        'meta_keywords': meta_keywords,
         'brands': brands,
     }
     return render(request, 'blog_detail.html', context)
@@ -373,7 +409,7 @@ def blog_detail(request, slug):
 
 
 def brand_list(request):
-    page_name = f"- Brands"
+    title_tag = "- Brands"
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
 
@@ -383,7 +419,7 @@ def brand_list(request):
     context = {
         'cartItems': cartItems,
         'blogs': blogs,
-        'page_name': page_name,
+        'title_tag': title_tag,
         'brands': brands,
     }
     return render(request, 'brand_list.html', context)
@@ -394,7 +430,7 @@ def brand_detail(request, slug):
     products = Product.objects.order_by('-pk')
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
-    page_name = f"- {brand.name}"
+    title_tag = f"- {brand.name}"
 
     data = cartData(request)
     cartItems = data['cartItems']
@@ -402,7 +438,7 @@ def brand_detail(request, slug):
     context = {
         'cartItems': cartItems,
         'blogs': blogs,
-        'page_name': page_name,
+        'title_tag': title_tag,
         'brands': brands,
         'brand': brand,
         'products': products,
@@ -411,7 +447,7 @@ def brand_detail(request, slug):
 
 
 def newsletter(request):
-    page_name = "- Newsletter"
+    title_tag = "- Newsletter"
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     data = cartData(request)
@@ -436,7 +472,7 @@ def newsletter(request):
         newsletter_form = NewsletterForm()
 
     context = {
-        'page_name': page_name,
+        'title_tag': title_tag,
         'cartItems': cartItems,
         'blogs': blogs,
         'brands': brands,
@@ -590,7 +626,7 @@ def processOrder(request):
 
 
 def loginPage(request):
-    page_name = f"- Log In"
+    title_tag = f"- Log In"
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     data = cartData(request)
@@ -618,7 +654,7 @@ def loginPage(request):
                 messages.info(request, 'Username Or Password is incorrect')
 
     context = {
-        'page_name': page_name,
+        'title_tag': title_tag,
         'cartItems': cartItems,
         'blogs': blogs,
         'brands': brands,
@@ -633,7 +669,9 @@ def logoutUser(request):
 
 
 def registerPage(request):
-    page_name = f"- Sign Up"
+    title_tag = f"- Create Your Luku Account - Sign Up for Exclusive Offers and Fashion Updates"
+    meta_description = "Join the Lukustore.nl community! Sign up for an account to access exclusive offers, stay updated on the latest Kenyan fashion trends, and be part of our socially-conscious shopping experience. Register now for a personalized shopping journey that celebrates diversity and style."
+    meta_keywords = "Luku Store.nl Signup, Account Registration, Exclusive Offers, Fashion Updates, Socially-conscious Shopping, Personalized Account, Kenyan Fashion, Streetwear, Community Membership, Stay Connected, Diverse Style."
     form = RegisterUserForm()
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
@@ -656,7 +694,9 @@ def registerPage(request):
         else:
             form = RegisterUserForm()
     context = {
-        'page_name': page_name,
+        'title_tag': title_tag,
+        'meta_description': meta_description,
+        'meta_keywords': meta_keywords,
         'cartItems': cartItems,
         'form': form,
         'blogs': blogs,
@@ -668,14 +708,14 @@ def registerPage(request):
 
 
 def confirmed(request):
-    page_name = f"- Order Complete!"
+    title_tag = f"- Order Complete!"
     data = cartData(request)
     cartItems = data['cartItems']
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
 
     context = {
-        'page_name': page_name,
+        'title_tag': title_tag,
         'cartItems': cartItems,
         'success': True,
         'blogs': blogs,
@@ -742,13 +782,13 @@ def viewPhoto(request, pk):
                 name__in=similar_products_codes)
         )
 
-        page_name = f"- {photo.name}"
+        title_tag = f"- {photo.name}"
 
         context = {
             'photo': photo,
             'cartItems': cartItems,
             'similar_products': similar_products,
-            'page_name': page_name,
+            'title_tag': title_tag,
             'blogs': blogs,
             'brands': brands,
             'product': product,
@@ -759,11 +799,11 @@ def viewPhoto(request, pk):
 
     except Exception as e:
         # Handle other exceptions
-        page_name = f'- Error {photo.name} was not found'
+        title_tag = f'- Error {photo.name} was not found'
         print("Error :", str(e))
         context = {
             'error': str(e),
-            'page_name': page_name
+            'title_tag': title_tag
         }
         return render(request, '404.html', context)
 
@@ -778,7 +818,10 @@ def account(request):
     shippings = ShippingAddress.objects.all()
     orders = Order.objects.order_by('-pk')
     order_item_list = OrderItem.objects.all()
-    page_name = f"- Account"
+    # title Tag
+    title_tag = f"Account Settings | Manage Your Luku Profile and Preferences"
+    meta_description = "Customize your Lukustore.nl experience with our account settings. Update your profile, manage preferences, and stay connected with the latest Kenyan fashion. Shop consciously with Lukustore.nl."
+    meta_keywords = "Lukustore, Account Settings, Profile Management, Preferences, Kenyan Fashion, Online Clothing Store, Socially-conscious Shopping, Vibrant Outfits, Handmade Clothes, Free Shipping Netherlands."
     data = cartData(request)
     cartItems = data['cartItems']
     order = data['order']
@@ -788,7 +831,7 @@ def account(request):
         'order_item_list': order_item_list,
         'shippings': shippings,
         'cartItems': cartItems,
-        'page_name': page_name,
+        'title_tag': title_tag,
         'photos': photos,
         'products': products,
         'orders': orders,
@@ -796,6 +839,9 @@ def account(request):
         'items': items,
         'blogs': blogs,
         'brands': brands,
+        'meta_description': meta_description,
+        'meta_keywords': meta_keywords,
+
     }
 
     return render(request, 'account.html', context)
@@ -803,13 +849,13 @@ def account(request):
 
 
 def music(request):
-    page_name = "- DJ G400 Mixes"
+    title_tag = "- DJ G400 Mixes"
     mixes = Mix.objects.all()
     latest_mix = mixes[2]
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     context = {
-        'page_name': page_name,
+        'title_tag': title_tag,
         'mixes': mixes,
         'latest_mix': latest_mix,
         'blogs': blogs,
@@ -818,14 +864,14 @@ def music(request):
     return render(request, 'music.html', context)
 
 
-def music_player(request, title):
-    mix = Mix.objects.get(title=title)
+def music_player(request, slug):
+    mix = Mix.objects.get(slug=slug)
     mixes = Mix.objects.all()
-    page_name = f"- Playing {mix.title}"
+    title_tag = f"- Playing {mix.title}"
     blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     context = {
-        'page_name': page_name,
+        'title_tag': title_tag,
         'mix': mix,
         'mixes': mixes,
         'blogs': blogs,
@@ -834,70 +880,124 @@ def music_player(request, title):
     return render(request, 'music_player.html', context)
 
 
+@login_required(login_url='index')
 def dashboard(request):
-    mixes = Mix.objects.order_by('-pk')
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-    products = Product.objects.order_by('-pk')
-    photos = Photo.objects.order_by('-pk')
-    help = Help.objects.order_by('-pk')
-    categories = Category.objects.order_by('-pk')
-    customers = Customer.objects.order_by('-pk')
-    orders = Order.objects.order_by('-pk')
-    order_items = OrderItem.objects.order_by('-pk')
-    shipping_addresses = ShippingAddress.objects.order_by('-pk')
-    newsletters = Newsletter.objects.order_by('-pk')
-    homepages = HomePage.objects.order_by('-pk')
+    stocks = Stock.objects.all()
+    total_pieces = Stock.objects.first().total_pieces()
+    total_consigment = Stock.objects.first().total_consigment()
+    grand_total_cost = Stock.objects.first().grand_total_cost()
+    total_amount_T = Stock.objects.first().total_amount_T()
 
-    page_name = "Dashboard"
+    euro_exchange_rate = int(155)
+    euro_converted_total_consigment = round(
+        int(grand_total_cost) / euro_exchange_rate)
+
+    title_tag = "Dashboard"
+    admin_actions = LogEntry.objects.order_by('-action_time')[:10]
 
     context = {
-        'page_name': page_name,
-        'mixes': mixes,
-        'blogs': blogs,
-        'brands': brands,
-        'products': products,
-        'photos': photos,
-        'help': help,
-        'categories': categories,
-        'customers': customers,
-        'orders': orders,
-        'order_items': order_items,
-        'shipping_addresses': shipping_addresses,
-        'newsletters': newsletters,
-        'homepages': homepages,
+        'title_tag': title_tag,
+        'stocks': stocks,
+        'total_pieces': total_pieces,
+        'total_consigment': total_consigment,
+        'grand_total_cost': grand_total_cost,
+        'total_amount_T': total_amount_T,
+        'euro_converted_total_consigment': euro_converted_total_consigment,
+        'admin_actions': admin_actions,
     }
 
     return render(request, 'dashboard.html', context)
 
 
+# Amapiano Workshop Signup Logic Start
+
+
+def send_email_with_inline_logo(email, first_name, ticket_number):
+    subject = 'Your Amapiano Workshop Confirmation 🎉'
+    message = f"Hi {first_name},\n\nGreat news! You're officially registered for the Amapiano Workshop 🎶\n\n📅 Date: 18th Nov 2023\n🕒 Time: 3:00 PM - 5:00 PM\n📍 Venue: Amsterdam Dance Center\n\n\nYour Ticket: {ticket_number}\n\nGet ready for a fantastic time of music and dance!\nSee you there,\n\nLuku Store.nl\ninfo@lukustore.nl"
+
+    from_email = 'lukustore.nl@gmail.com'
+    lukustore_info_email = 'info@lukustore.nl'
+    recipient_list = [email, lukustore_info_email]
+
+    # Create an EmailMessage instance
+    email_message = EmailMessage(
+        subject,
+        message,
+        from_email,
+        recipient_list,
+    )
+
+    # Attach the logo inline
+    logo_path = os.path.join(os.path.dirname(
+        __file__), 'static/Amapiano-Workshop.jpg')
+    with open(logo_path, 'rb') as logo_file:
+        # Adjust content type if needed
+        email_message.attach(logo_file.name, logo_file.read(), 'image/png')
+
+    # Send the email
+    email_message.send()
+
+
 def amapiano_workshop_signup(request):
-    page_name = "Amapiano Workshop Signup"
+    title_tag = "- Amapiano Workshop Signup"
     form = AmapianoSignUpForm()
+    remaining_slots = 20 - AmapianoSignUp.objects.count()
 
     if request.method == 'POST':
         form = AmapianoSignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-            first_name = form.cleaned_data.get('first_name')
-            last_name = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
-            print(
-                f"{first_name} {last_name} registered to the Amapiano Workshop! \n Email: {email}")
-            messages.success(
-                request, ('Amapiano Workshop Registration Successful'))
-            return redirect('index')
+
+            # Check if the email already exists in the database
+            if AmapianoSignUp.objects.filter(email=email).exists():
+                messages.error(
+                    request, ('This email is already registered. Please use a different email.'))
+                return redirect('index')
+
+            if remaining_slots > 0:
+                user_signup = form.save(commit=False)
+                user_signup.consent = form.cleaned_data.get('consent')
+                user_signup.ticket_number = str(uuid.uuid4())[:8]
+                user_signup.save()
+
+                first_name = form.cleaned_data.get('first_name')
+                last_name = form.cleaned_data.get('last_name')
+                email = form.cleaned_data.get('email')
+                consent = user_signup.consent
+                ticket_number = user_signup.ticket_number
+                short_ticket_number = ticket_number[:8]
+
+                print(
+                    f"\n\n++++++SIGNUP DETAILS START+++++\n\nTicket Number: {ticket_number}\n{first_name} {last_name} registered with {email}\nConsent: {consent}\nShort Ticket No: #{short_ticket_number}\n\n++++++SIGNUP DETAILS END+++++\n\n")
+
+                # Send email with inline logo
+                send_email_with_inline_logo(
+                    email, first_name, short_ticket_number)
+
+                messages.success(
+                    request, (f"Hey {first_name}! Your Amapiano Workshop Registration Was Successful! Check your email for the ticket and event details."))
+                return redirect('index')
+            else:
+                form.save()
+                messages.error(
+                    request, ('Sorry, all slots have been filled.'))
+                return redirect('index')
         else:
             form = AmapianoSignUpForm()
 
     context = {
-        'page_name': page_name,
+        'title_tag': title_tag,
         'form': form,
+        'remaining_slots': remaining_slots,
     }
-    return render(request, 'amapiano.html', context)
 
+    return render(request, 'amapiano.html', context)
+# Amapiano Workshop Signup Logic End
 
 # ACCOUNT
+
+
 @login_required(login_url='login')
 def account_settings(request):
     blogs = Blog.objects.order_by('-pk')
@@ -912,7 +1012,7 @@ def account_settings(request):
     customer = request.user.customer
     form = CustomerForm(instance=customer)
 
-    page_name = f"- Account Settings"
+    title_tag = f"- Account Settings"
     if request.method == 'POST':
         form = CustomerForm(request.POST, request.FILES, instance=customer)
         if form.is_valid():
@@ -928,10 +1028,68 @@ def account_settings(request):
     context = {
         'shippings': shippings,
         'cartItems': cartItems,
-        'page_name': page_name,
+        'title_tag': title_tag,
         'blogs': blogs,
         'brands': brands,
         'form': form,
     }
 
     return render(request, 'account_settings.html', context)
+
+
+# Stock Logic Start
+def view_stock(request, slug):
+    stock = Stock.objects.get(slug=slug)
+    return HttpResponseRedirect(reverse('dashboard'))
+
+
+def edit_stock(request, slug):
+    stock = get_object_or_404(Stock, slug=slug)
+
+    if request.method == 'POST':
+        form = StockForm(request.POST, request.FILES, instance=stock)
+        if form.is_valid():
+            form.save()
+            return render(request, 'edit_stock.html', {
+                'form': form,
+                'success': True
+            })
+        else:
+            print("Errors occurred while uploading: ", form.errors)
+    else:
+        form = StockForm(instance=stock)
+
+    return render(request, 'edit_stock.html', {
+        'form': form,
+    })
+
+
+def delete_stock(request, slug):
+    if request.method == 'POST':
+        stock = Stock.objects.get(slug=slug)
+        stock.delete()
+    return HttpResponseRedirect(reverse('dashboard'))
+
+
+def add_stock(request):
+    if request.method == 'POST':
+        form = StockForm(request.POST)
+        if form.is_valid():
+            # new_title = form.cleaned_data['title']
+            new_stock = Stock(
+                # title=new_title,
+
+            )
+
+            new_stock.save()
+            return render(request, 'add_stock.html', {
+                'form': StockForm(),
+                'success': True
+            })
+    else:
+        form = StockForm()
+    return render(request, 'add_stock.html', {
+        'form': StockForm()
+    })
+
+# Stock Logic End

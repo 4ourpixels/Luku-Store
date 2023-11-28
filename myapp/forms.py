@@ -135,20 +135,29 @@ class WatermarkColorForm(forms.Form):
 
 # Stocks Form Start
 
+
 class StockForm(forms.ModelForm):
     class Meta:
         model = Stock
-        fields = ('__all__')
-
-        def __init__(self, *args, **kwagrs):
-            super(CustomerForm, self).__init__(*args, **kwagrs)
-            self.fields['brand'].widget.attrs['class'] = 'form-control'
-            self.fields['type'].widget.attrs['class'] = 'form-control'
-            self.fields['target'].widget.attrs['class'] = 'form-control'
-            self.fields['item'].widget.attrs['class'] = 'form-control'
-            self.fields['amount_f'].widget.attrs['class'] = 'form-control'
-            self.fields['amount_t'].widget.attrs['class'] = 'form-control'
-            self.fields['selling_price'].widget.attrs['class'] = 'form-control'
-            self.fields['total_cost'].widget.attrs['class'] = 'form-control'
-            self.fields['possible_best_seller'].widget.attrs['class'] = 'form-control'
+        fields = '__all__'
+        widgets = {
+            'brand': forms.Select(attrs={'class': 'form-control'}),
+            'type': forms.Select(attrs={'class': 'form-control'}),
+            'target': forms.Select(attrs={'class': 'form-control'}),
+            'item': forms.TextInput(attrs={'class': 'form-control'}),
+            'amount_f': forms.NumberInput(attrs={'class': 'form-control'}),
+            'amount_t': forms.NumberInput(attrs={'class': 'form-control'}),
+            'buying_price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'selling_price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'total_cost': forms.NumberInput(attrs={'class': 'form-control'}),
+            'possible_best_seller': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'size': forms.TextInput(attrs={'class': 'form-control'}),
+            'color': forms.TextInput(attrs={'class': 'form-control'}),
+            'online': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'similar_products_codes': forms.TextInput(attrs={'class': 'form-control'}),
+            'image_original_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'image_large_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'image_medium_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'image_thumbnail_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
 # Stocks Form End
