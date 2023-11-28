@@ -1,30 +1,47 @@
 {% extends 'base.html' %} {% load static %} {% block body %}
-<div style="padding-top: 7rem" class="container">
+<div class="container-fluid py-5 bg-light">
   <div class="row">
     <h3 class="text-center mb-4">Update Stock</h3>
     {% if success %}
-    <div class="alert alert-success pb-5 tetx-center" role="alert">
-      The stock updated successfully.
-      <a href="{% url 'dashboard' %}" class="alert-link">Back To Dashboard.</a>
+    <div
+      class="alert alert-success pb-5 my-5 display-6 text-center"
+      role="alert"
+    >
+      The stock updated successfully <i class="fa-solid fa-square-check"></i
+      ><br /><br />
+      <a href="{% url 'dashboard' %}" class="alert-link"
+        ><i class="fa-solid fa-reply"></i> Back To Dashboard.</a
+      >
     </div>
     {% else %}
-    <div class="row justify-content-center">
-      <div class="col-8">
-        <div class="card bg-light mb-3">
-          <div class="card-header">
-            <i class="fa-solid fa-oen-to-square fa-lg"></i> Update Stock
-          </div>
-          <div class="card-body container">
+    <div class="row justify-content-center align-items-start">
+      <div class="col-sm-12 col-lg-6">
+        {% if stock.image_original_size.url %}
+        <img
+          src="{{ stock.image_original_size.url }}"
+          alt="{{ stock.item }}'s Image"
+          class="img-fluid rounded"
+        />
+        {% else %}
+        <img
+          src="{% static 'images/lukustorenl-banner.jpg' %}"
+          alt="{{ stock.item }}'s Image"
+          class="img-fluid rounded"
+        />
+        {% endif %}
+      </div>
+      <div class="col-lg-6 col-sm-12">
+        <div class="card shadow border-0 p-5 mb-3">
+          <div class="card-body">
             <form method="POST" enctype="multipart/form-data">
+              <h4 class="mb-3">Details</h4>
               {% csrf_token %} {{ form.as_p }}
-              <div class="btn-group w-50">
-                <button type="submit" class="btn btn-lg me-5 btn-primary">
-                  Save
-                </button>
-                <a href="{% url 'dashboard' %}" class="btn btn-lg btn-secondary"
-                  >Cancel</a
-                >
-              </div>
+              <button type="submit" class="btn me-2 btn-dark">
+                <i class="fa-solid fa-floppy-disk"></i> Save
+              </button>
+              <a href="{% url 'dashboard' %}" class="btn btn-outline-dark"
+                ><i class="fa-solid fa-reply"></i> Back</a
+              >
             </form>
           </div>
         </div>

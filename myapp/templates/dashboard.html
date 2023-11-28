@@ -1,5 +1,5 @@
 {% extends 'base.html' %}{% load static %}{% block body %}{% load humanize %}
-<div class="container mb-5">
+<div class="container-fluid mb-5">
   <h1 class="text-center display-6 my-5 border-bottom pb-5 fw-bold">
     <i class="fas fa-table me-1"></i>
     LukuStore Estimate Stock September 2023
@@ -63,10 +63,14 @@
             <tr>
               <th class="col">#ls0{{ stock.pk }}</th>
               <th>
-                {% if stock.image_original_size %}
+                {% if stock.image_original_size.url %}
                 <img src="{{ stock.image_original_size.url }}" height="150px" />
                 {% else %}
-                <img alt="No image" class="img-fluid" />
+                <img
+                  src="{% static 'images/lukustorenl-banner.jpg' %}"
+                  alt="{{ stock.item }}'s Image"
+                  class="img-fluid rounded"
+                />
                 {% endif %}
               </th>
               <th>
@@ -98,9 +102,7 @@
                   aria-labelledby="myModal{{ stock.id }}Label1"
                   aria-hidden="true"
                 >
-                  <div
-                    class="modal-dialog modal-dialog-center modal-fullscreen-sm-down"
-                  >
+                  <div class="modal-dialog modal-dialog-center modal-xl">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h1
@@ -125,14 +127,15 @@
                               {% if stock.image_original_size %}
                               <img
                                 src="{{ stock.image_original_size.url }}"
-                                height="150px"
+                                class="img-fluid"
+                                style="height: 75vh"
                               />
                               {% else %}
-                              <img alt="No image" class="img-fluid" />
-                              {% endif %} {% if stock.online %}
-                              <h4 class="badge bg-success mt-3">Online</h4>
-                              {% else %}
-                              <h4 class="badge bg-danger mt-3">Offline</h4>
+                              <img
+                                src="{% static 'images/lukustorenl-banner.jpg' %}"
+                                alt="{{ stock.item }}'s Image"
+                                class="img-fluid rounded"
+                              />
                               {% endif %}
                             </div>
                             <div class="col-sm-16 col-md-6">
@@ -151,6 +154,11 @@
                               </h6>
                               <h6>Size: {{ stock.size }}</h6>
                               <h6>Color: {{ stock.color }}</h6>
+                              {% if stock.online %}
+                              <h4 class="badge bg-success mt-3">Online</h4>
+                              {% else %}
+                              <h4 class="badge bg-danger mt-3">Offline</h4>
+                              {% endif %}
                             </div>
                           </div>
                         </div>
@@ -158,12 +166,12 @@
                       <div class="modal-footer">
                         <a
                           href="{% url 'edit_stock' slug=stock.slug %}"
-                          class="btn btn-dark me-2"
+                          class="btn btn-outline-dark me-2"
                           >Update</a
                         >
                         <button
                           type="button"
-                          class="btn btn-primary"
+                          class="btn btn-dark"
                           data-bs-dismiss="modal"
                         >
                           Close
@@ -191,89 +199,6 @@
               {% else %}
               <th class="badge bg-danger rounded-pill">Offline</th>
               {% endif %}
-              <!-- View Stock Start -->
-              <!-- <th> -->
-              <!-- <button
-                  type="button"
-                  class="btn btn-secondary me-1"
-                  href="{% url 'view_stock' slug=stock.slug %}"
-                  data-bs-toggle="modal"
-                  data-bs-target="#myModal{{ stock.id }}"
-                >
-                  <i class="fa-regular fa-folder-open"></i>
-                </button> -->
-
-              <!-- Modal - View Stock Modal -->
-              <!-- <div
-                  class="modal fade"
-                  id="myModal{{ stock.id }}"
-                  tabindex="-1"
-                  aria-labelledby="myModal{{ stock.id }}Label1"
-                  aria-hidden="true"
-                >
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1
-                          class="modal-title fs-5"
-                          id="myModal{{ stock.id }}Label1"
-                        >
-                          {{ stock.item }}
-                        </h1>
-                        <button
-                          type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"
-                        ></button>
-                      </div>
-                      <div class="modal-body">
-                        <ul class="list-unstyled text-dark">
-                          <li>Brand: {{ stock.brand }}</li>
-                          <li class="fw-bold mt-3">Type: {{ stock.type }}</li>
-                          <li class="fw-bold mt-3">
-                            Target: {{ stock.target }}
-                          </li>
-                          <li class="fw-bold mt-3">
-                            Amount (F): {{ stock.amount_f }}
-                          </li>
-                          <li class="fw-bold mt-3">
-                            Amount (T) {{ stock.amount_t }}
-                          </li>
-                          <li class="fw-bold mt-3">
-                            Buying Price: {{ stock.buying_price }}
-                          </li>
-                          <li class="fw-bold mt-3">
-                            Selling Price: {{ stock.selling_price }}
-                          </li>
-                          <li class="fw-bold mt-3">
-                            Total Cost: {{ stock.total_cost }}
-                          </li>
-                          {% if stock.possible_best_seller %}
-                          <li class="fw-bold text-success mt-3">
-                            Possible Best Seller
-                          </li>
-                          {% else %}
-                          <li class="fw-bold text-danger mt-3">
-                            Possible Less Seller
-                          </li>
-                          {% endif %}
-                        </ul>
-                      </div>
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn btn-primary"
-                          data-bs-dismiss="modal"
-                        >
-                          Close
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-              <!-- </th> -->
-              <!-- View Stock End -->
 
               <!-- Delete Stock Start -->
               <th>
