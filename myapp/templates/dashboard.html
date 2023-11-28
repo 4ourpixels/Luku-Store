@@ -63,7 +63,11 @@
             <tr>
               <th class="col">#ls0{{ stock.pk }}</th>
               <th>
+                {% if stock.image_original_size %}
                 <img src="{{ stock.image_original_size.url }}" height="150px" />
+                {% else %}
+                <img alt="No image" class="img-fluid" />
+                {% endif %}
               </th>
               <th>
                 <button
@@ -118,12 +122,14 @@
                             class="row justify-content-center align-items-start"
                           >
                             <div class="col-sm-16 col-md-6">
+                              {% if stock.image_original_size %}
                               <img
                                 src="{{ stock.image_original_size.url }}"
-                                alt="{{ stock.item }}'s Image"
-                                class="img-fluid"
+                                height="150px"
                               />
-                              {% if stock.online %}
+                              {% else %}
+                              <img alt="No image" class="img-fluid" />
+                              {% endif %} {% if stock.online %}
                               <h4 class="badge bg-success mt-3">Online</h4>
                               {% else %}
                               <h4 class="badge bg-danger mt-3">Offline</h4>
