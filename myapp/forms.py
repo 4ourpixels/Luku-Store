@@ -140,6 +140,7 @@ class StockForm(forms.ModelForm):
     class Meta:
         model = Stock
         fields = '__all__'
+        exclude = ['product_code', 'slug']
         widgets = {
             'brand': forms.Select(attrs={'class': 'form-control'}),
             'type': forms.Select(attrs={'class': 'form-control'}),

@@ -1061,6 +1061,7 @@ def edit_stock(request, slug):
 
     return render(request, 'edit_stock.html', {
         'form': form,
+        'stock': stock,
     })
 
 
