@@ -7,71 +7,167 @@
   </h1>
   <div
     class="table-responsive table"
-    style="max-height: 500px; overflow-y: auto; overflow-x: auto"
+    style="max-height: 550px; overflow-y: auto; overflow-x: auto"
   >
     <div class="row justify-content-center align-items-center">
       <div class="col">
         <table
-          class="table table-responsive overflow-scroll border shadow table-hover table-striped-columns"
+          class="table rounded-table table-responsive overflow-scroll border shadow table-striped-columns"
         >
           <thead
             style="
               top: 0;
               position: sticky;
-              background-color: black;
+              background-color: rgb(86, 130, 65);
               color: #fff;
             "
           >
             <tr>
-              <th>Code</th>
-              <th class="text-white">Brand</th>
-              <th>Type</th>
-              <th class="text-white">Target</th>
-              <th>Item</th>
-              <th class="text-white">Amount (F)</th>
+              <th>Product Code</th>
+              <th>Image</th>
+              <th>Stock Item</th>
+              <th>Target</th>
+              <th>Amount (F)</th>
               <th>Amount (T)</th>
-              <th class="text-white">Buying Price</th>
+              <th>Buying Price</th>
               <th>Selling Price</th>
-              <th class="text-white">Total Cost (ksh)</th>
+              <th>Total Cost</th>
               <th>Status</th>
-              <th class="text-white">View</th>
-              <th>Update</th>
-              <th class="text-white">Delete</th>
-              <th>Size</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tfoot
             style="
               bottom: 0;
               position: sticky;
-              background-color: black;
+              background-color: rgb(86, 130, 65);
               color: #fff;
             "
           >
             <tr>
-              <th>Code</th>
-              <th class="text-white">Brand</th>
-              <th>Type</th>
+              <th>Product Code</th>
+              <th>Image</th>
+              <th>Stock Item</th>
               <th class="text-white">Target</th>
-              <th>Item</th>
               <th class="text-white">{{ total_pieces }}</th>
               <th>{{ total_amount_T }}</th>
               <th class="text-white">€{{ total_consigment }}</th>
               <th>Price 0</th>
               <th class="text-white">{{ grand_total_cost }}</th>
               <th class="text-white">Status</th>
-              <th class="text-white">View</th>
-              <th class="text-white">Update</th>
               <th class="text-white">Delete</th>
-              <th class="text-white">Size</th>
             </tr>
           </tfoot>
           <tbody>
             {% for stock in stocks %}
             <tr>
               <th class="col">#ls0{{ stock.pk }}</th>
-              <th>{{ stock.brand }}</th>
-              <th>{{ stock.type }}</th>
+              <th>
+                <img src="{{ stock.image_original_size.url }}" height="150px" />
+              </th>
+              <th>
+                <button
+                  type="button"
+                  class="view_stock_btn"
+                  href="{% url 'view_stock' slug=stock.slug %}"
+                  data-bs-toggle="modal"
+                  data-bs-target="#myModal{{ stock.id }}"
+                >
+                  {{ stock.item }}</button
+                ><br />
+                <br />
+                <span style="font-weight: 400; font-size: 0.9rem"
+                  >Brand: {{ stock.brand }}</span
+                ><br />
+                <span style="font-weight: 400; font-size: 0.9rem"
+                  >Type: {{ stock.type }}</span
+                ><br />
+                <span style="font-weight: 400; font-size: 0.9rem"
+                  >Sizes: {{ stock.size }}</span
+                >
+
+                <!-- View Stock Modal 2 Start -->
+                <div
+                  class="modal fade"
+                  id="myModal{{ stock.id }}"
+                  tabindex="-1"
+                  aria-labelledby="myModal{{ stock.id }}Label1"
+                  aria-hidden="true"
+                >
+                  <div
+                    class="modal-dialog modal-dialog-center modal-fullscreen-sm-down"
+                  >
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1
+                          class="modal-title fs-5"
+                          id="myModal{{ stock.id }}Label1"
+                        >
+                          {{ stock.item }}
+                        </h1>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="container">
+                          <div
+                            class="row justify-content-center align-items-start"
+                          >
+                            <div class="col-sm-16 col-md-6">
+                              <img
+                                src="{{ stock.image_original_size.url }}"
+                                alt="{{ stock.item }}'s Image"
+                                class="img-fluid"
+                              />
+                              {% if stock.online %}
+                              <h4 class="badge bg-success mt-3">Online</h4>
+                              {% else %}
+                              <h4 class="badge bg-danger mt-3">Offline</h4>
+                              {% endif %}
+                            </div>
+                            <div class="col-sm-16 col-md-6">
+                              <h5 class="mb-3">{{ stock.item }}</h5>
+                              <h6>Brand: {{ stock.brand }}</h6>
+                              <h6>Type: {{ stock.type }}</h6>
+                              <h6>Target: {{ stock.target }}</h6>
+                              <h6>Target: {{ stock.target }}</h6>
+                              <h6>Amount_F: {{ stock.amount_f }}</h6>
+                              <h6>Amount_T: {{ stock.amount_t }}</h6>
+                              <h6>Buying Price: € {{ stock.buying_price }}</h6>
+                              <h6>Selling Price: {{ stock.selling_price }}</h6>
+                              <h6>Total Cost: Ksh {{ stock.total_cost }}/=</h6>
+                              <h6>
+                                Best Seller: {{ stock.possible_best_seller }}
+                              </h6>
+                              <h6>Size: {{ stock.size }}</h6>
+                              <h6>Color: {{ stock.color }}</h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <a
+                          href="{% url 'edit_stock' slug=stock.slug %}"
+                          class="btn btn-dark me-2"
+                          >Update</a
+                        >
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-bs-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- View Stock Modal 2 End -->
+              </th>
               {% if stock.target_display == 'M' %}
               <th>M</th>
               {% elif stock.target_display == "F" %}
@@ -79,7 +175,6 @@
               {% else %}
               <th>U</th>
               {% endif %}
-              <th>{{ stock.item }}</th>
               <th>{{ stock.amount_f }}</th>
               <th>{{ stock.amount_t }}</th>
               <th>€{{ stock.buying_price }}</th>
@@ -91,8 +186,8 @@
               <th class="badge bg-danger rounded-pill">Offline</th>
               {% endif %}
               <!-- View Stock Start -->
-              <th>
-                <button
+              <!-- <th> -->
+              <!-- <button
                   type="button"
                   class="btn btn-secondary me-1"
                   href="{% url 'view_stock' slug=stock.slug %}"
@@ -100,10 +195,10 @@
                   data-bs-target="#myModal{{ stock.id }}"
                 >
                   <i class="fa-regular fa-folder-open"></i>
-                </button>
+                </button> -->
 
-                <!-- Modal - View Stock Modal -->
-                <div
+              <!-- Modal - View Stock Modal -->
+              <!-- <div
                   class="modal fade"
                   id="myModal{{ stock.id }}"
                   tabindex="-1"
@@ -170,19 +265,9 @@
                       </div>
                     </div>
                   </div>
-                </div>
-              </th>
+                </div> -->
+              <!-- </th> -->
               <!-- View Stock End -->
-
-              <!-- Edit Stock Start -->
-              <th>
-                <a
-                  href="{% url 'edit_stock' slug=stock.slug %}"
-                  class="btn btn-warning me-1"
-                  ><i class="fa-solid fa-pen-to-square"></i
-                ></a>
-              </th>
-              <!-- Edit Stock End -->
 
               <!-- Delete Stock Start -->
               <th>
@@ -204,7 +289,7 @@
                   aria-labelledby="myModal{{ stock.id }}Label2"
                   aria-hidden="true"
                 >
-                  <div class="modal-dialog">
+                  <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h1
@@ -250,7 +335,6 @@
                 <!-- Modal - Delete Stock Modal End -->
               </th>
               <!-- Delete Stock End -->
-              <th>{{ stock.size }}</th>
             </tr>
             {% endfor %}
           </tbody>
@@ -349,7 +433,7 @@
   <div class="row justify-items-center">
     <div class="col-md-8 col-sm-12">
       <table
-        class="table table-responsive overflow-scroll border shadow table-hover table-striped-columns"
+        class="table table-responsive overflow-scroll border shadow table-striped-columns"
       >
         <thead class="bg-black">
           <tr>

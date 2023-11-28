@@ -220,6 +220,11 @@
                   class="dropdown-menu dropdown px-3"
                   aria-labelledby="dropdownBlogsLink"
                 >
+                  <li class="border-bottom">
+                    <a class="fw-bold underline" href="{% url 'blog_list' %}"
+                      >All Blogs</a
+                    >
+                  </li>
                   {% for blog in blogs %}
                   <li class="border-bottom">
                     <a
