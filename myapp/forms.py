@@ -155,6 +155,7 @@ class StockForm(forms.ModelForm):
             'size': forms.TextInput(attrs={'class': 'form-control'}),
             'color': forms.TextInput(attrs={'class': 'form-control'}),
             'online': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'priority': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'similar_products_codes': forms.TextInput(attrs={'class': 'form-control'}),
             'image_original_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'image_large_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
