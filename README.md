@@ -1,8 +1,14 @@
-Lukustore.nl is an online clothing store based in Netherlands that offers stylish and affordable clothes for young men and women. They import clothes from local designers in Kenya, Africa and curate the best pieces for customers in the Netherlands.
+🎨 As a Visual Identity Designer, I had the privilege to collaborate with this amazing brand! Luku Store.nl is the ultimate destination for chic and accessible streetwear inspired by the vibrant culture of Kenya, Africa. 🌍💃
 
-UI/UX: Photoshop, Illustrator, Figma. || Fronted: CSS, HTML, JavaScript. || Backend: Python, PHP. || Database: MYSQL. || Frameworks: Django, Bootstrap. || Libraries: Chart.js || File Storage: AWS, Google Drive.
+✨ We've poured our creative hearts into every pixel of their website and design assets, bringing you a unique online shopping experience that's both visually stunning and culturally rich.
 
-Langing Page
+👗 From trendy clothing sourced directly from Kenyan designers to captivating blog posts that share the stories behind the fashion, Luku Store is all about celebrating diversity through style.
+
+🛒 Shop now at lukustore.nl and be part of a community that appreciates fashion as a bridge to different cultures! 🌈
+
+UI/UX: Photoshop, Illustrator, Figma. || Frontend: CSS, HTML, JavaScript. || Backend: Python (Django), NGINX. || Database: SQL. || Libraries: Bootstrap, Chart.js || File Storage: Amazon S3 Bucket.
+
+Landing Page
 
 <img width="1263" alt="luku_store_landing_page_screenshot" src="https://github.com/4ourpixels/Luku-Store/assets/121856163/96e5d1aa-5db4-46d3-b238-f3bbe093f78d">
 
