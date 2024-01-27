@@ -163,3 +163,16 @@ class StockForm(forms.ModelForm):
             'image_thumbnail_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 # Stocks Form End
+
+
+class ProductCheckoutForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ["size", "color"]
+
+        def __init__(self, *args, **kwagrs):
+            super(ProductCheckoutForm, self).__init__(*args, **kwagrs)
+
+            self.fields['size'].widget.attrs['class'] = 'form-control'
+            self.fields['color'].widget.attrs['class'] = 'form-control'
+
