@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% load static %} {% block body %}
+<main class="container p-5 rounded border">
+  <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb m-auto">
+      <li class="breadcrumb-item">
+        <a class="text-dark underline" href="{% url 'index' %}">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'account' %}" class="text-dark underline">Account</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a class="text-dark underline" href="{% url 'account_settings' %}"
+          >Settings</a
+        >
+      </li>
+      <li class="breadcrumb-item">
+        <a class="text-dark underline" href="{% url 'logout' %}">Logout</a>
+      </li>
+    </ol>
+  </nav>
+
+  <section class="row justify-content-center mt-5">
+    <div class="text-center mb-4">
+      {% if user.customer.profile_pic %}
+      <img
+        src="{{ user.customer.profile_pic.url }}"
+        alt="{{ request.user.username }}' Image"
+        style="max-height: 300px"
+        class="img-fluid rounded"
+      />
+      {% endif %}
+
+      <form
+        class="px-4 form-control-lg needs-validation"
+        method="POST"
+        enctype="multipart/form-data"
+        action="{% url 'account_settings' %}"
+        novalidate
+      >
+        {% csrf_token %}
+        <div class="row">
+          {% for field in form %}
+          <div class="form-style mb-3">
+            {{ field }}
+            <div class="invalid-feedback">{{ field.errors }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="col text-center">
+          <input type="submit" name="Update Information" class="btn btn-dark" />
+          <a class="btn btn-outline-dark" href="{% url 'account' %}">Close</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<script>
+  var profilePicture = document.getElementById("profile_pic-clear_id");
+  if (profilePicture) {
+    profilePicture.classList += "form-check-input";
+  }
+</script>
+{% endblock %}

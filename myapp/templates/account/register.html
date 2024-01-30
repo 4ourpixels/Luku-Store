@@ -1,0 +1,79 @@
+{% extends 'base.html' %} {% load static %} {% block body %}
+<main class="container-fluid">
+  {% if form.errors %}
+  <section class="row">
+    <div
+      class="alert alert-warning alert-dismissable fade show w-100 text-center"
+      role="alert"
+    >
+      <h6 class="text-center">
+        {{ form.errors }}
+        <span
+          ><button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button
+        ></span>
+      </h6>
+    </div>
+  </section>
+  {% endif %}
+  <section class="container my-5">
+    <div class="row justify-content-center align-items-center text-center">
+      <article class="col-sm-12 col-md-4">
+        <h3 class="mb-3">Register Account</h3>
+        <form method="POST" action="{% url 'register' %}">
+          {% csrf_token %}
+          <h6>{{ form.non_field_errors }}</h6>
+          {% for field in form %}
+          <div class="form-group mb-3">{{ field }}</div>
+          {% endfor %}
+          <button
+            type="submit"
+            class="btn mt-3 btn-dark"
+            value="Register Account"
+          >
+            Register Account
+          </button>
+          <p class="small mt-3">
+            Already have an account?
+            <a href="{% url 'login' %}" class="underline text-dark fw-bold"
+              >Log In</a
+            >
+          </p>
+        </form>
+      </article>
+      <article class="col-sm-12 col-md-6">
+        <img
+          src="{% static 'images/svg/undraw_two_factor_authentication_namy.svg' %}"
+          alt=""
+          class="img-fluid"
+        />
+      </article>
+    </div>
+  </section>
+</main>
+<script>
+  var firstName = document.getElementById("id_first_name");
+  var lastName = document.getElementById("id_last_name");
+  var username = document.getElementById("id_username");
+  var email = document.getElementById("id_email");
+  var password1 = document.getElementById("id_password1");
+  var password2 = document.getElementById("id_password2");
+
+  firstName.placeholder = "First Name";
+  firstName.classList += "form-control";
+  lastName.placeholder = "Last Name";
+  lastName.classList += "form-control";
+  username.placeholder = "Username";
+  username.classList += "form-control";
+  email.placeholder = "Email";
+  email.classList += "form-control";
+  password1.placeholder = "Password";
+  password1.classList += "form-control";
+  password2.placeholder = "Confirm password";
+  password2.classList += "form-control";
+</script>
+{% endblock %}
