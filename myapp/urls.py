@@ -1,41 +1,52 @@
 from django.urls import path
+from blog.views import add_blog
+from .checkout import updateItem, processOrder, confirmed
+from .event import event_signup
+from .dashboard import dashboard
+from .newsletter import newsletter
+from .account import account, account_settings, loginPage, logoutUser, registerPage
+from .product import view_product, edit_product, delete_product, add_product_photo, allProductPhotos, viewProductPhoto, viewProductVideo, handle_order
 from .import views
-from django.conf import settings
-from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('shop/', views.shop, name='shop'),
-    path('blog/', views.blog_list, name='blog_list'),
-    path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
-    path('lukufam/', views.lukufam, name='lukufam'),
-    path('account/', views.account, name='account'),
-    path('settings/', views.account_settings, name='account_settings'),
-    path('login/', views.loginPage, name='login'),
-    path('logout/', views.logoutUser, name='logout'),
-    path('register/', views.registerPage, name='register'),
+    path('lukufam/', views.about, name='about'),
+    path('account/', account, name='account'),
+    path('settings/', account_settings, name='account_settings'),
+    path('login/', loginPage, name='login'),
+    path('logout/', logoutUser, name='logout'),
+    path('add-blog/', add_blog, name='add_blog'),
+    path('register/', registerPage, name='register'),
     path('cart/', views.cart, name='cart'),
-    path('confirmed/', views.confirmed, name='confirmed'),
+    path('confirmed/', confirmed, name='confirmed'),
     path('checkout/', views.checkout, name='checkout'),
-    path('newsletter/', views.newsletter, name='newsletter'),
+    path('newsletter/', newsletter, name='newsletter'),
     path('help/', views.help, name='help'),
-    path('updateItem/', views.updateItem, name='updateItem'),
-    path('processOrder/', views.processOrder, name='processOrder'),
+    path('updateItem/', updateItem, name='updateItem'),
+    path('processOrder/', processOrder, name='processOrder'),
     path('music/', views.music, name='music'),
     path('music/mix/DJ-G400/<slug:slug>/',
          views.music_player, name='music_player'),
-    path('gallery/', views.gallery, name='gallery'),
-    path('photo/<str:pk>/', views.viewPhoto, name='photo'),
     path('brands/', views.brand_list, name='brand_list'),
     path('brand/<slug:slug>/', views.brand_detail, name='brand_detail'),
-    path('shop/<slug:slug>/', views.view_product, name='view_product'),
     path('404/', views.error404, name='error404'),
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/', dashboard, name='dashboard'),
     path('amapiano/', views.amapiano_workshop_signup,
          name='amapiano_workshop_signup'),
-    path('<slug:slug>', views.view_stock, name='view_stock'),
-    path('edit_stock/<slug:slug>/', views.edit_stock, name='edit_stock'),
-    path('delete_stock/<slug:slug>/', views.delete_stock, name='delete_stock'),
-    path('add_stock/', views.add_stock, name='add_stock'),
+    path('shop/<slug:slug>/', view_product, name='view_product'),
+    path('edit_product/<slug:slug>/', edit_product, name='edit_product'),
+    path('delete_product/<slug:slug>/',
+         delete_product, name='delete_product'),
+    path('add_product_photo/', add_product_photo, name='add_product_photo'),
+    path('event/Spectra-Talks-with-Luku-Store-nl-and-WhoWhatWhereKE/',
+         views.spectra_talks_signup, name='spectra_talks_signup'),
+    path('all-product-photos/', allProductPhotos, name='allProductPhotos'),
+    path('view-product-photo/<int:pk>',
+         viewProductPhoto, name='viewProductPhoto'),
+    path('view-product-video/<int:pk>',
+         viewProductVideo, name='viewProductVideo'),
+    path('search/', views.search_result, name='search_result'),
+    path('Luku-Radio-Vol-02/', event_signup, name='event_signup'),
+    path('handle_order/', handle_order, name='handle_order'),
 ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

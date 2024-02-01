@@ -1,48 +1,28 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-import json
-import datetime
 from .models import *
 from .forms import *
-from . utils import cartData, guestOrder
-from django.db.models import Q
+from .email import send_email_with_inline_logo
+from .utils import cartData
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-
-# Email Logic
-from django.core.mail import send_mail, EmailMessage
-from django.conf import settings
-
-# Amapiano Slots Logic
-from django.db.models import Count
-from django.http import JsonResponse
+from django.db.models import Q
+from blog.models import BlogPost
 import uuid
-import os
+from django.views.decorators.csrf import csrf_exempt
+from .mollie_integration import create_payment
+blogs = BlogPost.objects.filter(is_published=True).order_by('-pk')
 
-# History Logic Start
-from django.contrib.admin.models import LogEntry
-# History Logic End
 # ABOUT US
 
 
-def lukufam(request):
-    title_tag = f"- About Us"
-
+def about(request):
     data = cartData(request)
     cartItems = data['cartItems']
-
     object = AboutUs.objects.all()
-    blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
-
     kendy = object[0]
     djg400 = object[1]
     fkinyash = object[2]
     tarela = object[3]
-
     if request.method == 'POST':
         email = request.POST.get('email')
         name = request.POST.get('name')
@@ -53,37 +33,32 @@ def lukufam(request):
             message=message,
         )
         contact.save()
-        return redirect('lukufam')
-
+        return redirect('about')
     context = {
-        'kendy': kendy,
-        'djg400': djg400,
+        'title_tag': "Luku Fam | About Us",
         'fkinyash': fkinyash,
+        'kendy': kendy,
         'tarela': tarela,
-        'title_tag': title_tag,
+        'djg400': djg400,
         'cartItems': cartItems,
         'blogs': blogs,
         'brands': brands
     }
 
-    return render(request, 'lukufam.html', context)
+    return render(request, 'about.html', context)
 # END OF ABOUT US
 
 # HELP SECTION - DONE
 
 
 def help(request):
-    title_tag = f"- Help"
-
     data = cartData(request)
     cartItems = data['cartItems']
-    blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
-
     help = Help.objects.first()
     context = {
+        'title_tag': "Help",
         'help': help,
-        'title_tag': title_tag,
         'cartItems': cartItems,
         'blogs': blogs,
         'brands': brands,
@@ -93,15 +68,14 @@ def help(request):
 
 
 def index(request):
-    title_tag = "- Home of Afro Streetwear Culture | Online Clothing Store"
+    title_tag = "Home of Afro Streetwear Culture | Online Clothing Store"
     meta_description = "Immerse yourself in the rich tapestry of Kenyan culture with Luku Store.nl. Explore our latest blogs, diverse brands, new collections, and visually stunning images. Shop unique, handmade fashion that tells a story. Join our community of socially-conscious shoppers and experience the vibrancy of Kenyan style here in Amsterdam."
     meta_keywords = "Kenyan Culture, Fashion Blog, Unique Brands, New Collections, Vibrant Images, Streetwear, Handmade Clothing, Socially-conscious Shopping, Afro, Luku Store.nl, Cultural Fashion, Fashion Community, Online Clothing Store, Netherlands, Amsterdam, Young Men, Young Women, Local Designers, Unique Outfits, Colorful, Independent Clothing Designers, Reasonable Price, Stories Behind Designers."
     photos = Photo.objects.all()
-    blogs = Blog.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     homepages = HomePage.objects.all()
     categories = Category.objects.all()
-    mixes = Mix.objects.all()
+    mixes = Mix.objects.order_by('-pk')[:4]
 
     popular_items = Photo.objects.filter(popular=True)[:4]
 
@@ -144,7 +118,11 @@ def index(request):
     cartItems = data['cartItems']
 
     # Calculate remaining slots
-    remaining_slots = 20 - AmapianoSignUp.objects.count()
+    remaining_slots = 30 - LukuRadioSignup.objects.count()
+
+    bonkerz_nairobi_products = Product.objects.filter(online=True)[:3]
+    bonkerz_nairobi = Brand.objects.get(slug="bonkerz-nrb")
+    bonkerz_nairobi_logo = bonkerz_nairobi.image.url
 
     context = {
         'photos': photos,
@@ -168,37 +146,37 @@ def index(request):
         'asorted_trucker_hats': asorted_trucker_hats,
         'green_trucker_hat': green_trucker_hat,
         'categories': categories,
-
         'popular_items': popular_items,
         'mixes': mixes,
-
         'slider_01': slider_01,
         'slider_02': slider_02,
         'slider_03': slider_03,
-
         'lukubookImage': lukubookImage,
         'red_bucket_hat': red_bucket_hat,
         'kintsugi_top_blue': kintsugi_top_blue,
         'utility_jacket': utility_jacket,
         'kintsugi_flare': kintsugi_flare,
         'trucker_hat': trucker_hat,
-
         'video': video,
         'home_video_2': home_video_2,
         'home_video_3': home_video_3,
         'remaining_slots': remaining_slots,
+        'bonkerz_nairobi_products': bonkerz_nairobi_products,
+        'bonkerz_nairobi_logo': bonkerz_nairobi_logo,
 
     }
     return render(request, 'index.html', context)
 
 
 def shop(request):
-    title_tag = f"- Shop Unique Kenyan Fashion at Luku Store.nl | Accessible and Stylish Clothing"
+    brand = request.GET.get('brand')
+    title_tag = "Shop Unique Kenyan Fashion at Luku Store.nl | Accessible and Stylish Clothing"
     meta_description = "Explore our collection of vibrant and accessible Kenyan fashion at Luku Store.nl. From handcrafted pieces to curated designs, discover the latest trends for unisex, men and women. Make a statement with our socially-conscious clothing. Shipping within Netherlands."
     meta_keywords = "Kenyan Fashion, Accessible Clothing, Stylish Outfits, Online Fashion Store, Handmade Clothes, Curated Designs, Socially-conscious Shopping, Men's Fashion, Women's Fashion, Unisex, Luku Store.nl, Netherlands Fashion, Shipping."
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-    products = Product.objects.order_by('-pk')
+    blogs = BlogPost.objects.order_by('-pk')
+    brands = Brand.objects.order_by('pk')
+    products = Product.objects.all()
+    # products = product.objects.filter(online=True).order_by('-priority')
 
     unique_product_codes = Photo.objects.filter(
         product_code__isnull=False).values_list('product_code', flat=True).distinct()
@@ -214,6 +192,15 @@ def shop(request):
     data = cartData(request)
     cartItems = data['cartItems']
 
+    if brand is not None:
+        products = Product.objects.filter(brand__name=brand, online=True)
+    else:
+        products = Product.objects.filter(online=True)
+
+    sorted_brands = Brand.get_brands_sorted_by_online_product()
+    # sorted_brands = Brand.objects.all()
+    active_brand = request.GET.get('brand', None)
+
     context = {
         'title_tag': title_tag,
         'cartItems': cartItems,
@@ -222,65 +209,22 @@ def shop(request):
         'categories': categories,
         'blogs': blogs,
         'brands': brands,
-        'products': products,
         "meta_description": meta_description,
         'meta_keywords': meta_keywords,
+        'products': products,
+        'sorted_brands': sorted_brands,
+        'active_brand': active_brand,
     }
 
     return render(request, 'shop.html', context)
 
 
-def view_product(request, slug):
-    try:
-        product = get_object_or_404(Product, slug=slug)
-        photos = Photo.objects.filter(product_code=product.product_code)
-
-        similar_products_codes = product.similar_products_codes.split(',')
-        similar_products = Product.objects.filter(
-            Q(product_code__in=similar_products_codes) | Q(
-                name__in=similar_products_codes)
-        )
-
-        data = cartData(request)
-        cartItems = data['cartItems']
-        blogs = Blog.objects.order_by('-pk')
-        brands = Brand.objects.order_by('-pk')
-
-        title_tag = f"- {product.name}"
-
-        context = {
-            'product': product,
-            'cartItems': cartItems,
-            'photos': photos,
-            'title_tag': title_tag,
-            'blogs': blogs,
-            'brands': brands,
-            'similar_products': similar_products,
-        }
-
-        return render(request, 'product.html', context)
-    except Product.DoesNotExist:
-        # Handle the case when the product doesn't exist
-        # You can render a specific template or return an appropriate response
-        return render(request, 'product_not_found.html')
-
-    except Exception as e:
-        # Handle other exceptions
-        title_tag = f'- Error {product.name} was not found'
-        print("Error :", str(e))
-        context = {
-            'error': str(e),
-            'title_tag': title_tag
-        }
-        return render(request, '404.html', context)
 # CART
 
 
 def error404(request):
-    page = "- Error"
-
     context = {
-        'page': page,
+        'title_tag': "Error 404",
     }
     return render(request, '404.html', context)
 
@@ -297,8 +241,8 @@ def cart(request):
         order = {'get_cart_total': 0, 'get_cart_items': 0}
         cartItems = order['get_cart_items']
 
-    title_tag = f"- Cart({cartItems})"
-    blogs = Blog.objects.order_by('-pk')
+    title_tag = f"Cart({cartItems})"
+    blogs = BlogPost.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
 
     data = cartData(request)
@@ -315,7 +259,7 @@ def cart(request):
         'brands': brands,
     }
 
-    return render(request, 'cart.html', context)
+    return render(request, 'checkout/cart.html', context)
 
 # END OF CART
 
@@ -323,8 +267,8 @@ def cart(request):
 
 
 def checkout(request):
-    title_tag = f"- Checkout"
-    blogs = Blog.objects.order_by('-pk')
+    title_tag = "Checkout"
+    blogs = BlogPost.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     # data = cartData(request)
     # cartItems = data['cartItems']
@@ -336,6 +280,9 @@ def checkout(request):
             customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
+        order_amount = order.get_cart_total
+        order_description = f"Order for {order.customer}"
+        # initiate_payment(request, order_amount, order_description)
     else:
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0}
@@ -350,509 +297,63 @@ def checkout(request):
         'brands': brands,
     }
 
-    return render(request, 'checkout.html', context)
+    return render(request, 'checkout/checkout.html', context)
 
 # END OF CHECKOUT
-
-
-def blog_list(request):
-    title_tag = f"- Blogs"
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    context = {
-        'cartItems': cartItems,
-        'blogs': blogs,
-        'brands': brands,
-        'title_tag': title_tag,
-    }
-    return render(request, 'blog_list.html', context)
-
-
-def blog_detail(request, slug):
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-    blog = get_object_or_404(Blog, slug=slug)
-    title_tag = f"- {blog.title}"
-    meta_description = f"- {blog.title}"
-    meta_keywords = f"- {blog.keywords}"
-    keywords = [
-        item.strip()
-        for item in blog.keywords.split(',')
-        if item.strip()
-    ]
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    # Retrieve photos from the category named "SS23"
-    category_ss23 = Category.objects.get(name='SS23')
-    photos_in_ss23_category = Photo.objects.filter(category=category_ss23)
-
-    context = {
-        'blog': blog,
-        'title_tag': title_tag,
-        'blogs': blogs,
-        'cartItems': cartItems,
-        'photos_in_ss23_category': photos_in_ss23_category,
-        'keywords': keywords,
-        'meta_description': meta_description,
-        'meta_keywords': meta_keywords,
-        'brands': brands,
-    }
-    return render(request, 'blog_detail.html', context)
-
 # Brands Start
 
 
 def brand_list(request):
-    title_tag = "- Brands"
-    blogs = Blog.objects.order_by('-pk')
+    blogs = BlogPost.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
-
     data = cartData(request)
     cartItems = data['cartItems']
-
     context = {
+        'title_tag': "Brands",
         'cartItems': cartItems,
         'blogs': blogs,
-        'title_tag': title_tag,
         'brands': brands,
     }
-    return render(request, 'brand_list.html', context)
+    return render(request, 'brands/brand-list.html', context)
 
 
 def brand_detail(request, slug):
     brand = get_object_or_404(Brand, slug=slug)
-    products = Product.objects.order_by('-pk')
-    blogs = Blog.objects.order_by('-pk')
+    blogs = BlogPost.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
-    title_tag = f"- {brand.name}"
+    brand_products = Product.objects.filter(brand=brand).order_by('-priority')
+    products = []
+    for product in brand_products:
+        if product.online:
+            products.append(product)
+
+    filtered_blogs = BlogPost.objects.filter(
+        Q(tag__name__icontains=brand.name) |
+        Q(category__name__icontains=brand.name) |
+        Q(author__username__icontains=brand.name) |
+        Q(content__icontains=brand.name) |
+        Q(title__icontains=brand.name)
+    ).distinct()
 
     data = cartData(request)
     cartItems = data['cartItems']
-
     context = {
+        'title_tag': brand.name,
         'cartItems': cartItems,
-        'blogs': blogs,
-        'title_tag': title_tag,
+        'filtered_blogs': filtered_blogs,
         'brands': brands,
         'brand': brand,
         'products': products,
-    }
-    return render(request, 'brand_detail.html', context)
-
-
-def newsletter(request):
-    title_tag = "- Newsletter"
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    if request.method == 'POST':
-        newsletter_form = NewsletterForm(request.POST)
-        if newsletter_form.is_valid():
-            email = newsletter_form.cleaned_data.get('email')
-            if Newsletter.objects.filter(email=email).exists():
-                messages.info(
-                    request, "Hey superstar, you're already one of our favorites! Keep an eye on your inbox for more amazing content. You're officially ahead of the curve!")
-            else:
-                newsletter_form.save()
-                print(f"{email} subscribed to our newsletter from the homepage!")
-                messages.success(
-                    request, "You just unlocked VIP access to our exclusive updates! Stay tuned for the hottest news and insider tips we've got lined up just for you.")
-            # Get the referring page's URL
-            referer = request.META.get('HTTP_REFERER')
-            return redirect(referer or 'index')
-    else:
-        newsletter_form = NewsletterForm()
-
-    context = {
-        'title_tag': title_tag,
-        'cartItems': cartItems,
         'blogs': blogs,
-        'brands': brands,
-        'newsletter_form': newsletter_form,
     }
-
-    return render(request, 'newsletter.html', context)
-
-# cart update item view
-
-
-def updateItem(request):
-    data = json.loads(request.body)
-    productId = data['productId']
-    action = data['action']
-
-    customer = request.user.customer
-    product = Product.objects.get(pk=productId)
-    order, created = Order.objects.get_or_create(
-        customer=customer, complete=False)
-
-    orderItem, created = OrderItem.objects.get_or_create(
-        order=order, product=product)
-
-    if action == 'add':
-        orderItem.quantity = (orderItem.quantity + 1)
-    elif action == 'remove':
-        orderItem.quantity = (orderItem.quantity - 1)
-
-    orderItem.save()
-
-    if orderItem.quantity <= 0:
-        orderItem.delete()
-
-    return JsonResponse('Item was added', safe=False)
-# end of cart update item view
-
-
-def processOrder(request):
-    transaction_id = datetime.datetime.now().timestamp()
-    data = json.loads(request.body)
-
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(
-            customer=customer, complete=False)
-        if order.shipping == True:
-            ShippingAddress.objects.create(
-                customer=customer,
-                order=order,
-                address=data['shipping']['address'],
-                city=data['shipping']['city'],
-                state=data['shipping']['state'],
-                zipcode=data['shipping']['zipcode'],
-            )
-
-    else:
-        customer, order = guestOrder(request, data)
-
-    total = data['form']['total']
-    order.transaction_id = transaction_id
-
-    if total == order.get_cart_total:
-        order.complete = True
-    order.save()
-
-    if order.shipping == True:
-        ShippingAddress.objects.create(
-            customer=customer,
-            order=order,
-            address=data['shipping']['address'],
-            city=data['shipping']['city'],
-            state=data['shipping']['state'],
-            zipcode=data['shipping']['zipcode'],
-        )
-    messages.success(request, ("Payment Complete!"))
-    return JsonResponse('Payment Complete!', safe=False)
-
-# Trial cart update item view
-
-
-def updateItem(request):
-    data = json.loads(request.body)
-    productId = data['productId']
-    action = data['action']
-
-    print(f'{action}ed the product {productId}')
-
-    customer = request.user.customer
-    product = Product.objects.get(product_code=productId)
-    order, created = Order.objects.get_or_create(
-        customer=customer, complete=False)
-
-    orderItem, created = OrderItem.objects.get_or_create(
-        order=order, product=product)
-
-    if action == 'add':
-        orderItem.quantity = (orderItem.quantity + 1)
-    elif action == 'remove':
-        orderItem.quantity = (orderItem.quantity - 1)
-
-    orderItem.save()
-
-    if orderItem.quantity <= 0:
-        orderItem.delete()
-
-    return JsonResponse('Item was added', safe=False)
-# end of cart update item view
-
-
-def processOrder(request):
-    transaction_id = datetime.datetime.now().timestamp()
-    print("TRANSACTION ID: ==>> ", transaction_id)
-    data = json.loads(request.body)
-
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(
-            customer=customer, complete=False)
-        if order.shipping == True:
-            ShippingAddress.objects.create(
-                customer=customer,
-                order=order,
-                address=data['shipping']['address'],
-                city=data['shipping']['city'],
-                state=data['shipping']['state'],
-                zipcode=data['shipping']['zipcode'],
-            )
-
-    else:
-        customer, order = guestOrder(request, data)
-
-    total = data['form']['total']
-    order.transaction_id = transaction_id
-
-    if total == order.get_cart_total:
-        order.complete = True
-    order.save()
-
-    if order.shipping == True:
-        ShippingAddress.objects.create(
-            customer=customer,
-            order=order,
-            address=data['shipping']['address'],
-            city=data['shipping']['city'],
-            state=data['shipping']['state'],
-            zipcode=data['shipping']['zipcode'],
-        )
-    messages.success(request, ("Payment Complete!"))
-    return JsonResponse('Payment Complete!', safe=False)
-
-
-def loginPage(request):
-    title_tag = f"- Log In"
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    if request.user.is_authenticated:
-        return redirect('index')
-    else:
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-
-            user = authenticate(request, username=username, password=password)
-
-            if user is not None:
-                login(request, user)
-                if user.is_staff:
-                    messages.info(request, f'Welcome back {user.first_name}')
-                    return redirect('index')
-                else:
-                    messages.info(
-                        request, 'Register an account with us today.')
-                    return redirect('register')
-            else:
-                messages.info(request, 'Username Or Password is incorrect')
-
-    context = {
-        'title_tag': title_tag,
-        'cartItems': cartItems,
-        'blogs': blogs,
-        'brands': brands,
-    }
-
-    return render(request, 'login.html', context)
-
-
-def logoutUser(request):
-    logout(request)
-    return redirect('login')
-
-
-def registerPage(request):
-    title_tag = f"- Create Your Luku Account - Sign Up for Exclusive Offers and Fashion Updates"
-    meta_description = "Join the Lukustore.nl community! Sign up for an account to access exclusive offers, stay updated on the latest Kenyan fashion trends, and be part of our socially-conscious shopping experience. Register now for a personalized shopping journey that celebrates diversity and style."
-    meta_keywords = "Luku Store.nl Signup, Account Registration, Exclusive Offers, Fashion Updates, Socially-conscious Shopping, Personalized Account, Kenyan Fashion, Streetwear, Community Membership, Stay Connected, Diverse Style."
-    form = RegisterUserForm()
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    if request.user.is_authenticated:
-        return redirect('index')
-    else:
-        if request.method == "POST":
-            form = RegisterUserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                username = form.cleaned_data.get('username')
-                password = form.cleaned_data.get('password1')
-                user = authenticate(username=username, password=password)
-                login(request, user)
-                messages.success(request, ('Registration Successful'))
-                return redirect('index')
-        else:
-            form = RegisterUserForm()
-    context = {
-        'title_tag': title_tag,
-        'meta_description': meta_description,
-        'meta_keywords': meta_keywords,
-        'cartItems': cartItems,
-        'form': form,
-        'blogs': blogs,
-        'brands': brands,
-    }
-
-    return render(request, 'register.html', context)
-# customer
-
-
-def confirmed(request):
-    title_tag = f"- Order Complete!"
-    data = cartData(request)
-    cartItems = data['cartItems']
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-
-    context = {
-        'title_tag': title_tag,
-        'cartItems': cartItems,
-        'success': True,
-        'blogs': blogs,
-        'brands': brands,
-    }
-
-    return render(request, 'confirmed.html', context)
-
-
-def gallery(request):
-    category = request.GET.get('category')
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-
-    data = cartData(request)
-    cartItems = data['cartItems']
-
-    if category == None:
-        products = Product.objects.all()
-    else:
-        products = Product.objects.filter(category__name=category)
-
-    categories = Category.objects.all()
-
-    unique_product_codes = Product.objects.filter(
-        product_code__isnull=False).values_list('product_code', flat=True).distinct()
-    unique_photos = []
-
-    for product_code in unique_product_codes:
-        latest_photo = Product.objects.filter(
-            product_code=product_code).order_by('-id').first()
-        unique_photos.append(latest_photo)
-
-    active_category = request.GET.get('category', None)
-
-    context = {
-        'categories': categories,
-        'products': products,
-        'cartItems': cartItems,
-        'active_category': active_category,
-        'unique_photos': unique_photos,
-        'blogs': blogs,
-        'brands': brands,
-    }
-    return render(request, 'gallery.html', context)
-
-
-def viewPhoto(request, pk):
-    try:
-        photo = get_object_or_404(Photo, pk=pk)
-        product = get_object_or_404(Product, product_code=photo.product_code)
-        data = cartData(request)
-        cartItems = data['cartItems']
-        blogs = Blog.objects.order_by('-pk')
-        brands = Brand.objects.order_by('-pk')
-        photos = Photo.objects.filter(product_code=product.product_code)
-
-        similar_products = Product.objects.filter(
-            product_code=photo.product_code)
-
-        similar_products_codes = photo.similar_products_codes.split(',')
-        similar_products = Product.objects.filter(
-            Q(product_code__in=similar_products_codes) | Q(
-                name__in=similar_products_codes)
-        )
-
-        title_tag = f"- {photo.name}"
-
-        context = {
-            'photo': photo,
-            'cartItems': cartItems,
-            'similar_products': similar_products,
-            'title_tag': title_tag,
-            'blogs': blogs,
-            'brands': brands,
-            'product': product,
-            'photos': photos,
-        }
-
-        return render(request, 'photo.html', context)
-
-    except Exception as e:
-        # Handle other exceptions
-        title_tag = f'- Error {photo.name} was not found'
-        print("Error :", str(e))
-        context = {
-            'error': str(e),
-            'title_tag': title_tag
-        }
-        return render(request, '404.html', context)
-
-
-# ACCOUNT
-@login_required(login_url='login')
-def account(request):
-    photos = Photo.objects.all()
-    products = Product.objects.all()
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-    shippings = ShippingAddress.objects.all()
-    orders = Order.objects.order_by('-pk')
-    order_item_list = OrderItem.objects.all()
-    # title Tag
-    title_tag = f"Account Settings | Manage Your Luku Profile and Preferences"
-    meta_description = "Customize your Lukustore.nl experience with our account settings. Update your profile, manage preferences, and stay connected with the latest Kenyan fashion. Shop consciously with Lukustore.nl."
-    meta_keywords = "Lukustore, Account Settings, Profile Management, Preferences, Kenyan Fashion, Online Clothing Store, Socially-conscious Shopping, Vibrant Outfits, Handmade Clothes, Free Shipping Netherlands."
-    data = cartData(request)
-    cartItems = data['cartItems']
-    order = data['order']
-    items = data['items']
-
-    context = {
-        'order_item_list': order_item_list,
-        'shippings': shippings,
-        'cartItems': cartItems,
-        'title_tag': title_tag,
-        'photos': photos,
-        'products': products,
-        'orders': orders,
-        'order': order,
-        'items': items,
-        'blogs': blogs,
-        'brands': brands,
-        'meta_description': meta_description,
-        'meta_keywords': meta_keywords,
-
-    }
-
-    return render(request, 'account.html', context)
-# END OF ACCOUNT
+    return render(request, 'brands/brand-detail.html', context)
 
 
 def music(request):
-    title_tag = "- DJ G400 Mixes"
-    mixes = Mix.objects.all()
+    title_tag = "DJ G400 Mixes"
+    mixes = Mix.objects.order_by("-pk")
     latest_mix = mixes[2]
-    blogs = Blog.objects.order_by('-pk')
+    blogs = BlogPost.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     context = {
         'title_tag': title_tag,
@@ -866,81 +367,21 @@ def music(request):
 
 def music_player(request, slug):
     mix = Mix.objects.get(slug=slug)
-    mixes = Mix.objects.all()
-    title_tag = f"- Playing {mix.title}"
-    blogs = Blog.objects.order_by('-pk')
+    title_tag = f"Playing {mix.title}"
+    blogs = BlogPost.objects.order_by('-pk')
     brands = Brand.objects.order_by('-pk')
     context = {
         'title_tag': title_tag,
         'mix': mix,
-        'mixes': mixes,
         'blogs': blogs,
         'brands': brands,
     }
     return render(request, 'music_player.html', context)
 
 
-@login_required(login_url='index')
-def dashboard(request):
-    stocks = Stock.objects.all()
-    total_pieces = Stock.objects.first().total_pieces()
-    total_consigment = Stock.objects.first().total_consigment()
-    grand_total_cost = Stock.objects.first().grand_total_cost()
-    total_amount_T = Stock.objects.first().total_amount_T()
-
-    euro_exchange_rate = int(155)
-    euro_converted_total_consigment = round(
-        int(grand_total_cost) / euro_exchange_rate)
-
-    title_tag = "Dashboard"
-    admin_actions = LogEntry.objects.order_by('-action_time')[:10]
-
-    context = {
-        'title_tag': title_tag,
-        'stocks': stocks,
-        'total_pieces': total_pieces,
-        'total_consigment': total_consigment,
-        'grand_total_cost': grand_total_cost,
-        'total_amount_T': total_amount_T,
-        'euro_converted_total_consigment': euro_converted_total_consigment,
-        'admin_actions': admin_actions,
-    }
-
-    return render(request, 'dashboard.html', context)
-
-
 # Amapiano Workshop Signup Logic Start
-
-
-def send_email_with_inline_logo(email, first_name, ticket_number):
-    subject = 'Your Amapiano Workshop Confirmation 🎉'
-    message = f"Hi {first_name},\n\nGreat news! You're officially registered for the Amapiano Workshop 🎶\n\n📅 Date: 18th Nov 2023\n🕒 Time: 3:00 PM - 5:00 PM\n📍 Venue: Amsterdam Dance Center\n\n\nYour Ticket: {ticket_number}\n\nGet ready for a fantastic time of music and dance!\nSee you there,\n\nLuku Store.nl\ninfo@lukustore.nl"
-
-    from_email = 'lukustore.nl@gmail.com'
-    lukustore_info_email = 'info@lukustore.nl'
-    recipient_list = [email, lukustore_info_email]
-
-    # Create an EmailMessage instance
-    email_message = EmailMessage(
-        subject,
-        message,
-        from_email,
-        recipient_list,
-    )
-
-    # Attach the logo inline
-    logo_path = os.path.join(os.path.dirname(
-        __file__), 'static/Amapiano-Workshop.jpg')
-    with open(logo_path, 'rb') as logo_file:
-        # Adjust content type if needed
-        email_message.attach(logo_file.name, logo_file.read(), 'image/png')
-
-    # Send the email
-    email_message.send()
-
-
 def amapiano_workshop_signup(request):
-    title_tag = "- Amapiano Workshop Signup"
+    title_tag = "Amapiano Workshop Signup"
     form = AmapianoSignUpForm()
     remaining_slots = 20 - AmapianoSignUp.objects.count()
 
@@ -992,105 +433,103 @@ def amapiano_workshop_signup(request):
         'remaining_slots': remaining_slots,
     }
 
-    return render(request, 'amapiano.html', context)
+    return render(request, 'events/amapiano.html', context)
 # Amapiano Workshop Signup Logic End
 
 # ACCOUNT
 
 
-@login_required(login_url='login')
-def account_settings(request):
-    blogs = Blog.objects.order_by('-pk')
-    brands = Brand.objects.order_by('-pk')
-    shippings = ShippingAddress.objects.all()
-    data = cartData(request)
-    cartItems = data['cartItems']
-    order = data['order']
-    items = data['items']
+# spectra Talks Signup Logic Start
 
-    # Edit account
-    customer = request.user.customer
-    form = CustomerForm(instance=customer)
 
-    title_tag = f"- Account Settings"
+def spectra_talks_signup(request):
+    title_tag = "spectra Talks with Luku Store.nl & WhoWhatWhereKE Signup"
+    spectra_talks_signup_form = SpectraTalksSignUpForm()
+    remaining_slots = 43 - SpectraTalksSignUp.objects.count()
+
     if request.method == 'POST':
-        form = CustomerForm(request.POST, request.FILES, instance=customer)
-        if form.is_valid():
-            form.save()
-            first_name = form.cleaned_data.get('first_name')
-            print(f"Succesfully updated {first_name}'s account.")
-            messages.success(
-                request, ('Succesfully updated account settings.'))
-            return redirect('account_settings')
+        spectra_talks_signup_form = SpectraTalksSignUpForm(request.POST)
+        if spectra_talks_signup_form.is_valid():
+            email = spectra_talks_signup_form.cleaned_data.get('email')
+
+            if SpectraTalksSignUp.objects.filter(email=email).exists():
+                messages.error(
+                    request, ('Successfylly registered'))
+                return redirect('index')
+
+            if remaining_slots > 0:
+                user_signup = spectra_talks_signup_form.save(commit=False)
+                user_signup.consent = spectra_talks_signup_form.cleaned_data.get(
+                    'consent')
+                user_signup.ticket_number = str(uuid.uuid4())[:8]
+                user_signup.save()
+
+                first_name = spectra_talks_signup_form.cleaned_data.get(
+                    'first_name')
+                last_name = spectra_talks_signup_form.cleaned_data.get(
+                    'last_name')
+                email = spectra_talks_signup_form.cleaned_data.get('email')
+                consent = user_signup.consent
+                ticket_number = user_signup.ticket_number
+                short_ticket_number = ticket_number[:8]
+                consent = user_signup.consent
+
+                if consent:
+                    print("New subscriber!")
+                    consent_status = "Subscribed"
+                elif consent == "Unknown":
+                    print("Consent Unknown")
+                    consent_status = "Unknown"
+                else:
+                    consent_status = "Unsbscribed"
+                    print(f"{first_name} Unsibscribed :(")
+
+                print(
+                    f"\n\n++++++SIGNUP DETAILS START+++++\n\nTicket Number: {ticket_number}\n{first_name} {last_name} registered with {email}\nSubscription status: {consent_status}\nShort Ticket No: #{short_ticket_number}\n\n++++++SIGNUP DETAILS END+++++\n\n")
+
+                send_email_with_inline_logo(
+                    email, first_name, short_ticket_number)
+
+                messages.success(
+                    request, (f"Hey {first_name}! Your Registration to 'spectra Talks with Luku Store.nl & WhoWhatWhereKE' Was Successful! Check your email for the ticket and event details."))
+                return redirect('index')
+            else:
+                spectra_talks_signup_form.save()
+                messages.error(
+                    request, ("We appreciate your interest! As we've reached full capacity, keep an eye on our announcements for details on the next event. Stay connected through our newsletter or social channels to be the first to know."))
+                return redirect('index')
         else:
-            form = CustomerForm(instance=customer)
+            spectra_talks_signup_form = SpectraTalksSignUpForm()
 
     context = {
-        'shippings': shippings,
-        'cartItems': cartItems,
         'title_tag': title_tag,
-        'blogs': blogs,
-        'brands': brands,
-        'form': form,
+        'remaining_slots': remaining_slots,
+        'spectra_talks_signup_form': spectra_talks_signup_form,
     }
 
-    return render(request, 'account_settings.html', context)
+    return render(request, 'events/spectra-talks.html', context)
+# spectra Talks Signup Logic End
 
 
-# Stock Logic Start
-def view_stock(request, slug):
-    stock = Stock.objects.get(slug=slug)
-    return HttpResponseRedirect(reverse('dashboard'))
+def search_result(request):
+    title_tag = f'"{request.GET.get("q")}" results'
+    brands = Brand.objects.all()
+    data = cartData(request)
+    cartItems = data['cartItems']
+    context = {
+        "title_tag": title_tag,
+        "brands": brands,
+        "blogs": blogs,
+        "cartItems": cartItems,
+    }
+    return render(request, "search.html", context)
 
 
-def edit_stock(request, slug):
-    stock = get_object_or_404(Stock, slug=slug)
+# Mollie Utility Start
 
-    if request.method == 'POST':
-        form = StockForm(request.POST, request.FILES, instance=stock)
-        if form.is_valid():
-            form.save()
-            return render(request, 'edit_stock.html', {
-                'form': form,
-                'success': True
-            })
-        else:
-            print("Errors occurred while uploading: ", form.errors)
-    else:
-        form = StockForm(instance=stock)
-
-    return render(request, 'edit_stock.html', {
-        'form': form,
-        'stock': stock,
-    })
-
-
-def delete_stock(request, slug):
-    if request.method == 'POST':
-        stock = Stock.objects.get(slug=slug)
-        stock.delete()
-    return HttpResponseRedirect(reverse('dashboard'))
-
-
-def add_stock(request):
-    if request.method == 'POST':
-        form = StockForm(request.POST)
-        if form.is_valid():
-            # new_title = form.cleaned_data['title']
-            new_stock = Stock(
-                # title=new_title,
-
-            )
-
-            new_stock.save()
-            return render(request, 'add_stock.html', {
-                'form': StockForm(),
-                'success': True
-            })
-    else:
-        form = StockForm()
-    return render(request, 'add_stock.html', {
-        'form': StockForm()
-    })
-
-# Stock Logic End
+def initiate_payment(request, order_amount, order_description):
+    redirect_url = "confirmed"
+    payment = create_payment(
+        amount=order_amount, description=order_description, redirect_url=redirect_url)
+    return render(request, 'payment.html', {'payment_url': payment.checkout_url})
+# Mollie Utility End
