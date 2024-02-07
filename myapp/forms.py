@@ -1,5 +1,5 @@
 from django import forms
-from .models import *
+from .models import Order, AmapianoSignUp, Newsletter, Customer, Product, ProductPhoto, SpectraTalksSignUp, LukuRadioSignup
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -29,8 +29,8 @@ class RegisterUserForm(UserCreationForm):
             'password2',
         )
 
-        def __init__(self, *args, **kwagrs):
-            super(RegisterUserForm, self).__init__(*args, **kwagrs)
+        def __init__(self, *args, **kwargs):
+            super(RegisterUserForm, self).__init__(*args, **kwargs)
 
             self.fields['username'].widget.attrs['class'] = 'form-control'
             self.fields['password1'].widget.attrs['class'] = 'form-control'
@@ -38,48 +38,6 @@ class RegisterUserForm(UserCreationForm):
             self.fields['first_name'].widget.attrs['class'] = 'form-control'
             self.fields['last_name'].widget.attrs['class'] = 'form-control'
             self.fields['email'].widget.attrs['class'] = 'form-control'
-
-
-class PhotoForm(forms.ModelForm):
-    class Meta:
-        model = Photo
-        fields = ("__all__")
-
-        def __init__(self, *args, **kwagrs):
-            super(PhotoForm, self).__init__(*args, **kwagrs)
-
-            self.fields['name'].widget.attrs['class'] = 'form-control'
-            self.fields['name_link'].widget.attrs['class'] = 'form-control'
-            self.fields['type'].widget.attrs['class'] = 'form-control'
-            self.fields['category'].widget.attrs['class'] = 'form-control'
-            self.fields['image'].widget.attrs['class'] = 'form-control'
-            self.fields['description'].widget.attrs['class'] = 'form-control'
-            self.fields['similar_products'].widget.attrs['class'] = 'form-control'
-            self.fields['price'].widget.attrs['class'] = 'form-control'
-            self.fields['stock'].widget.attrs['class'] = 'form-control'
-            self.fields['color'].widget.attrs['class'] = 'form-control'
-            self.fields['size'].widget.attrs['class'] = 'form-control'
-            self.fields['rating'].widget.attrs['class'] = 'form-control'
-            self.fields['popular'].widget.attrs['class'] = 'form-check-input'
-            self.fields['shop'].widget.attrs['class'] = 'form-check-input'
-            self.fields['digital'].widget.attrs['class'] = 'form-check-input'
-
-
-class BlogForm(forms.ModelForm):
-    class Meta:
-        model = Blog
-        fields = ("__all__")
-
-        def __init__(self, *args, **kwagrs):
-            super(BlogForm, self).__init__(*args, **kwagrs)
-
-            self.fields['title'].widget.attrs['class'] = 'form-control'
-            self.fields['summary'].widget.attrs['class'] = 'form-control'
-            self.fields['content'].widget.attrs['class'] = 'form-control'
-            self.fields['author'].widget.attrs['class'] = 'form-control'
-            self.fields['keywords'].widget.attrs['class'] = 'form-control'
-            self.fields['image'].widget.attrs['class'] = 'form-control'
-            self.fields['youtube'].widget.attrs['class'] = 'form-control'
 
 
 class AmapianoSignUpForm(forms.ModelForm):
@@ -124,21 +82,12 @@ class CustomerForm(ModelForm):
             self.fields['password1'].widget.attrs['class'] = 'form-control'
             self.fields['password2'].widget.attrs['class'] = 'form-control'
 
-
-class WatermarkColorForm(forms.Form):
-    watermark_color = forms.ChoiceField(
-        choices=[('white', 'White'), ('black', 'Black')],
-        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
-        initial='white',
-    )
-
-
 # Stocks Form Start
 
 
-class StockForm(forms.ModelForm):
+class ProductForm(forms.ModelForm):
     class Meta:
-        model = Stock
+        model = Product
         fields = '__all__'
         exclude = ['product_code', 'slug']
         widgets = {
@@ -146,6 +95,9 @@ class StockForm(forms.ModelForm):
             'type': forms.Select(attrs={'class': 'form-control'}),
             'target': forms.Select(attrs={'class': 'form-control'}),
             'item': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'stock': forms.NumberInput(attrs={'class': 'form-control'}),
+            'rating': forms.NumberInput(attrs={'class': 'form-control'}),
             'amount_f': forms.NumberInput(attrs={'class': 'form-control'}),
             'amount_t': forms.NumberInput(attrs={'class': 'form-control'}),
             'buying_price': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -157,22 +109,47 @@ class StockForm(forms.ModelForm):
             'online': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'priority': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'similar_products_codes': forms.TextInput(attrs={'class': 'form-control'}),
-            'image_original_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'image_large_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'image_medium_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'image_thumbnail_size': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'thumbnail': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'size_xs': forms.NumberInput(attrs={'class': 'form-control'}),
+            'size_small': forms.NumberInput(attrs={'class': 'form-control'}),
+            'size_medium': forms.NumberInput(attrs={'class': 'form-control'}),
+            'size_large': forms.NumberInput(attrs={'class': 'form-control'}),
+            'size_xl': forms.NumberInput(attrs={'class': 'form-control'}),
+            'size_xxl': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
 # Stocks Form End
 
 
-class ProductCheckoutForm(forms.ModelForm):
+class ProductPhotoForm(forms.ModelForm):
     class Meta:
-        model = Product
-        fields = ["size", "color"]
+        model = ProductPhoto
+        fields = '__all__'
+
+
+class SpectraTalksSignUpForm(forms.ModelForm):
+    class Meta:
+        model = SpectraTalksSignUp
+        fields = ("__all__")
 
         def __init__(self, *args, **kwagrs):
-            super(ProductCheckoutForm, self).__init__(*args, **kwagrs)
+            super(SpectraTalksSignUpForm, self).__init__(*args, **kwagrs)
 
-            self.fields['size'].widget.attrs['class'] = 'form-control'
-            self.fields['color'].widget.attrs['class'] = 'form-control'
+            self.fields['first_name'].widget.attrs['class'] = 'form-control'
+            self.fields['last_name'].widget.attrs['class'] = 'form-control'
+            self.fields['email'].widget.attrs['class'] = 'form-control'
+            self.fields['consent'].widget.attrs['class'] = 'form-check-input'
 
+
+class LukuRadioSignupForm(forms.ModelForm):
+    class Meta:
+        model = LukuRadioSignup
+        fields = ("__all__")
+
+        def __init__(self, *args, **kwagrs):
+            super(LukuRadioSignupForm, self).__init__(*args, **kwagrs)
+
+            self.fields['first_name'].widget.attrs['class'] = 'form-control'
+            self.fields['last_name'].widget.attrs['class'] = 'form-control'
+            self.fields['email'].widget.attrs['class'] = 'form-control'
+            self.fields['consent'].widget.attrs['class'] = 'form-check-input'
