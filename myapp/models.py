@@ -557,5 +557,22 @@ class EmailSignupMessage(models.Model):
         return self.subject
 
     class Meta:
+
+class Event(models.Model):
+    name = models.CharField(max_length=255)
+    poster = models.ImageField(upload_to='event_posters/')
+    date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    location = models.CharField(max_length=255)
+    venue = models.CharField(max_length=255)
+    event_disclaimer = models.TextField()
+    event_keywords = models.TextField(null=True, blank=True)
+    event_description = models.TextField(null=True, blank=True)
+    event_capacity = models.IntegerField(default=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
         verbose_name = 'Email Signup Message'
         verbose_name_plural = 'Email Signup Messages'
