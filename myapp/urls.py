@@ -47,6 +47,6 @@ urlpatterns = [
     path('view-product-video/<int:pk>',
          viewProductVideo, name='viewProductVideo'),
     path('search/', views.search_result, name='search_result'),
-    path('Luku-Radio-Vol-02/', event_signup, name='event_signup'),
+    path('Luku-Radio/', event_signup, name='event_signup'),
     path('handle_order/', handle_order, name='handle_order'),
 ]

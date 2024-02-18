@@ -118,8 +118,8 @@ def index(request):
     cartItems = data['cartItems']
 
     # Calculate remaining slots
-    remaining_slots = 30 - LukuRadioSignup.objects.count()
-
+    event = Event.objects.latest('date')
+    remaining_slots = event.remaining_slots
     bonkerz_nairobi_products = Product.objects.filter(online=True)[:3]
     bonkerz_nairobi = Brand.objects.get(slug="bonkerz-nrb")
     bonkerz_nairobi_logo = bonkerz_nairobi.image.url
@@ -163,6 +163,7 @@ def index(request):
         'remaining_slots': remaining_slots,
         'bonkerz_nairobi_products': bonkerz_nairobi_products,
         'bonkerz_nairobi_logo': bonkerz_nairobi_logo,
+        'event': event,
 
     }
     return render(request, 'index.html', context)
@@ -198,8 +199,20 @@ def shop(request):
         products = Product.objects.filter(online=True)
 
     sorted_brands = Brand.get_brands_sorted_by_online_product()
-    # sorted_brands = Brand.objects.all()
     active_brand = request.GET.get('brand', None)
+
+    for product in products:
+        if any([
+            product.size_xs > 0,
+            product.size_small > 0,
+            product.size_medium > 0,
+            product.size_large > 0,
+            product.size_xl > 0,
+            product.size_xxl > 0,
+        ]):
+            product.has_size = True
+        else:
+            product.has_size = False
 
     context = {
         'title_tag': title_tag,
@@ -249,7 +262,6 @@ def cart(request):
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
-
     context = {
         'items': items,
         'order': order,

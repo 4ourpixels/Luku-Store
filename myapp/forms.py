@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order, AmapianoSignUp, Newsletter, Customer, Product, ProductPhoto, SpectraTalksSignUp, LukuRadioSignup
+from .models import Order, AmapianoSignUp, Newsletter, Customer, Product, ProductPhoto, SpectraTalksSignUp, LukuRadioSignup, Event, EventParticipant
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -153,3 +153,29 @@ class LukuRadioSignupForm(forms.ModelForm):
             self.fields['last_name'].widget.attrs['class'] = 'form-control'
             self.fields['email'].widget.attrs['class'] = 'form-control'
             self.fields['consent'].widget.attrs['class'] = 'form-check-input'
+
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = '__all__'
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+            'start_time': forms.TimeInput(attrs={'type': 'time'}),
+            'end_time': forms.TimeInput(attrs={'type': 'time'}),
+        }
+
+
+class EventParticipantForm(forms.ModelForm):
+    class Meta:
+        model = EventParticipant
+        fields = ("__all__")
+
+        def __init__(self, *args, **kwagrs):
+            super(EventParticipantForm, self).__init__(*args, **kwagrs)
+
+            self.fields['first_name'].widget.attrs['class'] = 'form-control'
+            self.fields['last_name'].widget.attrs['class'] = 'form-control'
+            self.fields['email'].widget.attrs['class'] = 'form-control'
+            self.fields['consent'].widget.attrs['class'] = 'form-check-input'
+            self.fields['event'].widget.attrs['class'] = 'form-control'

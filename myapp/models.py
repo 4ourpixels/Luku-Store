@@ -557,6 +557,9 @@ class EmailSignupMessage(models.Model):
         return self.subject
 
     class Meta:
+        verbose_name = 'Email Signup Message'
+        verbose_name_plural = 'Email Signup Messages'
+
 
 class Event(models.Model):
     name = models.CharField(max_length=255)
@@ -570,9 +573,37 @@ class Event(models.Model):
     event_keywords = models.TextField(null=True, blank=True)
     event_description = models.TextField(null=True, blank=True)
     event_capacity = models.IntegerField(default=50, null=True, blank=True)
+    confirmation_email_subject = models.TextField(null=True, blank=True)
+    confirmation_email_message = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
 
-        verbose_name = 'Email Signup Message'
-        verbose_name_plural = 'Email Signup Messages'
+    @property
+    def remaining_slots(self):
+        if self.event_capacity is not None:
+            participants_count = self.eventparticipant_set.count()
+            return max(0, self.event_capacity - participants_count)
+        else:
+            return None
+
+
+class EventParticipant(models.Model):
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
+    first_name = models.CharField(max_length=100, blank=True, null=True)
+    last_name = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField()
+    consent = models.BooleanField(default=True, null=True, blank=False)
+    ticket_number = models.CharField(
+        max_length=36, unique=True, blank=True, null=True)
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
